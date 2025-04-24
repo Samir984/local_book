@@ -1,0 +1,8 @@
+Django
+django-types
+django-stubs-ext
+gunicorn
+psycopg2-binary
+pydantic
+pydantic-settings
+whitenoise-spa
