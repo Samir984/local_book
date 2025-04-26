@@ -7,15 +7,22 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "kubb": "kubb generate",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@kubb/core": "^3.10.2",
+    "@kubb/plugin-oas": "^3.10.2",
+    "@kubb/plugin-react-query": "^3.10.2",
+    "@kubb/plugin-ts": "^3.10.2",
+    "@tanstack/react-query": "^5.74.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@kubb/cli": "^3.10.2",
+    "@kubb/core": "^3.10.2",
+    "@kubb/plugin-client": "^3.10.2",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
