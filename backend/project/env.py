@@ -13,6 +13,10 @@ class Environment(BaseSettings):
     ALLOWED_HOSTS: str = "*"
     CSRF_TRUSTED_ORIGINS: str = "http://127.0.0.1:8000"
     SECRET_KEY: str = "STRONG_KEY"
+    AWS_ACCESS_KEY_ID: str = ""
+    AWS_SECRET_ACCESS_KEY: str = ""
+    AWS_STORAGE_BUCKET_NAME: str = ""
+    AWS_STORAGE_REGION: str = ""
 
 
 ENV = Environment()

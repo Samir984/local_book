@@ -41,6 +41,8 @@ CSRF_TRUSTED_ORIGINS = ENV.CSRF_TRUSTED_ORIGINS.split(",")
 # Application definition
 
 INSTALLED_APPS = [
+    "core",
+    "storages",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -147,3 +149,25 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Custom user model
+AUTH_USER_MODEL = "core.User"
+
+
+# File storage settings
+STORAGES: dict[str, Any] = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "bucket_name": ENV.AWS_STORAGE_BUCKET_NAME,
+            "region_name": ENV.AWS_STORAGE_REGION,
+            "access_key": ENV.AWS_ACCESS_KEY_ID,
+            "secret_key": ENV.AWS_SECRET_ACCESS_KEY,
+            "querystring_expire": 3600,
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
