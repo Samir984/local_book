@@ -1,6 +1,7 @@
 Django
-django-types
+django-ninja
 django-stubs-ext
+django-types
 gunicorn
 psycopg2-binary
 pydantic
