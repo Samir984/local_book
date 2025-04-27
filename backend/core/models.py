@@ -89,10 +89,19 @@ class BookMark(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="bookmarks"
     )
-    book = models.ForeignKey(
-        Book, on_delete=models.CASCADE, related_name="bookmarks"
-    )
     date_created = models.DateTimeField(auto_now_add=True)
+     
+    def __str__(self):
+        return f"{self.user.username} bookmarked"
+
+
+class BookMarkItem(models.Model):
+    bookmark = models.ForeignKey(
+        BookMark, on_delete=models.CASCADE, related_name="bookmark_items"
+    )
+    book = models.ForeignKey(
+        Book, on_delete=models.CASCADE, related_name="bookmark_items"
+    )
 
     def __str__(self):
-        return f"{self.user.username} bookmarked {self.book.name}"
+        return f"{self.bookmark.user.username} bookmarked {self.book.name}"

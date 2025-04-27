@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 
 from .models import Book
 from .models import BookMark
+from .models import BookMarkItem
 from .models import Report
 from .models import User
 
@@ -34,6 +35,7 @@ class CustomUserAdmin(UserAdmin):
         ("Important dates", {"fields": ("last_login", "date_joined")}),
     )
     list_display = (
+        "id",
         "username",
         "email",
         "first_name",
@@ -54,6 +56,7 @@ class CustomUserAdmin(UserAdmin):
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin[Book]):
     list_display = (
+        "id",
         "name",
         "user",
         "publication",
@@ -125,17 +128,20 @@ class BookAdmin(admin.ModelAdmin[Book]):
 
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin[Report]):
-    list_display = ("user", "book", "reason", "date_created")
+    list_display = ("id", "user", "book", "reason", "date_created")
     list_filter = ("user", "book", "date_created")
     search_fields = ("user__username", "book__name", "reason")
     ordering = ("-date_created",)
-    readonly_fields = ("date_created",)
 
 
 @admin.register(BookMark)
 class BookMarkAdmin(admin.ModelAdmin[BookMark]):
-    list_display = ("user", "book", "date_created")
-    list_filter = ("user", "book", "date_created")
-    search_fields = ("user__username", "book__name")
-    ordering = ("-date_created",)
-    readonly_fields = ("date_created",)
+    list_display = ("id", "user", "date_created")
+    list_filter = ("user", "date_created")
+    search_fields = ("user__username",)
+
+
+@admin.register(BookMarkItem)
+class BookMarkItemAdmin(admin.ModelAdmin[BookMarkItem]):
+    list_display = ("id", "bookmark", "book")
+    list_filter = ("book",)
