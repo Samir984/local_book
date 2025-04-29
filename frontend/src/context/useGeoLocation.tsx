@@ -4,6 +4,7 @@ import { toast } from "sonner";
 interface Geolocation {
   latitude: number;
   longitude: number;
+  estimatedError: number;
 }
 
 export default function useGeoLocation() {
@@ -15,26 +16,30 @@ export default function useGeoLocation() {
         (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-          const accuracy = position.coords.accuracy;
+          const estimatedError = position.coords.accuracy;
           console.log(
             "Latitude: " +
               latitude +
               ", Longitude: " +
               longitude +
-              ", Accuracy: " +
-              accuracy
+              ",  estimatedError: " +
+              estimatedError
           );
-          if (accuracy < 100) {
-            setGeoLocation({ latitude: latitude, longitude: longitude });
+          if (estimatedError < 100) {
+            setGeoLocation({
+              latitude: latitude,
+              longitude: longitude,
+              estimatedError: estimatedError,
+            });
           } else {
             toast.error(
-              "Location accuracy is too low. Make sure your GPS is turn on."
+              "Location  estimatedError is too low. Make sure your GPS is turn on."
             );
           }
         },
         (error) => {
           console.error("Error getting location", error);
-          alert(
+          toast.error(
             "Error getting location. Make sure site has permission to access location."
           );
         },
@@ -44,8 +49,6 @@ export default function useGeoLocation() {
           maximumAge: 0,
         }
       );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
     }
   }
 

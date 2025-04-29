@@ -1,9 +1,18 @@
+export type { CoreApiCheckUsernameQueryKey } from './useCoreApiCheckUsername.ts'
+export type { CoreApiCheckUsernameSuspenseQueryKey } from './useCoreApiCheckUsernameSuspense.ts'
 export type { CoreApiGetUserQueryKey } from './useCoreApiGetUser.ts'
 export type { CoreApiGetUserSuspenseQueryKey } from './useCoreApiGetUserSuspense.ts'
 export type { CoreApiLoginUserMutationKey } from './useCoreApiLoginUser.ts'
 export type { CoreApiLogoutUserQueryKey } from './useCoreApiLogoutUser.ts'
 export type { CoreApiLogoutUserSuspenseQueryKey } from './useCoreApiLogoutUserSuspense.ts'
 export type { CoreApiRegisterUserMutationKey } from './useCoreApiRegisterUser.ts'
+export { coreApiCheckUsernameQueryKey, coreApiCheckUsername, coreApiCheckUsernameQueryOptions, useCoreApiCheckUsername } from './useCoreApiCheckUsername.ts'
+export {
+  coreApiCheckUsernameSuspenseQueryKey,
+  coreApiCheckUsernameSuspense,
+  coreApiCheckUsernameSuspenseQueryOptions,
+  useCoreApiCheckUsernameSuspense,
+} from './useCoreApiCheckUsernameSuspense.ts'
 export { coreApiGetUserQueryKey, coreApiGetUser, coreApiGetUserQueryOptions, useCoreApiGetUser } from './useCoreApiGetUser.ts'
 export {
   coreApiGetUserSuspenseQueryKey,

@@ -1,3 +1,10 @@
+export type {
+  CoreApiCheckUsernameQueryParams,
+  CoreApiCheckUsername200,
+  CoreApiCheckUsername400,
+  CoreApiCheckUsernameQueryResponse,
+  CoreApiCheckUsernameQuery,
+} from './CoreApiCheckUsername.ts'
 export type { CoreApiGetUser200, CoreApiGetUser401, CoreApiGetUserQueryResponse, CoreApiGetUserQuery } from './CoreApiGetUser.ts'
 export type {
   CoreApiLoginUser200,

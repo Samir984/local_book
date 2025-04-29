@@ -1,9 +1,18 @@
+export type { CoreApiCheckUsernameQueryKey } from './hooks/useCoreApiCheckUsername.ts'
+export type { CoreApiCheckUsernameSuspenseQueryKey } from './hooks/useCoreApiCheckUsernameSuspense.ts'
 export type { CoreApiGetUserQueryKey } from './hooks/useCoreApiGetUser.ts'
 export type { CoreApiGetUserSuspenseQueryKey } from './hooks/useCoreApiGetUserSuspense.ts'
 export type { CoreApiLoginUserMutationKey } from './hooks/useCoreApiLoginUser.ts'
 export type { CoreApiLogoutUserQueryKey } from './hooks/useCoreApiLogoutUser.ts'
 export type { CoreApiLogoutUserSuspenseQueryKey } from './hooks/useCoreApiLogoutUserSuspense.ts'
 export type { CoreApiRegisterUserMutationKey } from './hooks/useCoreApiRegisterUser.ts'
+export type {
+  CoreApiCheckUsernameQueryParams,
+  CoreApiCheckUsername200,
+  CoreApiCheckUsername400,
+  CoreApiCheckUsernameQueryResponse,
+  CoreApiCheckUsernameQuery,
+} from './types/CoreApiCheckUsername.ts'
 export type { CoreApiGetUser200, CoreApiGetUser401, CoreApiGetUserQueryResponse, CoreApiGetUserQuery } from './types/CoreApiGetUser.ts'
 export type {
   CoreApiLoginUser200,
@@ -24,6 +33,18 @@ export type { GenericSchema } from './types/GenericSchema.ts'
 export type { LoginSchema } from './types/LoginSchema.ts'
 export type { RegisterSchema } from './types/RegisterSchema.ts'
 export type { UserSchema } from './types/UserSchema.ts'
+export {
+  coreApiCheckUsernameQueryKey,
+  coreApiCheckUsername,
+  coreApiCheckUsernameQueryOptions,
+  useCoreApiCheckUsername,
+} from './hooks/useCoreApiCheckUsername.ts'
+export {
+  coreApiCheckUsernameSuspenseQueryKey,
+  coreApiCheckUsernameSuspense,
+  coreApiCheckUsernameSuspenseQueryOptions,
+  useCoreApiCheckUsernameSuspense,
+} from './hooks/useCoreApiCheckUsernameSuspense.ts'
 export { coreApiGetUserQueryKey, coreApiGetUser, coreApiGetUserQueryOptions, useCoreApiGetUser } from './hooks/useCoreApiGetUser.ts'
 export {
   coreApiGetUserSuspenseQueryKey,

@@ -12,11 +12,13 @@ import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Lock, Phone } from "lucide-react";
-import useGeoLocation from "@/context/useGeoLocation";
+import { Mail, Lock, Phone, LocateFixed } from "lucide-react";
+
 import { z } from "zod";
-import { useCoreApiRegisterUser } from "@/gen";
+import { useCoreApiCheckUsername, useCoreApiRegisterUser } from "@/gen";
 import { toast } from "sonner";
+import { useEffect } from "react";
+import useDebounce from "@/hooks/useDebounce";
 
 const RegisterSchema = z.object({
   first_name: z
@@ -32,6 +34,7 @@ const RegisterSchema = z.object({
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
+  location: z.string(),
   phone_number: z
     .string()
     .min(10, { message: "Phone number must at least 10 digits" }),
@@ -39,15 +42,15 @@ const RegisterSchema = z.object({
 type RegisterForm = z.infer<typeof RegisterSchema>;
 
 function Register() {
-  const geoLocation = useGeoLocation();
-  const mutation = useCoreApiRegisterUser({
+  const signupMutation = useCoreApiRegisterUser({
     mutation: {
       onSuccess: (data) => {
-        console.log("User registered successfully", data);
+        console.log("response:", data);
+        toast.success("User registered successfully");
       },
       onError: (error) => {
         console.error("Error registering user", error);
-        toast("Error registering user. Please try again.");
+        toast.error("Error registering user. Please try again.");
       },
     },
   });
@@ -55,29 +58,41 @@ function Register() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<RegisterForm>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {},
   });
+  const username = watch("username");
+  const debounceUsername = useDebounce(username || "");
+  const {
+    data: checkUserName,
+    isFetching: isCheckingUserName,
+    refetch: refetchCheckUsername,
+  } = useCoreApiCheckUsername({
+    username: debounceUsername,
+  });
 
   const onSubmit = (data: RegisterForm) => {
-    if (!geoLocation) {
-      toast.error("Please allow location access to register.");
+    if (!checkUserName?.detail) {
+      toast.error("Form validation failed.");
       return;
     }
-    const finalData = {
-      ...data,
-      ...geoLocation,
-    };
-
-    mutation.mutate({ data: finalData });
+    signupMutation.mutate({ data });
   };
-  console.log("Errors:", errors);
 
-  console.log("GeoLocation:", geoLocation);
+  useEffect(() => {
+    function checkUsername() {
+      refetchCheckUsername();
+    }
+
+    checkUsername();
+  }, [debounceUsername, refetchCheckUsername]);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className=""></div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Card className="w-full max-w-md space-y-4">
           <CardHeader className="space-y-1 text-center">
@@ -98,6 +113,7 @@ function Register() {
                   className={`${errors.first_name ? "border-red-600" : ""}`}
                   placeholder="John"
                   {...register("first_name")}
+                  required
                 />
                 {
                   <p className="text-[12px]  text-red-500 ">
@@ -114,6 +130,7 @@ function Register() {
                   placeholder="Doe"
                   className={`${errors.last_name ? "border-red-600" : ""}`}
                   {...register("last_name")}
+                  required
                 />
                 {
                   <p className="text-[12px]  text-red-500 ">
@@ -129,11 +146,14 @@ function Register() {
                   id="username"
                   type="text"
                   placeholder="johndoe"
-                  className={`${errors.username ? "border-red-600" : ""}`}
+                  className={`${username && !checkUserName?.detail ? "border-red-600" : ""}`}
                   {...register("username")}
                 />
                 {
                   <p className="text-[12px]  text-red-500 ">
+                    {!isCheckingUserName &&
+                      !checkUserName?.detail &&
+                      `${debounceUsername} is already taken`}
                     {errors.username?.message}
                   </p>
                 }
@@ -149,6 +169,7 @@ function Register() {
                   placeholder="john@example.com"
                   className={`pl-10 ${errors.email ? "border-red-600" : ""}`}
                   {...register("email")}
+                  required
                 />
                 {
                   <p className="text-[12px]  text-red-500 ">
@@ -168,10 +189,30 @@ function Register() {
                   placeholder="**********"
                   className={`pl-10 ${errors.password ? "border-red-600" : ""}`}
                   {...register("password")}
+                  required
                 />
                 {
                   <p className="text-[12px]  text-red-500 ">
                     {errors.password?.message}
+                  </p>
+                }
+              </div>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="location">Location:</Label>
+              <div className="relative ">
+                <LocateFixed className="absolute left-3 top-2 h-5 w-5 text-gray-400" />
+                <Input
+                  id="location"
+                  type="text"
+                  placeholder="location"
+                  className={`pl-10 ${errors.phone_number ? "border-red-600" : ""}`}
+                  {...register("location")}
+                  required
+                />
+                {
+                  <p className="text-[12px]  text-red-500 ">
+                    {errors.phone_number?.message}
                   </p>
                 }
               </div>
@@ -184,8 +225,9 @@ function Register() {
                   id="phone"
                   type="number"
                   placeholder="mobile"
-                  className={`pl-10 ${errors.username ? "border-red-600" : ""}`}
+                  className={`pl-10 ${errors.phone_number ? "border-red-600" : ""}`}
                   {...register("phone_number")}
+                  required
                 />
                 {
                   <p className="text-[12px]  text-red-500 ">
@@ -196,7 +238,9 @@ function Register() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button className="w-full">Register</Button>
+            <Button className="w-full" disabled={signupMutation.isPending}>
+              Register
+            </Button>
             <div className="text-sm text-center">
               Already have an account?{" "}
               <Link

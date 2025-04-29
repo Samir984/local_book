@@ -13,13 +13,9 @@ export type UserSchema = {
    */
   email: string
   /**
-   * @type number
+   * @type string
    */
-  latitude: number
-  /**
-   * @type number
-   */
-  longitude: number
+  location: string
   /**
    * @type string
    */
