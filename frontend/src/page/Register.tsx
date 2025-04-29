@@ -46,11 +46,13 @@ function Register() {
     mutation: {
       onSuccess: (data) => {
         console.log("response:", data);
-        toast.success("User registered successfully");
+        toast.success(data.detail);
       },
       onError: (error) => {
         console.error("Error registering user", error);
-        toast.error("Error registering user. Please try again.");
+        toast.error(
+          `Error: ${error.response?.data.detail || "Fail to resister."}`
+        );
       },
     },
   });
@@ -92,7 +94,6 @@ function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className=""></div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Card className="w-full max-w-md space-y-4">
           <CardHeader className="space-y-1 text-center">

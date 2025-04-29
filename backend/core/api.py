@@ -35,7 +35,7 @@ api = NinjaAPI(
     docs_url="/docs/",
     title="Book Exchange API",
     version="1.0.0",
-    # auth=session_auth,
+    auth=session_auth,
 )
 api.add_router("/users/", user, tags=["Users"])
 api.add_router("/books/", book, tags=["books"])
@@ -43,7 +43,9 @@ api.add_router("/reports/", report, tags=["reports"])
 api.add_router("/ratings/", rating, tags=["ratings"])
 
 
-@user.post("/register/", response={201: GenericSchema, 400: GenericSchema})
+@user.post(
+    "/register/", response={201: GenericSchema, 400: GenericSchema}, auth=None
+)
 def register_user(request: HttpRequest, data: RegisterSchema):
     if User.objects.filter(username=data.username).exists():
         return 400, {"detail": "Username already exists."}
@@ -57,7 +59,9 @@ def register_user(request: HttpRequest, data: RegisterSchema):
     return 201, {"detail": "User registered successfully."}
 
 
-@user.post("/login/", response={200: GenericSchema, 401: GenericSchema})
+@user.post(
+    "/login/", response={200: UserSchema, 401: GenericSchema}, auth=None
+)
 def login_user(request: HttpRequest, data: LoginSchema):
     try:
         user = User.objects.get(email=data.email)  # Get user by email
@@ -66,7 +70,7 @@ def login_user(request: HttpRequest, data: LoginSchema):
 
     if user.check_password(data.password):
         login(request, user)
-        return 200, {"status": "success", "detail": "Login successful"}
+        return 200, request.user
     else:
         return 401, {"detail": "Invalid credentials."}
 
@@ -89,7 +93,9 @@ def get_user(request: HttpRequest):
 
 
 @user.get(
-    "/check-username/", response={200: GenericSchema, 400: GenericSchema}
+    "/check-username/",
+    response={200: GenericSchema, 400: GenericSchema},
+    auth=None,
 )
 def check_username(request: HttpRequest, username: str):
     if User.objects.filter(username=username).exists():

@@ -4,14 +4,16 @@ import { Button } from "@/components/ui/button";
 
 import { Book } from "lucide-react";
 import { useMobileNav } from "@/hooks/useMobileNav";
+import { useAuth } from "@/context/AuthProvider";
 
 const Navbar = () => {
   const isMobile = useMobileNav();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isLoading, isLoggedIn, user } = useAuth();
 
   return (
     <nav className="bg-white shadow-md py-4 sticky top-0 z-50">
-      <div className="max-w-[1340px] mx-auto px-4">
+      <div className="max-w-[1440px] mx-auto px-4">
         <div className="flex justify-between items-center">
           {/* Logo & Brand */}
           <Link to="/" className="flex items-center space-x-2">

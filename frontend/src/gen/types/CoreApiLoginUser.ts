@@ -5,11 +5,12 @@
 
 import type { GenericSchema } from './GenericSchema.ts'
 import type { LoginSchema } from './LoginSchema.ts'
+import type { UserSchema } from './UserSchema.ts'
 
 /**
  * @description OK
  */
-export type CoreApiLoginUser200 = GenericSchema
+export type CoreApiLoginUser200 = UserSchema
 
 /**
  * @description Unauthorized
