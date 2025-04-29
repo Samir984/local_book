@@ -1,21 +1,20 @@
-from django.http import HttpRequest
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth import logout
-
-from core.models import User
-from core.models import Book
-from core.models import Report
-from core.models import BookMark
-
-
+from django.http import HttpRequest
 from ninja import NinjaAPI
 from ninja import Router
 from ninja.security import SessionAuth
 
+from core.models import Book
+from core.models import BookMark
+from core.models import Report
+from core.models import User
+from core.schema import CreateBookSchema
+from core.schema import GenericSchema
 from core.schema import LoginSchema
 from core.schema import RegisterSchema
-from core.schema import CreateBookSchema, GenericSchema, UserSchema
+from core.schema import UserSchema
 
 # from core.schema import BookSchema
 # from core.schema import BookListSchema
@@ -88,3 +87,11 @@ def get_user(request: HttpRequest):
     else:
         return 401, {"detail": "User not logged in."}
 
+
+@user.get(
+    "/check-username/", response={200: GenericSchema, 400: GenericSchema}
+)
+def check_username(request: HttpRequest, username: str):
+    if User.objects.filter(username=username).exists():
+        return 400, {"detail": "Username already exists."}
+    return 200, {"detail": "Username is available."}

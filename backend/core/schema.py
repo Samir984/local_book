@@ -1,5 +1,6 @@
-from ninja import Schema
 from typing import Optional
+
+from ninja import Schema
 from pydantic import EmailStr
 
 
@@ -11,8 +12,7 @@ class LoginSchema(Schema):
 class UserSchema(Schema):
     username: str
     email: str
-    latitude: float
-    longitude: float
+    location: str
     phone_number: str
 
 
@@ -22,8 +22,7 @@ class RegisterSchema(Schema):
     username: str
     email: EmailStr
     password: str
-    latitude: float
-    longitude: float
+    location: str
     phone_number: str
 
 
@@ -39,6 +38,8 @@ class CreateBookSchema(Schema):
     description: str
     condition: str
     price: float = 0.00
+    latitude: float
+    longitude: float
 
 
 class GenericSchema(Schema):

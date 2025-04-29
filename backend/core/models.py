@@ -13,9 +13,7 @@ from core.choices import StreamChoices
 
 class User(AbstractUser):
     phone_number = models.CharField(max_length=20, default="")
-    country = models.CharField(max_length=100, default="Nepal")
-    latitude = models.FloatField(blank=True, null=True)
-    longitude = models.FloatField(blank=True, null=True)
+    location = models.CharField(max_length=100)
 
     def __str__(self):
         return self.username
@@ -60,6 +58,9 @@ class Book(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     data_modified = models.DateTimeField(auto_now=True)
 
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+
     class Meta:
         indexes = [
             models.Index(fields=["name"]),
@@ -90,7 +91,7 @@ class BookMark(models.Model):
         User, on_delete=models.CASCADE, related_name="bookmarks"
     )
     date_created = models.DateTimeField(auto_now_add=True)
-     
+
     def __str__(self):
         return f"{self.user.username} bookmarked"
 
