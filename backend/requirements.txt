@@ -1,5 +1,7 @@
 Django
 django-ninja
+django-storages[s3]
+boto3-stubs[s3]
 django-stubs-ext
 django-types
 gunicorn
