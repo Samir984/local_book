@@ -42,5 +42,10 @@ class CreateBookSchema(Schema):
     longitude: float
 
 
+class S3UploadURLResponseScehma(Schema):
+    url: str
+    fields: dict[str, str]
+    key: str
+
 class GenericSchema(Schema):
     detail: str
