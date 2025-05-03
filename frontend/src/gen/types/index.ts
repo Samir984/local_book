@@ -5,6 +5,22 @@ export type {
   CoreApiCheckUsernameQueryResponse,
   CoreApiCheckUsernameQuery,
 } from './CoreApiCheckUsername.ts'
+export type {
+  CoreApiCreateBook201,
+  CoreApiCreateBook400,
+  CoreApiCreateBookMutationRequest,
+  CoreApiCreateBookMutationResponse,
+  CoreApiCreateBookMutation,
+} from './CoreApiCreateBook.ts'
+export type { CoreApiDeleteFileQueryParams, CoreApiDeleteFile200, CoreApiDeleteFileMutationResponse, CoreApiDeleteFileMutation } from './CoreApiDeleteFile.ts'
+export type {
+  CoreApiGetUploadUrlQueryParams,
+  CoreApiGetUploadUrl200,
+  CoreApiGetUploadUrl400,
+  CoreApiGetUploadUrl500,
+  CoreApiGetUploadUrlMutationResponse,
+  CoreApiGetUploadUrlMutation,
+} from './CoreApiGetUploadUrl.ts'
 export type { CoreApiGetUser200, CoreApiGetUser401, CoreApiGetUserQueryResponse, CoreApiGetUserQuery } from './CoreApiGetUser.ts'
 export type {
   CoreApiLoginUser200,
@@ -21,7 +37,9 @@ export type {
   CoreApiRegisterUserMutationResponse,
   CoreApiRegisterUserMutation,
 } from './CoreApiRegisterUser.ts'
+export type { CreateBookSchema } from './CreateBookSchema.ts'
 export type { GenericSchema } from './GenericSchema.ts'
 export type { LoginSchema } from './LoginSchema.ts'
 export type { RegisterSchema } from './RegisterSchema.ts'
+export type { S3UploadURLResponseScehma } from './S3UploadURLResponseScehma.ts'
 export type { UserSchema } from './UserSchema.ts'

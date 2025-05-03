@@ -39,7 +39,7 @@ const RegisterSchema = z.object({
     .string()
     .min(10, { message: "Phone number must at least 10 digits" }),
 });
-type RegisterForm = z.infer<typeof RegisterSchema>;
+type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 
 function Register() {
   const signupMutation = useCoreApiRegisterUser({
@@ -62,7 +62,7 @@ function Register() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<RegisterForm>({
+  } = useForm<RegisterSchemaType>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {},
   });
@@ -76,7 +76,7 @@ function Register() {
     username: debounceUsername,
   });
 
-  const onSubmit = (data: RegisterForm) => {
+  const onSubmit = (data: RegisterSchemaType) => {
     if (!checkUserName?.detail) {
       toast.error("Form validation failed.");
       return;

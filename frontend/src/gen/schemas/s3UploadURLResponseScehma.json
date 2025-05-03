@@ -1,0 +1,1 @@
+{"properties":{"url":{"title":"Url","type":"string"},"fields":{"additionalProperties":{"type":"string"},"title":"Fields","type":"object"},"key":{"title":"Key","type":"string"}},"required":["url","fields","key"],"title":"S3UploadURLResponseScehma","type":"object","x-readme-ref-name":"S3UploadURLResponseScehma"}

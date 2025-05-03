@@ -38,10 +38,15 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const checkAuth = async function () {
-      const data = await coreApiGetUser();
-      setUser(data);
-      setIsLoggedIn(true);
-      setIsLoading(false);
+      try {
+        const data = await coreApiGetUser();
+        console.log(data);
+        setUser(data);
+        setIsLoggedIn(true);
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
+      }
     };
     checkAuth();
   }, []);

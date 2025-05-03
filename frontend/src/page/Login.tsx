@@ -26,7 +26,7 @@ const LoginSchema = z.object({
     .min(8, { message: "Password must be at least 8 characters" }),
 });
 
-type LoginForm = z.infer<typeof LoginSchema>;
+type LoginSchemaType = z.infer<typeof LoginSchema>;
 
 function Login() {
   const {
@@ -34,7 +34,7 @@ function Login() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<LoginForm>({
+  } = useForm<LoginSchemaType>({
     resolver: zodResolver(LoginSchema),
   });
 
@@ -58,7 +58,7 @@ function Login() {
     },
   });
 
-  const onSubmit = (data: LoginForm) => {
+  const onSubmit = (data: LoginSchemaType) => {
     console.log(data);
     LoginMutation.mutate({ data });
   };

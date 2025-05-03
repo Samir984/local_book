@@ -1,5 +1,8 @@
 export type { CoreApiCheckUsernameQueryKey } from './useCoreApiCheckUsername.ts'
 export type { CoreApiCheckUsernameSuspenseQueryKey } from './useCoreApiCheckUsernameSuspense.ts'
+export type { CoreApiCreateBookMutationKey } from './useCoreApiCreateBook.ts'
+export type { CoreApiDeleteFileMutationKey } from './useCoreApiDeleteFile.ts'
+export type { CoreApiGetUploadUrlMutationKey } from './useCoreApiGetUploadUrl.ts'
 export type { CoreApiGetUserQueryKey } from './useCoreApiGetUser.ts'
 export type { CoreApiGetUserSuspenseQueryKey } from './useCoreApiGetUserSuspense.ts'
 export type { CoreApiLoginUserMutationKey } from './useCoreApiLoginUser.ts'
@@ -13,6 +16,9 @@ export {
   coreApiCheckUsernameSuspenseQueryOptions,
   useCoreApiCheckUsernameSuspense,
 } from './useCoreApiCheckUsernameSuspense.ts'
+export { coreApiCreateBookMutationKey, coreApiCreateBook, useCoreApiCreateBook } from './useCoreApiCreateBook.ts'
+export { coreApiDeleteFileMutationKey, coreApiDeleteFile, useCoreApiDeleteFile } from './useCoreApiDeleteFile.ts'
+export { coreApiGetUploadUrlMutationKey, coreApiGetUploadUrl, useCoreApiGetUploadUrl } from './useCoreApiGetUploadUrl.ts'
 export { coreApiGetUserQueryKey, coreApiGetUser, coreApiGetUserQueryOptions, useCoreApiGetUser } from './useCoreApiGetUser.ts'
 export {
   coreApiGetUserSuspenseQueryKey,

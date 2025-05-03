@@ -25,7 +25,7 @@ export default function useGeoLocation() {
               ",  estimatedError: " +
               estimatedError
           );
-          if (estimatedError < 100) {
+          if (estimatedError < 300) {
             setGeoLocation({
               latitude: latitude,
               longitude: longitude,
@@ -33,7 +33,7 @@ export default function useGeoLocation() {
             });
           } else {
             toast.error(
-              "Location  estimatedError is too low. Make sure your GPS is turn on."
+              "Location  estimatedError is too hight. Make sure your GPS is turn on."
             );
           }
         },
