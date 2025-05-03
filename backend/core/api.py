@@ -118,8 +118,6 @@ def check_username(request: HttpRequest, username: str):
 
 
 # S3 file upload
-
-
 @s3.post(
     "/get-upload-url",
     response={
@@ -169,3 +167,11 @@ def delete_file(request: HttpRequest, key: str):
         return {"detail": "File deleted successfully"}
     except ClientError as e:
         return 500, {"detail": str(e)}
+
+
+@book.post(
+    "/create/", response={201: GenericSchema, 400: GenericSchema}, auth=None
+)
+def create_book(request: HttpRequest, data: CreateBookSchema):
+    print(create_book, request.user)
+    return 201, {"detail": "good"}

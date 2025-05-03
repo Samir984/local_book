@@ -8,7 +8,7 @@ from django.db import models
 from core.choices import BookConditionChoices
 from core.choices import EditionChoices
 from core.choices import GradeChoices
-from core.choices import StreamChoices
+from core.choices import BookCategoryChoices
 
 
 class User(AbstractUser):
@@ -26,17 +26,24 @@ class Book(models.Model):
     )
     book_image = models.ImageField(upload_to="book/")
     name = models.CharField(max_length=100)
-    publication = models.CharField(max_length=255)
-    edition = models.CharField(choices=EditionChoices.choices, max_length=10)
-    is_academic_book = models.BooleanField(default=False)
+    category = models.CharField(
+        choices=BookCategoryChoices.choices,
+        max_length=20,
+        default=BookCategoryChoices.OTHER,
+    )
+    publication = models.CharField(max_length=255, default=None)
+    edition = models.CharField(
+        choices=EditionChoices.choices,
+        max_length=10,
+        default=EditionChoices.FIRST,
+    )
     is_school_book = models.BooleanField(default=False)
     grade = models.CharField(
         choices=GradeChoices.choices, blank=True, null=True
     )
     is_college_book = models.BooleanField(default=False)
-    stream = models.CharField(
-        choices=StreamChoices.choices, blank=True, null=True
-    )
+    is_bachlore_book = models.BooleanField(default=False)
+
     description = models.TextField(help_text="Details of the book.")
     condition = models.CharField(
         choices=BookConditionChoices.choices, max_length=10
@@ -59,13 +66,12 @@ class Book(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     data_modified = models.DateTimeField(auto_now=True)
 
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    latitude = models.FloatField(default=None)
+    longitude = models.FloatField(default=None)
 
     class Meta:
         indexes = [
             models.Index(fields=["name"]),
-            models.Index(fields=["publication"]),
         ]
 
     def __str__(self):

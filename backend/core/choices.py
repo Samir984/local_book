@@ -2,10 +2,10 @@ from django.db.models import TextChoices
 
 
 class BookConditionChoices(TextChoices):
-    LIKE_NEW = ("LN", "Like New")
-    GOOD = ("GD", "Good")
-    MODERATE = ("MOD", "Moderate")
-    POOR = ("PR", "Poor")
+    LIKE_NEW = ("LIKE NEW", "Like New")
+    GOOD = ("GDOD", "Good")
+    MODERATE = ("MODERATE", "Moderate")
+    POOR = ("POOR", "Poor")
 
 
 class EditionChoices(TextChoices):
@@ -14,13 +14,6 @@ class EditionChoices(TextChoices):
     THIRD = ("THIRD", "Third Edition")
     FOURTH = ("FOURTH", "Fourth Edition")
     FIFTH = ("FIFTH", "Fifth Edition")
-
-
-class StreamChoices(TextChoices):
-    SCIENCE = ("SCIENCE", "Science")
-    MANAGEMENT = ("MANAGEMENT", "Management")
-    COMMERCE = ("COMMERCE", "Commerce")
-    ART = ("ART", "Art")
 
 
 class GradeChoices(TextChoices):
@@ -34,5 +27,11 @@ class GradeChoices(TextChoices):
     EIGHTH = ("EIGHTH", "Eighth")
     NINTH = ("NINTH", "Ninth")
     TENTH = ("TENTH", "Tenth")
-    ELEVENTH = ("ELEVENTH", "Eleventh")
-    TWELFTH = ("TWELFTH", "Twelfth")
+
+
+class BookCategoryChoices(TextChoices):
+    TEXTBOOK = ("TEXTBOOK", "Text Book")
+    REFERENCE = ("REFERENCE", "Reference Book")
+    GUIDEBOOK = ("GUIDEBOOK", "Guide Book")
+    SOLUTION = ("SOLUTION", "Solution")
+    OTHER = ("OTHER", "Other")

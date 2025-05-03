@@ -28,24 +28,32 @@ class RegisterSchema(Schema):
 
 class CreateBookSchema(Schema):
     name: str
-    publication: str
-    edition: str
-    is_academic_book: bool = False
+    book_image: str
+    category: str
+    publication: Optional[str] = None
+    edition: Optional[str] = None
     is_school_book: bool = False
     grade: Optional[str] = None
     is_college_book: bool = False
-    stream: Optional[str] = None
+    is_bachlore_book:bool=False
     description: str
     condition: str
     price: float = 0.00
-    latitude: float
-    longitude: float
+    latitude: Optional[float]=None
+    longitude: Optional[float]=None
+
+
+# class CreateBookSchema(Schema):
+#     class Meta:
+#         model = Book
+#         fields = "__all__"
 
 
 class S3UploadURLResponseScehma(Schema):
     url: str
     fields: dict[str, str]
     key: str
+
 
 class GenericSchema(Schema):
     detail: str

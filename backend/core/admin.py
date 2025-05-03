@@ -58,6 +58,7 @@ class BookAdmin(admin.ModelAdmin[Book]):
     list_display = (
         "id",
         "name",
+        "category",
         "user",
         "publication",
         "book_image",
@@ -71,7 +72,6 @@ class BookAdmin(admin.ModelAdmin[Book]):
     )
     list_filter = (
         "user",
-        "is_academic_book",
         "is_school_book",
         "is_college_book",
         "condition",
@@ -97,6 +97,7 @@ class BookAdmin(admin.ModelAdmin[Book]):
                 "fields": (
                     "user",
                     "name",
+                    "category",
                     "book_image",
                     "publication",
                     "description",
