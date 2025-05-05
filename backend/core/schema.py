@@ -1,7 +1,10 @@
-from typing import Optional
+from typing import Optional, Literal
 
-from ninja import Schema
-from pydantic import EmailStr
+from ninja import ModelSchema, Schema
+from pydantic import EmailStr, Field
+from .models import Book
+from .choices import BookCategoryChoices, BookConditionChoices
+from decimal import Decimal
 
 
 class LoginSchema(Schema):
@@ -29,24 +32,29 @@ class RegisterSchema(Schema):
 class CreateBookSchema(Schema):
     name: str
     book_image: str
-    category: str
+    category: Literal[
+        BookCategoryChoices.TEXTBOOK,
+        BookCategoryChoices.SOLUTION,
+        BookCategoryChoices.REFERENCE,
+        BookCategoryChoices.GUIDEBOOK,
+        BookCategoryChoices.OTHER,
+    ]
     publication: Optional[str] = None
-    edition: Optional[str] = None
+    edition: int = 1
     is_school_book: bool = False
-    grade: Optional[str] = None
+    grade: Optional[int] = None
     is_college_book: bool = False
-    is_bachlore_book:bool=False
+    is_bachlore_book: bool = False
     description: str
-    condition: str
-    price: float = 0.00
-    latitude: Optional[float]=None
-    longitude: Optional[float]=None
-
-
-# class CreateBookSchema(Schema):
-#     class Meta:
-#         model = Book
-#         fields = "__all__"
+    condition: Literal[
+        BookConditionChoices.LIKE_NEW,
+        BookConditionChoices.GOOD,
+        BookConditionChoices.MODERATE,
+        BookConditionChoices.POOR,
+    ]
+    price: Decimal = Decimal("0.00")
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
 
 
 class S3UploadURLResponseScehma(Schema):

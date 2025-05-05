@@ -6,8 +6,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 from core.choices import BookConditionChoices
-from core.choices import EditionChoices
-from core.choices import GradeChoices
 from core.choices import BookCategoryChoices
 
 
@@ -27,19 +25,18 @@ class Book(models.Model):
     book_image = models.ImageField(upload_to="book/")
     name = models.CharField(max_length=100)
     category = models.CharField(
-        choices=BookCategoryChoices.choices,
         max_length=20,
+        choices=BookCategoryChoices.choices,
         default=BookCategoryChoices.OTHER,
     )
     publication = models.CharField(max_length=255, default=None)
-    edition = models.CharField(
-        choices=EditionChoices.choices,
-        max_length=10,
-        default=EditionChoices.FIRST,
+    edition = models.IntegerField(
+        validators=[MinValueValidator(1)],
+        default=1,
     )
     is_school_book = models.BooleanField(default=False)
-    grade = models.CharField(
-        choices=GradeChoices.choices, blank=True, null=True
+    grade = models.PositiveIntegerField(
+        validators=[MaxValueValidator(10)], blank=True, null=True
     )
     is_college_book = models.BooleanField(default=False)
     is_bachlore_book = models.BooleanField(default=False)
