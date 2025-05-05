@@ -29,7 +29,9 @@ class Book(models.Model):
         choices=BookCategoryChoices.choices,
         default=BookCategoryChoices.OTHER,
     )
-    publication = models.CharField(max_length=255, default=None)
+    publication = models.CharField(
+        max_length=255, null=True, blank=True, default=None
+    )
     edition = models.IntegerField(
         validators=[MinValueValidator(1)],
         default=1,

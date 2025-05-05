@@ -3,6 +3,25 @@
  * Do not edit manually.
  */
 
+export const createBookSchemaCategoryEnum = {
+  TEXTBOOK: 'TEXTBOOK',
+  SOLUTION: 'SOLUTION',
+  REFERENCE: 'REFERENCE',
+  GUIDEBOOK: 'GUIDEBOOK',
+  OTHER: 'OTHER',
+} as const
+
+export type CreateBookSchemaCategoryEnum = (typeof createBookSchemaCategoryEnum)[keyof typeof createBookSchemaCategoryEnum]
+
+export const createBookSchemaConditionEnum = {
+  'LIKE NEW': 'LIKE NEW',
+  GOOD: 'GOOD',
+  MODERATE: 'MODERATE',
+  POOR: 'POOR',
+} as const
+
+export type CreateBookSchemaConditionEnum = (typeof createBookSchemaConditionEnum)[keyof typeof createBookSchemaConditionEnum]
+
 export type CreateBookSchema = {
   /**
    * @type string
@@ -15,15 +34,19 @@ export type CreateBookSchema = {
   /**
    * @type string
    */
-  category: string
+  category: CreateBookSchemaCategoryEnum
   publication?: string | null
-  edition?: string | null
+  /**
+   * @default 1
+   * @type integer | undefined
+   */
+  edition?: number
   /**
    * @default false
    * @type boolean | undefined
    */
   is_school_book?: boolean
-  grade?: string | null
+  grade?: number | null
   /**
    * @default false
    * @type boolean | undefined
@@ -41,12 +64,11 @@ export type CreateBookSchema = {
   /**
    * @type string
    */
-  condition: string
+  condition: CreateBookSchemaConditionEnum
   /**
-   * @default 0
-   * @type number | undefined
+   * @default "0.00"
    */
-  price?: number
+  price?: number | string
   latitude?: number | null
   longitude?: number | null
 }

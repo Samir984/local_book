@@ -25,7 +25,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
-import { coreApiGetUploadUrl, useCoreApiCreateBook } from "@/gen";
+import {
+  createBookSchemaCategoryEnum,
+  createBookSchemaConditionEnum,
+  useCoreApiCreateBook,
+} from "@/gen";
 import useGeoLocation from "@/hooks/useGeoLocation";
 import {
   AlertDialog,
@@ -46,18 +50,28 @@ import { uploadToS3 } from "@/utils/utils";
 const CreateBookSchema = z.object({
   book_image: z.string(),
   name: z.string().min(1, { message: "Book name is required" }),
-  category: z.string().min(1, { message: "Category is required" }),
+  category: z.enum([
+    createBookSchemaCategoryEnum.TEXTBOOK,
+    createBookSchemaCategoryEnum.SOLUTION,
+    createBookSchemaCategoryEnum.REFERENCE,
+    createBookSchemaCategoryEnum.GUIDEBOOK,
+    createBookSchemaCategoryEnum.OTHER,
+  ]),
   publication: z.string().optional(),
-  edition: z.string().optional(),
+  edition: z.number().optional(),
   is_school_book: z.boolean().optional(),
-  grade: z.string().optional(),
+  grade: z.number().optional(),
   is_college_book: z.boolean().optional(),
   is_bachlore_book: z.boolean().optional(),
   description: z.string().min(1, { message: "Description is required" }),
-  condition: z.string().min(1, { message: "Condition is required" }),
+  condition: z.enum([
+    createBookSchemaConditionEnum["LIKE NEW"],
+    createBookSchemaConditionEnum.GOOD,
+    createBookSchemaConditionEnum.MODERATE,
+    createBookSchemaConditionEnum.POOR,
+  ]),
   price: z.number().min(0, "Price cannot be negative."),
 });
-
 type CreateBookSchemaType = z.infer<typeof CreateBookSchema>;
 
 function SellBook() {
@@ -65,7 +79,6 @@ function SellBook() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [triggerAlertBox, setTriggerAlertBox] = useState(false);
   const geolocation = useGeoLocation();
-  const [isSubmittingWithoutGeo, setIsSubmittingWithoutGeo] = useState(false);
 
   const form = useForm<CreateBookSchemaType>({
     resolver: zodResolver(CreateBookSchema),
@@ -73,7 +86,8 @@ function SellBook() {
       book_image: "3",
       name: "red",
       category: "REFERENCE",
-      price: 2,
+      price: 0,
+      edition: 1,
       description: "test",
       condition: "GOOD",
     },
@@ -88,9 +102,7 @@ function SellBook() {
       },
       onError: (error) => {
         console.log("Error:", error);
-        toast.error(
-          `Error: ${error.response?.data.detail || "Fail to submit book."}`
-        );
+        toast.error(`Error: Fail to submit book.`);
       },
     },
     client: {
@@ -132,6 +144,15 @@ function SellBook() {
   };
 
   const watchCategory = watch("category");
+  const watchIs_school_book = watch("is_school_book");
+  const watchIs_collage_book = watch("is_college_book");
+  console.log(
+    watchIs_school_book,
+    watchIs_collage_book,
+    watchCategory,
+    getValues("is_college_book")
+  );
+
   console.log(geolocation);
 
   const onSubmit = async function (data: CreateBookSchemaType) {
@@ -164,11 +185,9 @@ function SellBook() {
   };
 
   const handleSubmitWithoutGeoLocation = async () => {
-    setIsSubmittingWithoutGeo(true);
     const data = getValues();
     if (!imageFile) {
       toast.error("File is not selected");
-      setIsSubmittingWithoutGeo(false);
       return;
     }
 
@@ -185,7 +204,6 @@ function SellBook() {
       console.log(error);
       setTimeout(() => toast.error("Submit failed."), 1000);
     } finally {
-      setIsSubmittingWithoutGeo(false);
       setTriggerAlertBox(false);
     }
   };
@@ -382,55 +400,20 @@ function SellBook() {
                         name="grade"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Grade</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger
-                                  className={cn(
-                                    "w-full",
-                                    errors.condition &&
-                                      "border-red-500 focus:ring-red-500 focus:border-red-500"
-                                  )}
-                                >
-                                  <SelectValue placeholder="Select condition" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="FIRST">
-                                  First Grade
-                                </SelectItem>
-                                <SelectItem value="SECOND">
-                                  Second Grade
-                                </SelectItem>
-                                <SelectItem value="THIRD">
-                                  Third Grade
-                                </SelectItem>
-                                <SelectItem value="FOURTH">
-                                  Fourth Grade
-                                </SelectItem>
-                                <SelectItem value="FIFTH">
-                                  Fifth Grade
-                                </SelectItem>
-                                <SelectItem value="SIXTH">
-                                  Sixth Grade
-                                </SelectItem>
-                                <SelectItem value="SEVENTH">
-                                  Seventh Grade
-                                </SelectItem>
-                                <SelectItem value="EIGHTH">
-                                  Eighth Grade
-                                </SelectItem>
-                                <SelectItem value="NINTH">
-                                  Ninth Grade
-                                </SelectItem>
-                                <SelectItem value="TENTH">
-                                  Tenth Grade
-                                </SelectItem>
-                              </SelectContent>
-                            </Select>
+                            <FormLabel>Class</FormLabel>
+                            <Input
+                              type="number"
+                              disabled={!watchIs_school_book}
+                              placeholder="Enter your class "
+                              {...field}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                const parsedValue =
+                                  value === "" ? 1 : Number(value);
+
+                                field.onChange(parsedValue);
+                              }}
+                            />
                             <FormMessage />
                           </FormItem>
                         )}
@@ -469,9 +452,15 @@ function SellBook() {
                     <FormLabel>Edition</FormLabel>
                     <FormControl>
                       <Input
-                        type="text"
-                        placeholder="Enter book edition"
+                        type="number"
+                        placeholder="Enter book edition "
                         {...field}
+                        onChange={(e) => {
+                          const value = e.target.value;
+
+                          const parsedValue = value === "" ? 1 : Number(value);
+                          field.onChange(parsedValue);
+                        }}
                         className="mt-1 block w-full"
                       />
                     </FormControl>
@@ -495,8 +484,7 @@ function SellBook() {
                         onChange={(e) => {
                           const value = e.target.value;
 
-                          const parsedValue =
-                            value === "" ? undefined : Number(value);
+                          const parsedValue = value === "" ? 0 : Number(value);
                           field.onChange(parsedValue);
                         }}
                         className={cn(
@@ -570,7 +558,11 @@ function SellBook() {
 
               {/* Submit Button */}
               <div className="text-right">
-                <Button type="submit" disabled={isSubmitting}>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`${isSubmitting && "bg-red-500"}`}
+                >
                   {isSubmitting ? "Submitting..." : "Submit"}
                 </Button>
               </div>

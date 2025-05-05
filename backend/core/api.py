@@ -2,6 +2,7 @@ import os
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth import logout
+from django.db import IntegrityError
 from django.http import HttpRequest
 from ninja import NinjaAPI
 from ninja import Router
@@ -170,8 +171,42 @@ def delete_file(request: HttpRequest, key: str):
 
 
 @book.post(
-    "/create/", response={201: GenericSchema, 400: GenericSchema}, auth=None
+    "/create/",
+    response={201: GenericSchema, 400: GenericSchema, 500: GenericSchema},
 )
 def create_book(request: HttpRequest, data: CreateBookSchema):
-    print(create_book, request.user)
-    return 201, {"detail": "good"}
+    user = request.user
+
+    try:
+        Book.objects.create(
+            user=user,
+            book_image=data.book_image,
+            name=data.name,
+            category=data.category,
+            publication=data.publication,
+            edition=data.edition,
+            is_school_book=data.is_school_book,
+            grade=data.grade,
+            is_college_book=data.is_college_book,
+            is_bachlore_book=data.is_bachlore_book,
+            description=data.description,
+            condition=data.condition,
+            price=data.price,
+        )
+
+        return 201, {
+            "detail": "Book created successfully.",
+        }
+
+    except IntegrityError as e:
+        return 400, {
+            "detail": (
+                f"Database Integrity Error: {e}.  Check for missing or invalid"
+                " data."
+            ),
+        }
+
+    except Exception as e:
+        return 500, {
+            "detail": "Failed to create book due to an unexpected error."
+        }

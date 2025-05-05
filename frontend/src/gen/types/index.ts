@@ -8,6 +8,7 @@ export type {
 export type {
   CoreApiCreateBook201,
   CoreApiCreateBook400,
+  CoreApiCreateBook500,
   CoreApiCreateBookMutationRequest,
   CoreApiCreateBookMutationResponse,
   CoreApiCreateBookMutation,
@@ -37,9 +38,10 @@ export type {
   CoreApiRegisterUserMutationResponse,
   CoreApiRegisterUserMutation,
 } from './CoreApiRegisterUser.ts'
-export type { CreateBookSchema } from './CreateBookSchema.ts'
+export type { CreateBookSchemaCategoryEnum, CreateBookSchemaConditionEnum, CreateBookSchema } from './CreateBookSchema.ts'
 export type { GenericSchema } from './GenericSchema.ts'
 export type { LoginSchema } from './LoginSchema.ts'
 export type { RegisterSchema } from './RegisterSchema.ts'
 export type { S3UploadURLResponseScehma } from './S3UploadURLResponseScehma.ts'
 export type { UserSchema } from './UserSchema.ts'
+export { createBookSchemaCategoryEnum, createBookSchemaConditionEnum } from './CreateBookSchema.ts'

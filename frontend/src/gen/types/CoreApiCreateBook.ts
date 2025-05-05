@@ -16,6 +16,11 @@ export type CoreApiCreateBook201 = GenericSchema
  */
 export type CoreApiCreateBook400 = GenericSchema
 
+/**
+ * @description Internal Server Error
+ */
+export type CoreApiCreateBook500 = GenericSchema
+
 export type CoreApiCreateBookMutationRequest = CreateBookSchema
 
 export type CoreApiCreateBookMutationResponse = CoreApiCreateBook201
@@ -23,5 +28,5 @@ export type CoreApiCreateBookMutationResponse = CoreApiCreateBook201
 export type CoreApiCreateBookMutation = {
   Response: CoreApiCreateBook201
   Request: CoreApiCreateBookMutationRequest
-  Errors: CoreApiCreateBook400
+  Errors: CoreApiCreateBook400 | CoreApiCreateBook500
 }

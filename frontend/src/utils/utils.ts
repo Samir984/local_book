@@ -24,7 +24,7 @@ export async function uploadToS3(imageFile: File) {
     if (!uploadResponse.ok) {
       throw new Error("Image upload failed");
     }
-    console.log(signeduploadUrl.key, signeduploadUrl.fields.key);
+    toast.success("Filed upload successfully.");
     return signeduploadUrl.key;
   } catch (error) {
     console.log(error);
