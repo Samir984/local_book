@@ -68,6 +68,8 @@ class BookAdmin(admin.ModelAdmin[Book]):
         "is_sold",
         "is_accepted",
         "is_rejected",
+        "latitude",
+        "longitude",
         "date_created",
     )
     list_filter = (
@@ -101,6 +103,8 @@ class BookAdmin(admin.ModelAdmin[Book]):
                     "book_image",
                     "publication",
                     "description",
+                    "latitude",
+                    "longitude",
                 )
             },
         ),
@@ -111,11 +115,9 @@ class BookAdmin(admin.ModelAdmin[Book]):
                     "edition",
                     "condition",
                     "price",
-                    "is_academic_book",
                     "is_school_book",
                     "grade",
                     "is_college_book",
-                    "stream",
                 )
             },
         ),

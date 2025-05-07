@@ -3,6 +3,9 @@
  * Do not edit manually.
  */
 
+import type { GenericSchema } from './GenericSchema.ts'
+import type { S3GetSignedObjectURLScehma } from './S3GetSignedObjectURLScehma.ts'
+
 export type CoreApiDeleteFileQueryParams = {
   /**
    * @type string
@@ -13,12 +16,17 @@ export type CoreApiDeleteFileQueryParams = {
 /**
  * @description OK
  */
-export type CoreApiDeleteFile200 = any
+export type CoreApiDeleteFile200 = S3GetSignedObjectURLScehma
+
+/**
+ * @description Not Found
+ */
+export type CoreApiDeleteFile404 = GenericSchema
 
 export type CoreApiDeleteFileMutationResponse = CoreApiDeleteFile200
 
 export type CoreApiDeleteFileMutation = {
   Response: CoreApiDeleteFile200
   QueryParams: CoreApiDeleteFileQueryParams
-  Errors: any
+  Errors: CoreApiDeleteFile404
 }

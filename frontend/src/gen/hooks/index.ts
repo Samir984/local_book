@@ -2,6 +2,8 @@ export type { CoreApiCheckUsernameQueryKey } from './useCoreApiCheckUsername.ts'
 export type { CoreApiCheckUsernameSuspenseQueryKey } from './useCoreApiCheckUsernameSuspense.ts'
 export type { CoreApiCreateBookMutationKey } from './useCoreApiCreateBook.ts'
 export type { CoreApiDeleteFileMutationKey } from './useCoreApiDeleteFile.ts'
+export type { CoreApiGetFileUrlQueryKey } from './useCoreApiGetFileUrl.ts'
+export type { CoreApiGetFileUrlSuspenseQueryKey } from './useCoreApiGetFileUrlSuspense.ts'
 export type { CoreApiGetUploadUrlMutationKey } from './useCoreApiGetUploadUrl.ts'
 export type { CoreApiGetUserQueryKey } from './useCoreApiGetUser.ts'
 export type { CoreApiGetUserSuspenseQueryKey } from './useCoreApiGetUserSuspense.ts'
@@ -18,6 +20,13 @@ export {
 } from './useCoreApiCheckUsernameSuspense.ts'
 export { coreApiCreateBookMutationKey, coreApiCreateBook, useCoreApiCreateBook } from './useCoreApiCreateBook.ts'
 export { coreApiDeleteFileMutationKey, coreApiDeleteFile, useCoreApiDeleteFile } from './useCoreApiDeleteFile.ts'
+export { coreApiGetFileUrlQueryKey, coreApiGetFileUrl, coreApiGetFileUrlQueryOptions, useCoreApiGetFileUrl } from './useCoreApiGetFileUrl.ts'
+export {
+  coreApiGetFileUrlSuspenseQueryKey,
+  coreApiGetFileUrlSuspense,
+  coreApiGetFileUrlSuspenseQueryOptions,
+  useCoreApiGetFileUrlSuspense,
+} from './useCoreApiGetFileUrlSuspense.ts'
 export { coreApiGetUploadUrlMutationKey, coreApiGetUploadUrl, useCoreApiGetUploadUrl } from './useCoreApiGetUploadUrl.ts'
 export { coreApiGetUserQueryKey, coreApiGetUser, coreApiGetUserQueryOptions, useCoreApiGetUser } from './useCoreApiGetUser.ts'
 export {

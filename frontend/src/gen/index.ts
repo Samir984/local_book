@@ -2,6 +2,8 @@ export type { CoreApiCheckUsernameQueryKey } from './hooks/useCoreApiCheckUserna
 export type { CoreApiCheckUsernameSuspenseQueryKey } from './hooks/useCoreApiCheckUsernameSuspense.ts'
 export type { CoreApiCreateBookMutationKey } from './hooks/useCoreApiCreateBook.ts'
 export type { CoreApiDeleteFileMutationKey } from './hooks/useCoreApiDeleteFile.ts'
+export type { CoreApiGetFileUrlQueryKey } from './hooks/useCoreApiGetFileUrl.ts'
+export type { CoreApiGetFileUrlSuspenseQueryKey } from './hooks/useCoreApiGetFileUrlSuspense.ts'
 export type { CoreApiGetUploadUrlMutationKey } from './hooks/useCoreApiGetUploadUrl.ts'
 export type { CoreApiGetUserQueryKey } from './hooks/useCoreApiGetUser.ts'
 export type { CoreApiGetUserSuspenseQueryKey } from './hooks/useCoreApiGetUserSuspense.ts'
@@ -27,9 +29,17 @@ export type {
 export type {
   CoreApiDeleteFileQueryParams,
   CoreApiDeleteFile200,
+  CoreApiDeleteFile404,
   CoreApiDeleteFileMutationResponse,
   CoreApiDeleteFileMutation,
 } from './types/CoreApiDeleteFile.ts'
+export type {
+  CoreApiGetFileUrlQueryParams,
+  CoreApiGetFileUrl200,
+  CoreApiGetFileUrl404,
+  CoreApiGetFileUrlQueryResponse,
+  CoreApiGetFileUrlQuery,
+} from './types/CoreApiGetFileUrl.ts'
 export type {
   CoreApiGetUploadUrlQueryParams,
   CoreApiGetUploadUrl200,
@@ -58,6 +68,7 @@ export type { CreateBookSchemaCategoryEnum, CreateBookSchemaConditionEnum, Creat
 export type { GenericSchema } from './types/GenericSchema.ts'
 export type { LoginSchema } from './types/LoginSchema.ts'
 export type { RegisterSchema } from './types/RegisterSchema.ts'
+export type { S3GetSignedObjectURLScehma } from './types/S3GetSignedObjectURLScehma.ts'
 export type { S3UploadURLResponseScehma } from './types/S3UploadURLResponseScehma.ts'
 export type { UserSchema } from './types/UserSchema.ts'
 export {
@@ -74,6 +85,13 @@ export {
 } from './hooks/useCoreApiCheckUsernameSuspense.ts'
 export { coreApiCreateBookMutationKey, coreApiCreateBook, useCoreApiCreateBook } from './hooks/useCoreApiCreateBook.ts'
 export { coreApiDeleteFileMutationKey, coreApiDeleteFile, useCoreApiDeleteFile } from './hooks/useCoreApiDeleteFile.ts'
+export { coreApiGetFileUrlQueryKey, coreApiGetFileUrl, coreApiGetFileUrlQueryOptions, useCoreApiGetFileUrl } from './hooks/useCoreApiGetFileUrl.ts'
+export {
+  coreApiGetFileUrlSuspenseQueryKey,
+  coreApiGetFileUrlSuspense,
+  coreApiGetFileUrlSuspenseQueryOptions,
+  useCoreApiGetFileUrlSuspense,
+} from './hooks/useCoreApiGetFileUrlSuspense.ts'
 export { coreApiGetUploadUrlMutationKey, coreApiGetUploadUrl, useCoreApiGetUploadUrl } from './hooks/useCoreApiGetUploadUrl.ts'
 export { coreApiGetUserQueryKey, coreApiGetUser, coreApiGetUserQueryOptions, useCoreApiGetUser } from './hooks/useCoreApiGetUser.ts'
 export {

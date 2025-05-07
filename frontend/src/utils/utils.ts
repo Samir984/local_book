@@ -1,12 +1,20 @@
 import { coreApiGetUploadUrl } from "@/gen";
+import Cookies from "js-cookie";
 import { toast } from "sonner";
 
 export async function uploadToS3(imageFile: File) {
   try {
     // generating signed url backend
-    const signeduploadUrl = await coreApiGetUploadUrl({
-      filename: imageFile.name,
-    });
+    const signeduploadUrl = await coreApiGetUploadUrl(
+      {
+        filename: imageFile.name,
+      },
+      {
+        headers: {
+          "X-CSRFToken": Cookies.get("csrftoken")!,
+        },
+      }
+    );
 
     const formData = new FormData();
     for (const field in signeduploadUrl.fields) {

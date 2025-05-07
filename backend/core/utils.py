@@ -1,4 +1,5 @@
 import boto3
+
 from project.env import ENV
 
 s3_client = boto3.client(  # type: ignore
@@ -9,6 +10,8 @@ s3_client = boto3.client(  # type: ignore
 )
 
 BUCKET_NAME = ENV.AWS_STORAGE_BUCKET_NAME
+REGION_NAME = ENV.AWS_STORAGE_REGION
+
 MAX_UPLOAD_SIZE = 2 * 1024 * 1024
 ALLOWED_EXTENSIONS = [".jpg", ".jpeg", ".png"]
 MIME_TYPES = {

@@ -13,7 +13,20 @@ export type {
   CoreApiCreateBookMutationResponse,
   CoreApiCreateBookMutation,
 } from './CoreApiCreateBook.ts'
-export type { CoreApiDeleteFileQueryParams, CoreApiDeleteFile200, CoreApiDeleteFileMutationResponse, CoreApiDeleteFileMutation } from './CoreApiDeleteFile.ts'
+export type {
+  CoreApiDeleteFileQueryParams,
+  CoreApiDeleteFile200,
+  CoreApiDeleteFile404,
+  CoreApiDeleteFileMutationResponse,
+  CoreApiDeleteFileMutation,
+} from './CoreApiDeleteFile.ts'
+export type {
+  CoreApiGetFileUrlQueryParams,
+  CoreApiGetFileUrl200,
+  CoreApiGetFileUrl404,
+  CoreApiGetFileUrlQueryResponse,
+  CoreApiGetFileUrlQuery,
+} from './CoreApiGetFileUrl.ts'
 export type {
   CoreApiGetUploadUrlQueryParams,
   CoreApiGetUploadUrl200,
@@ -42,6 +55,7 @@ export type { CreateBookSchemaCategoryEnum, CreateBookSchemaConditionEnum, Creat
 export type { GenericSchema } from './GenericSchema.ts'
 export type { LoginSchema } from './LoginSchema.ts'
 export type { RegisterSchema } from './RegisterSchema.ts'
+export type { S3GetSignedObjectURLScehma } from './S3GetSignedObjectURLScehma.ts'
 export type { S3UploadURLResponseScehma } from './S3UploadURLResponseScehma.ts'
 export type { UserSchema } from './UserSchema.ts'
 export { createBookSchemaCategoryEnum, createBookSchemaConditionEnum } from './CreateBookSchema.ts'

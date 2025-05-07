@@ -4,7 +4,7 @@
  */
 
 import client from '@kubb/plugin-client/clients/axios'
-import type { CoreApiDeleteFileMutationResponse, CoreApiDeleteFileQueryParams } from '../types/CoreApiDeleteFile.ts'
+import type { CoreApiDeleteFileMutationResponse, CoreApiDeleteFileQueryParams, CoreApiDeleteFile404 } from '../types/CoreApiDeleteFile.ts'
 import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/axios'
 import type { UseMutationOptions, QueryClient } from '@tanstack/react-query'
 import { useMutation } from '@tanstack/react-query'
@@ -21,7 +21,7 @@ export type CoreApiDeleteFileMutationKey = ReturnType<typeof coreApiDeleteFileMu
 export async function coreApiDeleteFile(params: CoreApiDeleteFileQueryParams, config: Partial<RequestConfig> & { client?: typeof client } = {}) {
   const { client: request = client, ...requestConfig } = config
 
-  const res = await request<CoreApiDeleteFileMutationResponse, ResponseErrorConfig<Error>, unknown>({
+  const res = await request<CoreApiDeleteFileMutationResponse, ResponseErrorConfig<CoreApiDeleteFile404>, unknown>({
     method: 'POST',
     url: `/api/v1/s3/delete-file`,
     params,
@@ -37,16 +37,19 @@ export async function coreApiDeleteFile(params: CoreApiDeleteFileQueryParams, co
  */
 export function useCoreApiDeleteFile<TContext>(
   options: {
-    mutation?: UseMutationOptions<CoreApiDeleteFileMutationResponse, ResponseErrorConfig<Error>, { params: CoreApiDeleteFileQueryParams }, TContext> & {
-      client?: QueryClient
-    }
+    mutation?: UseMutationOptions<
+      CoreApiDeleteFileMutationResponse,
+      ResponseErrorConfig<CoreApiDeleteFile404>,
+      { params: CoreApiDeleteFileQueryParams },
+      TContext
+    > & { client?: QueryClient }
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {
   const { mutation: { client: queryClient, ...mutationOptions } = {}, client: config = {} } = options ?? {}
   const mutationKey = mutationOptions?.mutationKey ?? coreApiDeleteFileMutationKey()
 
-  return useMutation<CoreApiDeleteFileMutationResponse, ResponseErrorConfig<Error>, { params: CoreApiDeleteFileQueryParams }, TContext>(
+  return useMutation<CoreApiDeleteFileMutationResponse, ResponseErrorConfig<CoreApiDeleteFile404>, { params: CoreApiDeleteFileQueryParams }, TContext>(
     {
       mutationFn: async ({ params }) => {
         return coreApiDeleteFile(params, config)

@@ -77,6 +77,7 @@ type CreateBookSchemaType = z.infer<typeof CreateBookSchema>;
 function SellBook() {
   const [bookImage, setBookImage] = useState<string | ArrayBuffer | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [fileNotSetError, setFileNotSetError] = useState(false);
   const [triggerAlertBox, setTriggerAlertBox] = useState(false);
   const geolocation = useGeoLocation();
 
@@ -130,9 +131,11 @@ function SellBook() {
     // return;
     if (!file) {
       setBookImage(null);
+      setFileNotSetError(true);
       setImageFile(null);
       return;
     }
+    setFileNotSetError(false);
     setImageFile(file);
     if (file) {
       const reader = new FileReader();
@@ -145,17 +148,14 @@ function SellBook() {
 
   const watchCategory = watch("category");
   const watchIs_school_book = watch("is_school_book");
-  const watchIs_collage_book = watch("is_college_book");
-  console.log(
-    watchIs_school_book,
-    watchIs_collage_book,
-    watchCategory,
-    getValues("is_college_book")
-  );
-
-  console.log(geolocation);
 
   const onSubmit = async function (data: CreateBookSchemaType) {
+    if (!imageFile) {
+      toast.error("File is not selected");
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      setFileNotSetError(true);
+      return;
+    }
     if (!geolocation) {
       setTriggerAlertBox(true);
       return;
@@ -226,16 +226,17 @@ function SellBook() {
                 name="book_image"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Book Images *</FormLabel>
+                    <FormLabel htmlFor="book_image">Book Images *</FormLabel>
                     <FormControl>
                       <div
                         className={cn(
-                          "flex flex-col relative items-center justify-center h-96 border-gray-400 border-dashed",
+                          "flex flex-col relative items-center justify-center h-96  border-gray-400 border-dashed",
                           "border-2 border-dashed rounded-lg cursor-pointer",
                           "bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700",
                           "hover:bg-gray-100 dark:border-gray-800 dark:hover:border-gray-500",
                           "dark:hover:bg-gray-600",
-                          errors.book_image && "border-red-500"
+
+                          fileNotSetError === true ? "border-red-500" : ""
                         )}
                       >
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -265,6 +266,7 @@ function SellBook() {
                         </div>
                         <Input
                           type="file"
+                          id="book_image"
                           accept="image/png, image/jpeg, "
                           className="absolute w-full h-full opacity-0 z-50 cursor-pointer"
                           onChange={(e) => {

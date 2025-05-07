@@ -5,8 +5,8 @@ from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.db import models
 
-from core.choices import BookConditionChoices
 from core.choices import BookCategoryChoices
+from core.choices import BookConditionChoices
 
 
 class User(AbstractUser):
@@ -65,8 +65,8 @@ class Book(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     data_modified = models.DateTimeField(auto_now=True)
 
-    latitude = models.FloatField(default=None)
-    longitude = models.FloatField(default=None)
+    latitude = models.FloatField(null=True, blank=True, default=None)
+    longitude = models.FloatField(null=True, blank=True, default=None)
 
     class Meta:
         indexes = [

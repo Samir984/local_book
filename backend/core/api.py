@@ -1,5 +1,7 @@
 import os
-from django.contrib.auth import authenticate
+from datetime import datetime
+
+from botocore.exceptions import ClientError
 from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.db import IntegrityError
@@ -7,18 +9,21 @@ from django.http import HttpRequest
 from ninja import NinjaAPI
 from ninja import Router
 from ninja.security import SessionAuth
-from datetime import datetime
 
 from core.models import Book
-from core.models import BookMark
-from core.models import Report
 from core.models import User
 from core.schema import CreateBookSchema
 from core.schema import GenericSchema
 from core.schema import LoginSchema
 from core.schema import RegisterSchema
-from core.schema import UserSchema
+from core.schema import S3GetSignedObjectURLScehma
 from core.schema import S3UploadURLResponseScehma
+from core.schema import UserSchema
+from core.utils import ALLOWED_EXTENSIONS
+from core.utils import BUCKET_NAME
+from core.utils import MAX_UPLOAD_SIZE
+from core.utils import MIME_TYPES
+from core.utils import s3_client
 
 # from core.schema import BookSchema
 # from core.schema import BookListSchema
@@ -28,14 +33,6 @@ from core.schema import S3UploadURLResponseScehma
 # from core.schema import RatingSchema
 # from core.schema import RatingListSchema
 
-from core.utils import s3_client
-from core.utils import BUCKET_NAME
-from core.utils import MAX_UPLOAD_SIZE
-from core.utils import ALLOWED_EXTENSIONS
-from core.utils import MIME_TYPES
-
-
-from botocore.exceptions import ClientError
 
 user = Router()
 book = Router()
@@ -126,7 +123,6 @@ def check_username(request: HttpRequest, username: str):
         400: GenericSchema,
         500: GenericSchema,
     },
-    auth=None,
 )
 def get_upload_url(request: HttpRequest, filename: str):
     """Generates a pre-signed URL for uploading a file to S3."""
@@ -149,7 +145,7 @@ def get_upload_url(request: HttpRequest, filename: str):
                 ["content-length-range", 0, MAX_UPLOAD_SIZE],
                 {"Content-Type": mime_type},
             ],
-            ExpiresIn=3600,
+            ExpiresIn=300,
         )
         return {
             "url": response["url"],
@@ -160,14 +156,34 @@ def get_upload_url(request: HttpRequest, filename: str):
         return 500, {"detail": str(e)}
 
 
-@s3.post("/delete-file")
+@s3.post(
+    "/delete-file",
+    response={200: S3GetSignedObjectURLScehma, 404: GenericSchema},
+)
 def delete_file(request: HttpRequest, key: str):
     """Deletes a file from S3 based on its key."""
     try:
         s3_client.delete_object(Bucket=BUCKET_NAME, Key=key)
         return {"detail": "File deleted successfully"}
     except ClientError as e:
-        return 500, {"detail": str(e)}
+        return 404, {"detail": str(e)}
+
+
+@s3.get(
+    "/get-image", response={200: GenericSchema, 404: GenericSchema}, auth=None
+)
+def get_file_url(request: HttpRequest, key: str):
+    """get S3 file  based on its key"""
+    try:
+        presigned_url = s3_client.generate_presigned_url(
+            "get_object",
+            Params={"Bucket": BUCKET_NAME, "Key": key},
+            ExpiresIn=3600,
+        )
+
+        return {"url": f"{presigned_url}"}
+    except ClientError as e:
+        return 404, {"detail": str(e)}
 
 
 @book.post(
@@ -192,6 +208,8 @@ def create_book(request: HttpRequest, data: CreateBookSchema):
             description=data.description,
             condition=data.condition,
             price=data.price,
+            latitude=data.latitude,
+            longitude=data.longitude,
         )
 
         return 201, {

@@ -1,10 +1,12 @@
-from typing import Optional, Literal
-
-from ninja import ModelSchema, Schema
-from pydantic import EmailStr, Field
-from .models import Book
-from .choices import BookCategoryChoices, BookConditionChoices
 from decimal import Decimal
+from typing import Literal
+from typing import Optional
+
+from ninja import Schema
+from pydantic import EmailStr
+
+from .choices import BookCategoryChoices
+from .choices import BookConditionChoices
 
 
 class LoginSchema(Schema):
@@ -61,6 +63,10 @@ class S3UploadURLResponseScehma(Schema):
     url: str
     fields: dict[str, str]
     key: str
+
+
+class S3GetSignedObjectURLScehma(Schema):
+    url: str
 
 
 class GenericSchema(Schema):
