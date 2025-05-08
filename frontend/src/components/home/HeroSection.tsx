@@ -11,7 +11,7 @@ const HeroSection = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/books?search=${encodeURIComponent(searchQuery)}`);
+      navigate(`/books?name=${encodeURIComponent(searchQuery)}`);
     }
   };
 

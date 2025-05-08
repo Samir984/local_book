@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
-import useGeoLocation from "./hooks/useGeoLocation";
+import GeoLocationProvider from "./context/GeoLocationProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,14 +58,15 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  const geolocation = useGeoLocation();
   return (
     <div>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <RouterProvider router={router} />
-          <Toaster />
-        </AuthProvider>
+        <GeoLocationProvider>
+          <AuthProvider>
+            <RouterProvider router={router} />
+            <Toaster />
+          </AuthProvider>
+        </GeoLocationProvider>
       </QueryClientProvider>
     </div>
   );

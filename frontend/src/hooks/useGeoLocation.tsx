@@ -10,6 +10,7 @@ interface Geolocation {
 export default function useGeoLocation() {
   const [geoLocation, setGeoLocation] = useState<Geolocation>();
 
+
   function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
