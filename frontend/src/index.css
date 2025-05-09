@@ -48,6 +48,10 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+@theme {
+  --breakpoint-sidebar: 100rem;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

@@ -14,7 +14,7 @@ export const coreApiGetFileUrlQueryKey = (params: CoreApiGetFileUrlQueryParams) 
 export type CoreApiGetFileUrlQueryKey = ReturnType<typeof coreApiGetFileUrlQueryKey>
 
 /**
- * @description get S3 file  based on its key
+ * @description Generate s3 presigned url  based on its key
  * @summary Get File Url
  * {@link /api/v1/s3/get-image}
  */
@@ -43,7 +43,7 @@ export function coreApiGetFileUrlQueryOptions(params: CoreApiGetFileUrlQueryPara
 }
 
 /**
- * @description get S3 file  based on its key
+ * @description Generate s3 presigned url  based on its key
  * @summary Get File Url
  * {@link /api/v1/s3/get-image}
  */

@@ -4,12 +4,7 @@
  */
 
 import client from '@kubb/plugin-client/clients/axios'
-import type {
-  CoreApiCreateBookMutationRequest,
-  CoreApiCreateBookMutationResponse,
-  CoreApiCreateBook400,
-  CoreApiCreateBook500,
-} from '../types/CoreApiCreateBook.ts'
+import type { CoreApiCreateBookMutationRequest, CoreApiCreateBookMutationResponse, CoreApiCreateBook500 } from '../types/CoreApiCreateBook.ts'
 import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/axios'
 import type { UseMutationOptions, QueryClient } from '@tanstack/react-query'
 import { useMutation } from '@tanstack/react-query'
@@ -19,6 +14,7 @@ export const coreApiCreateBookMutationKey = () => [{ url: '/api/v1/books/create/
 export type CoreApiCreateBookMutationKey = ReturnType<typeof coreApiCreateBookMutationKey>
 
 /**
+ * @description Create book
  * @summary Create Book
  * {@link /api/v1/books/create/}
  */
@@ -28,15 +24,17 @@ export async function coreApiCreateBook(
 ) {
   const { client: request = client, ...requestConfig } = config
 
-  const res = await request<
-    CoreApiCreateBookMutationResponse,
-    ResponseErrorConfig<CoreApiCreateBook400 | CoreApiCreateBook500>,
-    CoreApiCreateBookMutationRequest
-  >({ method: 'POST', url: `/api/v1/books/create/`, data, ...requestConfig })
+  const res = await request<CoreApiCreateBookMutationResponse, ResponseErrorConfig<CoreApiCreateBook500>, CoreApiCreateBookMutationRequest>({
+    method: 'POST',
+    url: `/api/v1/books/create/`,
+    data,
+    ...requestConfig,
+  })
   return res.data
 }
 
 /**
+ * @description Create book
  * @summary Create Book
  * {@link /api/v1/books/create/}
  */
@@ -44,7 +42,7 @@ export function useCoreApiCreateBook<TContext>(
   options: {
     mutation?: UseMutationOptions<
       CoreApiCreateBookMutationResponse,
-      ResponseErrorConfig<CoreApiCreateBook400 | CoreApiCreateBook500>,
+      ResponseErrorConfig<CoreApiCreateBook500>,
       { data: CoreApiCreateBookMutationRequest },
       TContext
     > & { client?: QueryClient }
@@ -54,12 +52,7 @@ export function useCoreApiCreateBook<TContext>(
   const { mutation: { client: queryClient, ...mutationOptions } = {}, client: config = {} } = options ?? {}
   const mutationKey = mutationOptions?.mutationKey ?? coreApiCreateBookMutationKey()
 
-  return useMutation<
-    CoreApiCreateBookMutationResponse,
-    ResponseErrorConfig<CoreApiCreateBook400 | CoreApiCreateBook500>,
-    { data: CoreApiCreateBookMutationRequest },
-    TContext
-  >(
+  return useMutation<CoreApiCreateBookMutationResponse, ResponseErrorConfig<CoreApiCreateBook500>, { data: CoreApiCreateBookMutationRequest }, TContext>(
     {
       mutationFn: async ({ data }) => {
         return coreApiCreateBook(data, config)

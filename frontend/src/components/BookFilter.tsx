@@ -44,9 +44,8 @@ export default function BookFilter() {
     searchParams.get(paramName) || "";
 
   return (
-    <div className="w-full flex flex-col px-4 py-6 bg-white shadow-md">
+    <div className="w-full flex flex-col px-4 py-6 bg-white  sticky top-24 h-fit ">
       <h2 className="text-center text-lg font-medium text-gray-800 mb-4 ">
-        {" "}
         Book Filter
       </h2>
       <div className="flex flex-col gap-6 relative">
@@ -235,6 +234,22 @@ export default function BookFilter() {
                 </div>
               </RadioGroup>
             </fieldset>
+          </div>
+        </div>
+        {/* grade */}
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Class</span>
+          <div className="relative">
+            <X
+              className={`absolute top-2 p-1 rounded-full bg-gray-100 text-black right-2 cursor-pointer ${getQueryValue("grade") === "" && "hidden"}`}
+              onClick={() => updateQuery("grade", null)}
+            />
+            <Input
+              placeholder="grade"
+              type="number"
+              value={getQueryValue("grade")}
+              onChange={(e) => updateQuery("grade", e.target.value)}
+            />
           </div>
         </div>
 

@@ -7,6 +7,8 @@ export type { CoreApiGetFileUrlSuspenseQueryKey } from './useCoreApiGetFileUrlSu
 export type { CoreApiGetUploadUrlMutationKey } from './useCoreApiGetUploadUrl.ts'
 export type { CoreApiGetUserQueryKey } from './useCoreApiGetUser.ts'
 export type { CoreApiGetUserSuspenseQueryKey } from './useCoreApiGetUserSuspense.ts'
+export type { CoreApiListBooksQueryKey } from './useCoreApiListBooks.ts'
+export type { CoreApiListBooksSuspenseQueryKey } from './useCoreApiListBooksSuspense.ts'
 export type { CoreApiLoginUserMutationKey } from './useCoreApiLoginUser.ts'
 export type { CoreApiLogoutUserQueryKey } from './useCoreApiLogoutUser.ts'
 export type { CoreApiLogoutUserSuspenseQueryKey } from './useCoreApiLogoutUserSuspense.ts'
@@ -35,6 +37,13 @@ export {
   coreApiGetUserSuspenseQueryOptions,
   useCoreApiGetUserSuspense,
 } from './useCoreApiGetUserSuspense.ts'
+export { coreApiListBooksQueryKey, coreApiListBooks, coreApiListBooksQueryOptions, useCoreApiListBooks } from './useCoreApiListBooks.ts'
+export {
+  coreApiListBooksSuspenseQueryKey,
+  coreApiListBooksSuspense,
+  coreApiListBooksSuspenseQueryOptions,
+  useCoreApiListBooksSuspense,
+} from './useCoreApiListBooksSuspense.ts'
 export { coreApiLoginUserMutationKey, coreApiLoginUser, useCoreApiLoginUser } from './useCoreApiLoginUser.ts'
 export { coreApiLogoutUserQueryKey, coreApiLogoutUser, coreApiLogoutUserQueryOptions, useCoreApiLogoutUser } from './useCoreApiLogoutUser.ts'
 export {

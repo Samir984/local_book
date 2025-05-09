@@ -15,6 +15,7 @@ export const coreApiCheckUsernameQueryKey = (params: CoreApiCheckUsernameQueryPa
 export type CoreApiCheckUsernameQueryKey = ReturnType<typeof coreApiCheckUsernameQueryKey>
 
 /**
+ * @description Check for username exits for not.
  * @summary Check Username
  * {@link /api/v1/users/check-username/}
  */
@@ -43,6 +44,7 @@ export function coreApiCheckUsernameQueryOptions(params: CoreApiCheckUsernameQue
 }
 
 /**
+ * @description Check for username exits for not.
  * @summary Check Username
  * {@link /api/v1/users/check-username/}
  */

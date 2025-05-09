@@ -1,84 +1,78 @@
 import { Link } from "react-router-dom";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, MapPin } from "lucide-react";
+import { MapPin, BookIcon } from "lucide-react";
+import { PublicBookScehma } from "@/gen";
 
-export interface Book {
-  id: string;
-  title: string;
-  author: string;
-  price: number;
-  condition: "New" | "Like New" | "Very Good" | "Good" | "Fair" | "Poor";
-  imageUrl: string;
-  description: string;
-  genre: string[];
-  location: string;
-  distance?: string; // e.g. "2.5 miles away"
-  seller: {
-    id: string;
-    name: string;
-    rating: number;
-    profilePic?: string;
-  };
-  isbn?: string;
-  publishYear?: number;
-  publisher?: string;
-  language?: string;
-  pages?: number;
-  format?: "Hardcover" | "Paperback" | "Mass Market" | "eBook" | "Audiobook";
-  listedDate: Date | string;
-}
-
-export type BookCondition = Book["condition"];
-export type BookFormat = NonNullable<Book["format"]>;
 interface BookCardProps {
-  book: Book;
+  book: PublicBookScehma;
 }
 
 const BookCard = ({ book }: BookCardProps) => {
   return (
     <Link to={`/book/${book.id}`}>
-      <Card className="book-card h-full flex flex-col">
-        <div className="relative pt-[56.25%] ">
+      <Card className="book-card h-full flex flex-col min-w-[320px]">
+        <div className="relative pt-[56.25%] bg-bookworm-light">
           <img
-            src={book.imageUrl}
-            alt={book.title}
+            src={book.book_image}
+            alt={book.name}
             className="absolute top-0 left-0 w-full h-full object-cover"
           />
-          <Badge className="absolute top-2 right-2 bg-bookworm-burgundy hover:bg-bookworm-burgundy">
-            ${book.price.toFixed(2)}
+          <Badge className="absolute top-2 right-2 bg-bookworm-burgundy hover:bg-bookworm-burgundy bg-orange-700">
+            {Number(book.price) >= 0
+              ? "Donate"
+              : `Rs. ${Number(book.price).toFixed(2)}`}
           </Badge>
         </div>
-        <CardContent className="p-4 flex-grow flex flex-col">
-          <h3 className="text-lg font-semibold line-clamp-2 mb-1">
-            {book.title}
-          </h3>
-          <p className="text-bookworm-gray text-sm mb-2">{book.author}</p>
+        <CardContent className="px-4 flex-grow flex flex-col">
+          <h3 className="text-xl font-semibold line-clamp-2 ">{book.name}</h3>
 
+          {book.distance && book.distance !== "None" && (
+            <div className="text-base font-medium mt-1 text-green-600 ">
+              {Number(book.distance.trim().replace("m", "")).toFixed(2)} m away
+              you
+            </div>
+          )}
           <div className="flex justify-between items-center mt-auto pt-3">
             <div className="flex items-center text-sm">
-              <Badge variant="outline" className="mr-2">
+              <Badge
+                variant="outline"
+                className="bg-gray-100 hover:text-red-600"
+              >
                 {book.condition}
               </Badge>
             </div>
-            <div className="flex items-center text-sm text-bookworm-gray">
-              <MapPin className="h-4 w-4 mr-1" />
-              <span>{book.distance}</span>
+            <div className="flex items-center text-sm text-gray-700">
+              {book.category && (
+                <span className="flex items-center">
+                  <BookIcon className="h-4 w-4 " />
+                  <span>{book.category}</span>
+                </span>
+              )}
             </div>
           </div>
 
-          <div className="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
-            <div className="flex items-center">
-              <div className="w-6 h-6 bg-bookworm-secondary text-white rounded-full flex items-center justify-center text-xs">
-                {book.seller.name.charAt(0)}
+          {/* Owner information */}
+          {(book.owner_first_name ||
+            book.owner_last_name ||
+            book.owner_location) && (
+            <div className="flex justify-between items-center mt-3  border-t border-gray-100">
+              <div className="flex flex-col text-sm text-bookworm-gray">
+                {(book.owner_first_name || book.owner_last_name) && (
+                  <span className="font-medium text-lg">
+                    {book.owner_first_name} {book.owner_last_name}
+                  </span>
+                )}
+                {book.owner_location && (
+                  <span className="flex items-center font-medium gap-2 mt-1 ">
+                    <MapPin size={16} />
+                    {book.owner_location}
+                  </span>
+                )}
               </div>
-              <span className="ml-2 text-sm">{book.seller.name}</span>
             </div>
-            <div className="flex items-center">
-              <Star className="h-4 w-4 text-yellow-400 mr-1" />
-              <span className="text-sm">{book.seller.rating}</span>
-            </div>
-          </div>
+          )}
         </CardContent>
       </Card>
     </Link>

@@ -22,7 +22,7 @@ export async function coreApiDeleteFile(params: CoreApiDeleteFileQueryParams, co
   const { client: request = client, ...requestConfig } = config
 
   const res = await request<CoreApiDeleteFileMutationResponse, ResponseErrorConfig<CoreApiDeleteFile404>, unknown>({
-    method: 'POST',
+    method: 'DELETE',
     url: `/api/v1/s3/delete-file`,
     params,
     ...requestConfig,

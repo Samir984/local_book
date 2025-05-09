@@ -14,6 +14,7 @@ export const coreApiRegisterUserMutationKey = () => [{ url: '/api/v1/users/regis
 export type CoreApiRegisterUserMutationKey = ReturnType<typeof coreApiRegisterUserMutationKey>
 
 /**
+ * @description User registration
  * @summary Register User
  * {@link /api/v1/users/register/}
  */
@@ -33,6 +34,7 @@ export async function coreApiRegisterUser(
 }
 
 /**
+ * @description User registration
  * @summary Register User
  * {@link /api/v1/users/register/}
  */

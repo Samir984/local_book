@@ -15,7 +15,7 @@ export const coreApiGetFileUrlSuspenseQueryKey = (params: CoreApiGetFileUrlQuery
 export type CoreApiGetFileUrlSuspenseQueryKey = ReturnType<typeof coreApiGetFileUrlSuspenseQueryKey>
 
 /**
- * @description get S3 file  based on its key
+ * @description Generate s3 presigned url  based on its key
  * @summary Get File Url
  * {@link /api/v1/s3/get-image}
  */
@@ -44,7 +44,7 @@ export function coreApiGetFileUrlSuspenseQueryOptions(params: CoreApiGetFileUrlQ
 }
 
 /**
- * @description get S3 file  based on its key
+ * @description Generate s3 presigned url  based on its key
  * @summary Get File Url
  * {@link /api/v1/s3/get-image}
  */

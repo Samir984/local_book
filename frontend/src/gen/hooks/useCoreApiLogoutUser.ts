@@ -14,6 +14,7 @@ export const coreApiLogoutUserQueryKey = () => [{ url: '/api/v1/users/logout/' }
 export type CoreApiLogoutUserQueryKey = ReturnType<typeof coreApiLogoutUserQueryKey>
 
 /**
+ * @description User logout
  * @summary Logout User
  * {@link /api/v1/users/logout/}
  */
@@ -40,6 +41,7 @@ export function coreApiLogoutUserQueryOptions(config: Partial<RequestConfig> & {
 }
 
 /**
+ * @description User logout
  * @summary Logout User
  * {@link /api/v1/users/logout/}
  */

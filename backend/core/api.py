@@ -308,7 +308,7 @@ def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  #
         queryset = queryset.filter(filter_conditions).annotate(
             owner_first_name=F("user__first_name"),
             owner_last_name=F("user__last_name"),
-            owner_location=F("user_location"),
+            owner_location=F("user__location"),
         )
 
         return queryset

@@ -37,6 +37,7 @@ export type CreateBookSchema = {
   category: CreateBookSchemaCategoryEnum
   publication?: string | null
   /**
+   * @minLength 0
    * @default 1
    * @type integer | undefined
    */

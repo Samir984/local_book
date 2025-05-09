@@ -14,6 +14,7 @@ export const coreApiLoginUserMutationKey = () => [{ url: '/api/v1/users/login/' 
 export type CoreApiLoginUserMutationKey = ReturnType<typeof coreApiLoginUserMutationKey>
 
 /**
+ * @description User login
  * @summary Login User
  * {@link /api/v1/users/login/}
  */
@@ -33,6 +34,7 @@ export async function coreApiLoginUser(
 }
 
 /**
+ * @description User login
  * @summary Login User
  * {@link /api/v1/users/login/}
  */

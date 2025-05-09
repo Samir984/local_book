@@ -14,6 +14,7 @@ export const coreApiLogoutUserSuspenseQueryKey = () => [{ url: '/api/v1/users/lo
 export type CoreApiLogoutUserSuspenseQueryKey = ReturnType<typeof coreApiLogoutUserSuspenseQueryKey>
 
 /**
+ * @description User logout
  * @summary Logout User
  * {@link /api/v1/users/logout/}
  */
@@ -40,6 +41,7 @@ export function coreApiLogoutUserSuspenseQueryOptions(config: Partial<RequestCon
 }
 
 /**
+ * @description User logout
  * @summary Logout User
  * {@link /api/v1/users/logout/}
  */
