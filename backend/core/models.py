@@ -1,6 +1,9 @@
 from decimal import Decimal
 
 from django.contrib.auth.models import AbstractUser
+from django.contrib.gis.db.models import PointField
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.geos import Point
 from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -67,6 +70,7 @@ class Book(models.Model):
 
     latitude = models.FloatField(null=True, blank=True, default=None)
     longitude = models.FloatField(null=True, blank=True, default=None)
+    location = PointField(null=True, blank=True, srid=4326)
 
     class Meta:
         indexes = [

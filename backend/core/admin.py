@@ -18,7 +18,7 @@ class CustomUserAdmin(UserAdmin):
         ),
         (
             "Location",
-            {"fields": ("country", "latitude", "longitude")},
+            {"fields": ("location",)},
         ),
         (
             "Permissions",
@@ -61,6 +61,10 @@ class BookAdmin(admin.ModelAdmin[Book]):
         "category",
         "user",
         "publication",
+        "grade",
+        "is_school_book",
+        "is_bachlore_book",
+        "is_college_book",
         "book_image",
         "edition",
         "condition",
@@ -71,6 +75,7 @@ class BookAdmin(admin.ModelAdmin[Book]):
         "latitude",
         "longitude",
         "date_created",
+        "location",
     )
     list_filter = (
         "user",
@@ -91,42 +96,6 @@ class BookAdmin(admin.ModelAdmin[Book]):
     ordering = ("-date_created",)
 
     readonly_fields = ("date_created", "data_modified")
-
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "user",
-                    "name",
-                    "category",
-                    "book_image",
-                    "publication",
-                    "description",
-                    "latitude",
-                    "longitude",
-                )
-            },
-        ),
-        (
-            "Book Details",
-            {
-                "fields": (
-                    "edition",
-                    "condition",
-                    "price",
-                    "is_school_book",
-                    "grade",
-                    "is_college_book",
-                )
-            },
-        ),
-        (
-            "Status",
-            {"fields": ("is_sold", "is_accepted", "is_rejected", "rating")},
-        ),
-        ("Dates", {"fields": ("date_created", "data_modified")}),
-    )
 
 
 @admin.register(Report)
