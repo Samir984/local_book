@@ -1,4 +1,4 @@
-import FeaturedCategories from "@/components/home/RecentBooks";
+import RecentBook from "@/components/home/RecentBooks";
 import HeroSection from "@/components/home/HeroSection";
 import HowItWorks from "@/components/home/HowItWorks";
 import OurServices from "@/components/home/OurServices";
@@ -8,7 +8,7 @@ export default function LandingPage() {
     <div className="min-h-screen">
       <HeroSection />
       <OurServices />
-      <FeaturedCategories />
+      <RecentBook />
       <HowItWorks />
     </div>
   );

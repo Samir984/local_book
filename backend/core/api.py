@@ -4,10 +4,8 @@ from datetime import datetime
 from botocore.exceptions import ClientError
 from django.contrib.auth import login
 from django.contrib.auth import logout
-from django.contrib.gis.db.models import PointField
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
-from django.db import IntegrityError
 from django.db.models import F
 from django.db.models import Q
 from django.http import HttpRequest
@@ -245,7 +243,7 @@ def create_book(request: HttpRequest, data: CreateBookSchema):
         }
 
 
-@book.get("/", response={200: list[PublicBookScehma]})
+@book.get("/", response={200: list[PublicBookScehma]}, auth=None)
 @paginate
 def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  # type: ignore
     "List books based on provided filters."

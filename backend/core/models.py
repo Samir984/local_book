@@ -2,8 +2,6 @@ from decimal import Decimal
 
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db.models import PointField
-from django.contrib.gis.db.models.functions import Distance
-from django.contrib.gis.geos import Point
 from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.db import models

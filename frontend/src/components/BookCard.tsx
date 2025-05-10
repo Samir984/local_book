@@ -12,7 +12,7 @@ interface BookCardProps {
 const BookCard = ({ book }: BookCardProps) => {
   return (
     <Link to={`/book/${book.id}`}>
-      <Card className="book-card h-full flex flex-col min-w-[320px]">
+      <Card className=" h-full flex flex-col min-w-[320px] duration-300 hover:shadow-md hover:-translate-y-1 transition-all">
         <div className="relative pt-[56.25%] bg-bookworm-light">
           <img
             src={book.book_image}
@@ -38,7 +38,7 @@ const BookCard = ({ book }: BookCardProps) => {
             <div className="flex items-center text-sm">
               <Badge
                 variant="outline"
-                className="bg-gray-100 hover:text-red-600"
+                className={`bg-gray-100 text-green-600 hover:bg-gray-200 ${book.category === "POOR" && "text-red-600"}`}
               >
                 {book.condition}
               </Badge>

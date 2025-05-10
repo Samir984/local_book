@@ -20,11 +20,11 @@ export default function BookFilter() {
   const [publication, setPublication] = useState(
     searchParams.get("publication") || ""
   );
+  const [bookType, setBookType] = useState("is_any");
 
   const updateQuery = (name: string, value: string | null) => {
     const newParams = new URLSearchParams(searchParams);
-    const d = newParams.getAll("name");
-    console.log(d);
+
     if (value) {
       newParams.set(name, value);
     } else {
@@ -32,6 +32,7 @@ export default function BookFilter() {
     }
     setSearchParams(newParams);
   };
+  console.log(bookType);
 
   const deleteFilter = () => {
     const newParams = new URLSearchParams();
@@ -200,7 +201,10 @@ export default function BookFilter() {
               <RadioGroup
                 value={getQueryValue("bookType")}
                 className="flex  gape-2 flex-wrap"
-                onValueChange={(value) => updateQuery("bookType", value)}
+                onValueChange={(value) => {
+                  setBookType(value);
+                  updateQuery("bookType", value);
+                }}
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem
@@ -248,6 +252,7 @@ export default function BookFilter() {
               placeholder="grade"
               type="number"
               value={getQueryValue("grade")}
+              disabled={bookType !== "is_school_book"}
               onChange={(e) => updateQuery("grade", e.target.value)}
             />
           </div>
@@ -270,7 +275,7 @@ export default function BookFilter() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="asc">Low to heigh</SelectItem>
-                <SelectItem value="dex">high to low</SelectItem>
+                <SelectItem value="dec">high to low</SelectItem>
               </SelectContent>
             </Select>
           </div>

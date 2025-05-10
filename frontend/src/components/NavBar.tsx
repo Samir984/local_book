@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Book } from "lucide-react";
 import { useMobileNav } from "@/hooks/useMobileNav";
 import { useAuth } from "@/context/AuthProvider";
+import { Skeleton } from "./ui/skeleton";
+import Profile from "./Profile";
 
 const Navbar = () => {
   const isMobile = useMobileNav();
@@ -39,13 +41,20 @@ const Navbar = () => {
             >
               Sell Books
             </Link>
-
-            <Link to="/login">
-              <Button variant="outline">Sign In</Button>
-            </Link>
-            <Link to="/register">
-              <Button>Register</Button>
-            </Link>
+            {isLoading ? (
+              <Skeleton className="w-12 h-12 rounded-full bg-gray-300" />
+            ) : isLoggedIn ? (
+              <Profile user={user}/>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="outline">Sign In</Button>
+                </Link>
+                <Link to="/register">
+                  <Button>Register</Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}

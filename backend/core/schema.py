@@ -1,5 +1,4 @@
 from decimal import Decimal
-from typing import Any
 from typing import Literal
 from typing import Optional
 
