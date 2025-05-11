@@ -1,14 +1,18 @@
 import os
 from datetime import datetime
+from typing import Optional
 
 from botocore.exceptions import ClientError
 from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
+from django.db import connection
 from django.db.models import F
 from django.db.models import Q
 from django.http import HttpRequest
+from django.shortcuts import get_list_or_404
+from django.shortcuts import get_object_or_404
 from ninja import NinjaAPI
 from ninja import Query
 from ninja import Router
@@ -17,10 +21,12 @@ from ninja.security import SessionAuth
 
 from core.models import Book
 from core.models import User
+from core.schema import BookDetailSchema
 from core.schema import BookFilterScehma
 from core.schema import CreateBookSchema
 from core.schema import GenericSchema
 from core.schema import LoginSchema
+from core.schema import PrivateBookScehma
 from core.schema import PublicBookScehma
 from core.schema import RegisterSchema
 from core.schema import S3GetSignedObjectURLScehma
@@ -32,7 +38,6 @@ from core.utils import MAX_UPLOAD_SIZE
 from core.utils import MIME_TYPES
 from core.utils import s3_client
 
-# from core.schema import BookSchema
 # from core.schema import BookListSchema
 # from core.schema import BookDetailSchema
 # from core.schema import ReportSchema
@@ -299,6 +304,10 @@ def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  #
                     owner_first_name=book.owner_first_name,  # type: ignore
                     owner_last_name=book.owner_last_name,  # type: ignore
                     owner_location=book.owner_location,  # type: ignore
+                    is_school_book=book.is_school_book,  # type: ignore
+                    is_college_book=book.is_college_book,  # type: ignore
+                    is_bachlore_book=book.is_bachlore_book,  # type: ignore
+                    grade=book.grade,  # type: ignore
                 )
             )
         return results
@@ -310,3 +319,28 @@ def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  #
         )
 
         return queryset
+
+
+@book.get(
+    "/{id}/", response={200: BookDetailSchema, 404: GenericSchema}, auth=None
+)
+def get_book(request: HttpRequest, id: int):
+    "Get book details"
+    book = get_object_or_404(Book.objects.select_related("user"), pk=id)
+    # print(connection.queries)
+    return book
+
+
+@book.get(
+    "/current_user/{user_id}/",
+    response={200: list[PrivateBookScehma], 404: GenericSchema},
+)
+@paginate
+def list_user_books(request: HttpRequest, user_id: int):
+    "Get user book"
+    user_exists = User.objects.filter(id=user_id).exists()
+    if not user_exists:
+        return 404, {"detail": "User not found."}
+
+    book = Book.objects.filter(user_id=user_id).select_related("user")
+    return book

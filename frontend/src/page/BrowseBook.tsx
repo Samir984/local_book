@@ -1,16 +1,17 @@
 import BookCard from "@/components/BookCard";
 import BookFilter from "@/components/BookFilter";
 import { useGeoLocation } from "@/context/GeoLocationProvider";
+
+import { Filter, Search } from "lucide-react";
+import { useState } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton";
+import { BookPagination } from "@/components/BookPagination";
 import {
   CoreApiListBooksQueryParamsCategoryEnum,
   CoreApiListBooksQueryParamsConditionEnum,
   useCoreApiListBooks,
 } from "@/gen";
-import { Filter, Search } from "lucide-react";
-import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { Skeleton } from "@/components/ui/skeleton";
-import { BookPagination } from "@/components/BookPagination";
 
 const LIMIT = 25;
 
@@ -18,6 +19,7 @@ export default function BrowseBook() {
   const { latitude, longitude } = useGeoLocation();
   const [openFilterSideBar, setFilterSideBar] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+
   const [page, setPage] = useState(1);
 
   const books = useCoreApiListBooks(
@@ -74,7 +76,7 @@ export default function BrowseBook() {
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-full w-72 sidebar:ranslate-x-full" bg-white  z-50 overflow-y-scroll px-4 py-8 shadow-lg transition-transform duration-300 transform ${
+        className={`fixed top-0 right-0 h-full w-72 sidebar:translate-x-full bg-white  z-50 overflow-y-scroll px-4 py-8 shadow-lg transition-transform duration-300 transform ${
           openFilterSideBar ? "translate-x-0" : "translate-x-full"
         }`}
       >

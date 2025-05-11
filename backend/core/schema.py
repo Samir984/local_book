@@ -20,6 +20,8 @@ class LoginSchema(Schema):
 
 
 class UserSchema(Schema):
+    first_name: str
+    last_name: str
     username: str
     email: str
     location: str
@@ -44,7 +46,41 @@ class PublicBookScehma(ModelSchema):
 
     class Meta:
         model = Book
-        fields = ["id", "name", "book_image", "condition", "price", "category"]
+        fields = [
+            "id",
+            "name",
+            "book_image",
+            "condition",
+            "price",
+            "category",
+            "is_school_book",
+            "is_college_book",
+            "is_bachlore_book",
+            "grade",
+        ]
+
+
+class BookDetailSchema(ModelSchema):
+    user: UserSchema
+
+    class Meta:
+        model = Book
+        fields = [
+            "id",
+            "name",
+            "book_image",
+            "latitude",
+            "longitude",
+            "description",
+            "condition",
+            "price",
+            "category",
+            "is_school_book",
+            "is_college_book",
+            "is_bachlore_book",
+            "grade",
+            "date_created",
+        ]
 
 
 class PrivateBookScehma(ModelSchema):

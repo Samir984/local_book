@@ -10,6 +10,7 @@ import { Toaster } from "sonner";
 import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GeoLocationProvider from "./context/GeoLocationProvider";
+import BookDetailsPage from "./page/BookDetailsPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/books",
         element: <BrowseBook />,
+      },
+      {
+        path: "/books/:bookId",
+        element: <BookDetailsPage />,
       },
     ],
   },

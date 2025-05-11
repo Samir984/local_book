@@ -1,3 +1,4 @@
+export type { BookDetailSchema } from './BookDetailSchema.ts'
 export type { BookFilterScehmaCategoryEnum, BookFilterScehmaConditionEnum, BookFilterScehma } from './BookFilterScehma.ts'
 export type {
   CoreApiCheckUsernameQueryParams,
@@ -20,6 +21,7 @@ export type {
   CoreApiDeleteFileMutationResponse,
   CoreApiDeleteFileMutation,
 } from './CoreApiDeleteFile.ts'
+export type { CoreApiGetBookPathParams, CoreApiGetBook200, CoreApiGetBook404, CoreApiGetBookQueryResponse, CoreApiGetBookQuery } from './CoreApiGetBook.ts'
 export type {
   CoreApiGetFileUrlQueryParams,
   CoreApiGetFileUrl200,
@@ -45,6 +47,14 @@ export type {
   CoreApiListBooksQuery,
 } from './CoreApiListBooks.ts'
 export type {
+  CoreApiListUserBooksPathParams,
+  CoreApiListUserBooksQueryParams,
+  CoreApiListUserBooks200,
+  CoreApiListUserBooks404,
+  CoreApiListUserBooksQueryResponse,
+  CoreApiListUserBooksQuery,
+} from './CoreApiListUserBooks.ts'
+export type {
   CoreApiLoginUser200,
   CoreApiLoginUser401,
   CoreApiLoginUserMutationRequest,
@@ -63,7 +73,9 @@ export type { CreateBookSchemaCategoryEnum, CreateBookSchemaConditionEnum, Creat
 export type { GenericSchema } from './GenericSchema.ts'
 export type { Input } from './Input.ts'
 export type { LoginSchema } from './LoginSchema.ts'
+export type { PagedPrivateBookScehma } from './PagedPrivateBookScehma.ts'
 export type { PagedPublicBookScehma } from './PagedPublicBookScehma.ts'
+export type { PrivateBookScehma } from './PrivateBookScehma.ts'
 export type { PublicBookScehma } from './PublicBookScehma.ts'
 export type { RegisterSchema } from './RegisterSchema.ts'
 export type { S3GetSignedObjectURLScehma } from './S3GetSignedObjectURLScehma.ts'

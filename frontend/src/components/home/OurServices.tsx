@@ -37,7 +37,7 @@ function OurServices() {
     <div className="py-12">
       <div className="mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-serif font-bold mb-4">
+          <h2 className="text-2xl md:text-3xl font-share font-bold mb-4">
             Our Services
           </h2>
           <p className="text-bookworm-gray max-w-2xl mx-auto">

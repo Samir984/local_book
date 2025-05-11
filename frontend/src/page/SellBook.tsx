@@ -30,7 +30,7 @@ import {
   createBookSchemaConditionEnum,
   useCoreApiCreateBook,
 } from "@/gen";
-import useGeoLocation from "@/hooks/useGeoLocation";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -45,6 +45,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import Cookies from "js-cookie";
 import { uploadToS3 } from "@/utils/utils";
+import { useGeoLocation } from "@/context/GeoLocationProvider";
 
 // Define your schema
 const CreateBookSchema = z.object({

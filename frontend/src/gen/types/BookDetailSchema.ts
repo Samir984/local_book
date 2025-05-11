@@ -3,23 +3,13 @@
  * Do not edit manually.
  */
 
-export type PublicBookScehma = {
-  distance?: string | null
+import type { UserSchema } from './UserSchema.ts'
+
+export type BookDetailSchema = {
   /**
-   * @default ""
-   * @type string | undefined
+   * @type object
    */
-  owner_first_name?: string
-  /**
-   * @default ""
-   * @type string | undefined
-   */
-  owner_last_name?: string
-  /**
-   * @default ""
-   * @type string | undefined
-   */
-  owner_location?: string
+  user: UserSchema
   id?: number | null
   /**
    * @maxLength 100
@@ -30,6 +20,13 @@ export type PublicBookScehma = {
    * @type string
    */
   book_image: string
+  latitude?: number | null
+  longitude?: number | null
+  /**
+   * @description Details of the book.
+   * @type string
+   */
+  description: string
   /**
    * @maxLength 10
    * @type string
@@ -61,4 +58,8 @@ export type PublicBookScehma = {
    */
   is_bachlore_book?: boolean
   grade?: number | null
+  /**
+   * @type string, date-time
+   */
+  date_created: string
 }

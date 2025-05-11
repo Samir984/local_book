@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-import { Book } from "lucide-react";
+import { Book, Bookmark, Menu, X } from "lucide-react";
 import { useMobileNav } from "@/hooks/useMobileNav";
 import { useAuth } from "@/context/AuthProvider";
 import { Skeleton } from "./ui/skeleton";
@@ -14,7 +14,7 @@ const Navbar = () => {
   const { isLoading, isLoggedIn, user } = useAuth();
 
   return (
-    <nav className="bg-white shadow-md py-4 sticky top-0 z-50">
+    <nav className="bg-white shadow-md py-4 sticky top-0 z-40">
       <div className="max-w-[1440px] mx-auto px-4">
         <div className="flex justify-between items-center">
           {/* Logo & Brand */}
@@ -41,10 +41,24 @@ const Navbar = () => {
             >
               Sell Books
             </Link>
+            <Link
+              to="/mybooks"
+              className="text-bookworm-gray hover:text-bookworm-primary px-3 py-2 text-sm font-medium"
+            >
+              My Books
+            </Link>
+
+            <Link
+              to="/bookmarks"
+              className="text-bookworm-gray items-center flex gap-1  hover:text-bookworm-primary px-3 py-2 text-sm font-medium"
+            >
+              <Bookmark size={20} />
+              <span>Bookmark</span>
+            </Link>
             {isLoading ? (
               <Skeleton className="w-12 h-12 rounded-full bg-gray-300" />
             ) : isLoggedIn ? (
-              <Profile user={user}/>
+              <Profile user={user} />
             ) : (
               <>
                 <Link to="/login">
@@ -58,41 +72,29 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex gap-4">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-bookworm-primary hover:text-bookworm-secondary focus:outline-none"
             >
-              {isMenuOpen ? (
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              )}
+              {isMenuOpen ? <X /> : <Menu />}
             </button>
+            <div>
+              {isLoading ? (
+                <Skeleton className="w-12 h-12 rounded-full bg-gray-300" />
+              ) : isLoggedIn ? (
+                <Profile user={user} />
+              ) : (
+                <>
+                  <Link to="/login">
+                    <Button variant="outline">Sign In</Button>
+                  </Link>
+                  <Link to="/register">
+                    <Button>Register</Button>
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
@@ -114,17 +116,21 @@ const Navbar = () => {
               >
                 Sell Books
               </Link>
-
-              <div className="flex space-x-2 mt-4">
-                <Link to="/signin" className="w-1/2">
-                  <Button variant="outline" className="w-full">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link to="/register" className="w-1/2">
-                  <Button className="w-full">Register</Button>
-                </Link>
-              </div>
+              <Link
+                to="/mybooks"
+                className="block px-3 py-2 rounded-md text-base font-medium text-bookworm-primary hover: "
+                onClick={() => setIsMenuOpen(false)}
+              >
+                My Books
+              </Link>
+              <Link
+                to="/mybooks"
+                className=" flex gap-1 items-center px-3 py-2 rounded-md text-base font-medium text-bookworm-primary hover: "
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Bookmark />
+                <span>Bookmarks</span>
+              </Link>
             </div>
           </div>
         )}

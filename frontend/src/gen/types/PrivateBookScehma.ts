@@ -3,24 +3,7 @@
  * Do not edit manually.
  */
 
-export type PublicBookScehma = {
-  distance?: string | null
-  /**
-   * @default ""
-   * @type string | undefined
-   */
-  owner_first_name?: string
-  /**
-   * @default ""
-   * @type string | undefined
-   */
-  owner_last_name?: string
-  /**
-   * @default ""
-   * @type string | undefined
-   */
-  owner_location?: string
-  id?: number | null
+export type PrivateBookScehma = {
   /**
    * @maxLength 100
    * @type string
@@ -49,16 +32,20 @@ export type PublicBookScehma = {
    * @default false
    * @type boolean | undefined
    */
-  is_school_book?: boolean
+  is_reviewed?: boolean
   /**
    * @default false
    * @type boolean | undefined
    */
-  is_college_book?: boolean
+  is_accepted?: boolean
   /**
    * @default false
    * @type boolean | undefined
    */
-  is_bachlore_book?: boolean
-  grade?: number | null
+  is_rejected?: boolean
+  /**
+   * @default false
+   * @type boolean | undefined
+   */
+  is_sold?: boolean
 }

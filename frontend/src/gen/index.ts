@@ -2,6 +2,8 @@ export type { CoreApiCheckUsernameQueryKey } from './hooks/useCoreApiCheckUserna
 export type { CoreApiCheckUsernameSuspenseQueryKey } from './hooks/useCoreApiCheckUsernameSuspense.ts'
 export type { CoreApiCreateBookMutationKey } from './hooks/useCoreApiCreateBook.ts'
 export type { CoreApiDeleteFileMutationKey } from './hooks/useCoreApiDeleteFile.ts'
+export type { CoreApiGetBookQueryKey } from './hooks/useCoreApiGetBook.ts'
+export type { CoreApiGetBookSuspenseQueryKey } from './hooks/useCoreApiGetBookSuspense.ts'
 export type { CoreApiGetFileUrlQueryKey } from './hooks/useCoreApiGetFileUrl.ts'
 export type { CoreApiGetFileUrlSuspenseQueryKey } from './hooks/useCoreApiGetFileUrlSuspense.ts'
 export type { CoreApiGetUploadUrlMutationKey } from './hooks/useCoreApiGetUploadUrl.ts'
@@ -9,10 +11,13 @@ export type { CoreApiGetUserQueryKey } from './hooks/useCoreApiGetUser.ts'
 export type { CoreApiGetUserSuspenseQueryKey } from './hooks/useCoreApiGetUserSuspense.ts'
 export type { CoreApiListBooksQueryKey } from './hooks/useCoreApiListBooks.ts'
 export type { CoreApiListBooksSuspenseQueryKey } from './hooks/useCoreApiListBooksSuspense.ts'
+export type { CoreApiListUserBooksQueryKey } from './hooks/useCoreApiListUserBooks.ts'
+export type { CoreApiListUserBooksSuspenseQueryKey } from './hooks/useCoreApiListUserBooksSuspense.ts'
 export type { CoreApiLoginUserMutationKey } from './hooks/useCoreApiLoginUser.ts'
 export type { CoreApiLogoutUserQueryKey } from './hooks/useCoreApiLogoutUser.ts'
 export type { CoreApiLogoutUserSuspenseQueryKey } from './hooks/useCoreApiLogoutUserSuspense.ts'
 export type { CoreApiRegisterUserMutationKey } from './hooks/useCoreApiRegisterUser.ts'
+export type { BookDetailSchema } from './types/BookDetailSchema.ts'
 export type { BookFilterScehmaCategoryEnum, BookFilterScehmaConditionEnum, BookFilterScehma } from './types/BookFilterScehma.ts'
 export type {
   CoreApiCheckUsernameQueryParams,
@@ -35,6 +40,13 @@ export type {
   CoreApiDeleteFileMutationResponse,
   CoreApiDeleteFileMutation,
 } from './types/CoreApiDeleteFile.ts'
+export type {
+  CoreApiGetBookPathParams,
+  CoreApiGetBook200,
+  CoreApiGetBook404,
+  CoreApiGetBookQueryResponse,
+  CoreApiGetBookQuery,
+} from './types/CoreApiGetBook.ts'
 export type {
   CoreApiGetFileUrlQueryParams,
   CoreApiGetFileUrl200,
@@ -60,6 +72,14 @@ export type {
   CoreApiListBooksQuery,
 } from './types/CoreApiListBooks.ts'
 export type {
+  CoreApiListUserBooksPathParams,
+  CoreApiListUserBooksQueryParams,
+  CoreApiListUserBooks200,
+  CoreApiListUserBooks404,
+  CoreApiListUserBooksQueryResponse,
+  CoreApiListUserBooksQuery,
+} from './types/CoreApiListUserBooks.ts'
+export type {
   CoreApiLoginUser200,
   CoreApiLoginUser401,
   CoreApiLoginUserMutationRequest,
@@ -78,7 +98,9 @@ export type { CreateBookSchemaCategoryEnum, CreateBookSchemaConditionEnum, Creat
 export type { GenericSchema } from './types/GenericSchema.ts'
 export type { Input } from './types/Input.ts'
 export type { LoginSchema } from './types/LoginSchema.ts'
+export type { PagedPrivateBookScehma } from './types/PagedPrivateBookScehma.ts'
 export type { PagedPublicBookScehma } from './types/PagedPublicBookScehma.ts'
+export type { PrivateBookScehma } from './types/PrivateBookScehma.ts'
 export type { PublicBookScehma } from './types/PublicBookScehma.ts'
 export type { RegisterSchema } from './types/RegisterSchema.ts'
 export type { S3GetSignedObjectURLScehma } from './types/S3GetSignedObjectURLScehma.ts'
@@ -98,6 +120,13 @@ export {
 } from './hooks/useCoreApiCheckUsernameSuspense.ts'
 export { coreApiCreateBookMutationKey, coreApiCreateBook, useCoreApiCreateBook } from './hooks/useCoreApiCreateBook.ts'
 export { coreApiDeleteFileMutationKey, coreApiDeleteFile, useCoreApiDeleteFile } from './hooks/useCoreApiDeleteFile.ts'
+export { coreApiGetBookQueryKey, coreApiGetBook, coreApiGetBookQueryOptions, useCoreApiGetBook } from './hooks/useCoreApiGetBook.ts'
+export {
+  coreApiGetBookSuspenseQueryKey,
+  coreApiGetBookSuspense,
+  coreApiGetBookSuspenseQueryOptions,
+  useCoreApiGetBookSuspense,
+} from './hooks/useCoreApiGetBookSuspense.ts'
 export { coreApiGetFileUrlQueryKey, coreApiGetFileUrl, coreApiGetFileUrlQueryOptions, useCoreApiGetFileUrl } from './hooks/useCoreApiGetFileUrl.ts'
 export {
   coreApiGetFileUrlSuspenseQueryKey,
@@ -120,6 +149,18 @@ export {
   coreApiListBooksSuspenseQueryOptions,
   useCoreApiListBooksSuspense,
 } from './hooks/useCoreApiListBooksSuspense.ts'
+export {
+  coreApiListUserBooksQueryKey,
+  coreApiListUserBooks,
+  coreApiListUserBooksQueryOptions,
+  useCoreApiListUserBooks,
+} from './hooks/useCoreApiListUserBooks.ts'
+export {
+  coreApiListUserBooksSuspenseQueryKey,
+  coreApiListUserBooksSuspense,
+  coreApiListUserBooksSuspenseQueryOptions,
+  useCoreApiListUserBooksSuspense,
+} from './hooks/useCoreApiListUserBooksSuspense.ts'
 export { coreApiLoginUserMutationKey, coreApiLoginUser, useCoreApiLoginUser } from './hooks/useCoreApiLoginUser.ts'
 export { coreApiLogoutUserQueryKey, coreApiLogoutUser, coreApiLogoutUserQueryOptions, useCoreApiLogoutUser } from './hooks/useCoreApiLogoutUser.ts'
 export {

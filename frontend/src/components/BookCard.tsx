@@ -11,7 +11,7 @@ interface BookCardProps {
 
 const BookCard = ({ book }: BookCardProps) => {
   return (
-    <Link to={`/book/${book.id}`}>
+    <Link to={`/books/${book.id}`}>
       <Card className=" h-full flex flex-col min-w-[320px] duration-300 hover:shadow-md hover:-translate-y-1 transition-all">
         <div className="relative pt-[56.25%] bg-bookworm-light">
           <img
@@ -19,8 +19,8 @@ const BookCard = ({ book }: BookCardProps) => {
             alt={book.name}
             className="absolute top-0 left-0 w-full h-full object-cover"
           />
-          <Badge className="absolute top-2 right-2 bg-bookworm-burgundy hover:bg-bookworm-burgundy bg-orange-700">
-            {Number(book.price) >= 0
+          <Badge className="absolute top-2 right-2  bg-orange-700">
+            {Number(book.price) <= 0
               ? "Donate"
               : `Rs. ${Number(book.price).toFixed(2)}`}
           </Badge>
@@ -36,12 +36,38 @@ const BookCard = ({ book }: BookCardProps) => {
           )}
           <div className="flex justify-between items-center mt-auto pt-3">
             <div className="flex items-center text-sm">
-              <Badge
-                variant="outline"
-                className={`bg-gray-100 text-green-600 hover:bg-gray-200 ${book.category === "POOR" && "text-red-600"}`}
-              >
-                {book.condition}
-              </Badge>
+              <div className="flex items-center gap-2">
+                <Badge
+                  variant="outline"
+                  className={`bg-gray-100 text-green-600 hover:bg-gray-200 ${book.category === "POOR" && "text-red-600"}`}
+                >
+                  {book.condition}
+                </Badge>
+                {(book.is_school_book ||
+                  book.is_college_book ||
+                  book.is_bachlore_book) && (
+                  <Badge
+                    variant="outline"
+                    className={`bg-gray-100 text-blue-600 hover:bg-gray-200`}
+                  >
+                    {book.is_school_book
+                      ? "School"
+                      : book.is_college_book
+                        ? "Collage"
+                        : book.is_bachlore_book
+                          ? "Bachlore"
+                          : "null"}
+                  </Badge>
+                )}
+                {book.grade && (
+                  <Badge
+                    className={`bg-gray-100 text-blue-600 hover:bg-gray-200`}
+                    variant="outline"
+                  >
+                    {book?.grade}
+                  </Badge>
+                )}
+              </div>
             </div>
             <div className="flex items-center text-sm text-gray-700">
               {book.category && (

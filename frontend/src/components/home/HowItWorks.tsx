@@ -28,12 +28,12 @@ const HowItWorks = () => {
     <div className="py-16 bg-amber-50">
       <div className="mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-serif font-bold mb-4">
+          <h2 className="text-2xl md:text-3xl font-share font-bold mb-4">
             How It Works
           </h2>
           <p className="text-bookworm-gray max-w-2xl mx-auto">
-            BookWorm Local Finds makes it easy to buy and sell used books in
-            your community.
+            LocalBook makes it easy to buy and sell used books in your
+            community.
           </p>
         </div>
 
