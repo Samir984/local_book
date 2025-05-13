@@ -35,8 +35,8 @@ import {
 } from "@/components/ui/table";
 import {
   coreApiDeleteBook,
-  PagedPrivateBookScehma,
   PrivateBookScehma,
+  useCoreApiListUserBooks,
 } from "@/gen";
 
 import Cookies from "js-cookie";
@@ -183,24 +183,8 @@ export const columns: ColumnDef<PrivateBookScehma>[] = [
     },
   },
 ];
-
-export function MyBookTable({
-  books,
-  page,
-  totalPage,
-  setPage,
-  refetch,
-  isLoading,
-  isFetching,
-}: {
-  books: PagedPrivateBookScehma;
-  page: number;
-  totalPage: number;
-  setPage: any;
-  refetch: () => void;
-  isLoading: boolean;
-  isFetching: boolean;
-}) {
+const LIMIT = 2;
+export function MyBookTable() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -208,6 +192,37 @@ export function MyBookTable({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [page, setPage] = React.useState(1);
+  const [totalPage, setTotalPage] = React.useState(1);
+
+  const {
+    data: books,
+    isFetching,
+    isLoading,
+    refetch,
+  } = useCoreApiListUserBooks(
+    {
+      limit: LIMIT,
+      offset: (page - 1) * LIMIT,
+    },
+    {
+      client: {
+        headers: {
+          "X-CSRFToken": Cookies.get("csrftoken")!,
+        },
+      },
+      query: {
+        staleTime: 1000 * 300,
+        queryKey: ["mybooks", page],
+      },
+    }
+  );
+
+  React.useEffect(() => {
+    if (!isFetching && books) {
+      setTotalPage(Math.ceil(books.count / LIMIT || 0));
+    }
+  }, [isFetching, books]);
 
   console.log(books);
   const table = useReactTable({
@@ -286,7 +301,7 @@ export function MyBookTable({
             ))}
           </TableHeader>
           <TableBody>
-            {isLoading === true ? (
+            {isFetching === true ? (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
