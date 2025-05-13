@@ -4,7 +4,7 @@ import { useGeoLocation } from "@/context/GeoLocationProvider";
 
 import { Filter, Search } from "lucide-react";
 import { useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BookPagination } from "@/components/BookPagination";
 import {
@@ -18,7 +18,7 @@ const LIMIT = 25;
 export default function BrowseBook() {
   const { latitude, longitude } = useGeoLocation();
   const [openFilterSideBar, setFilterSideBar] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const [page, setPage] = useState(1);
 
@@ -59,6 +59,8 @@ export default function BrowseBook() {
     }
   );
 
+  console.log(books.isError, books.error);
+
   return (
     <div className="px-4 py-6 flex flex-wrap gap-6 h-full flex-col  sidebar:flex-row relative">
       {/* Desktop Filter */}
@@ -91,9 +93,19 @@ export default function BrowseBook() {
         ></div>
       )}
       {/* Books */}
+
       <div className="flex-1 w-full  flex item-start flex-col ">
+        {books.isError && (
+          <div className="mt-24 w-full flex items-center justify-center text-red-500 flex-col">
+            <p className="text-xl font-semibold mb-2">
+              Oops! Something went wrong.
+            </p>
+            <p className="text-red-500">
+              We encountered an unexpected error. Please try again later.
+            </p>
+          </div>
+        )}
         {books.isFetching ? (
-          // Show skeleton loading when fetching
           <div className="grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
             {Array(6)
               .fill(null)

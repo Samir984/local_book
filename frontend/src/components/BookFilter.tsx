@@ -11,8 +11,8 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@radix-ui/react-label";
 import { useSearchParams } from "react-router-dom";
-import { useState } from "react";
 import { Badge } from "./ui/badge";
+import { useState } from "react";
 
 export default function BookFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,7 +32,6 @@ export default function BookFilter() {
     }
     setSearchParams(newParams);
   };
-  console.log(bookType);
 
   const deleteFilter = () => {
     const newParams = new URLSearchParams();

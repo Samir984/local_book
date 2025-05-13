@@ -1,6 +1,7 @@
 export type { CoreApiCheckUsernameQueryKey } from './useCoreApiCheckUsername.ts'
 export type { CoreApiCheckUsernameSuspenseQueryKey } from './useCoreApiCheckUsernameSuspense.ts'
 export type { CoreApiCreateBookMutationKey } from './useCoreApiCreateBook.ts'
+export type { CoreApiDeleteBookMutationKey } from './useCoreApiDeleteBook.ts'
 export type { CoreApiDeleteFileMutationKey } from './useCoreApiDeleteFile.ts'
 export type { CoreApiGetBookQueryKey } from './useCoreApiGetBook.ts'
 export type { CoreApiGetBookSuspenseQueryKey } from './useCoreApiGetBookSuspense.ts'
@@ -16,6 +17,7 @@ export type { CoreApiListUserBooksSuspenseQueryKey } from './useCoreApiListUserB
 export type { CoreApiLoginUserMutationKey } from './useCoreApiLoginUser.ts'
 export type { CoreApiLogoutUserQueryKey } from './useCoreApiLogoutUser.ts'
 export type { CoreApiLogoutUserSuspenseQueryKey } from './useCoreApiLogoutUserSuspense.ts'
+export type { CoreApiPartialUpdateBookMutationKey } from './useCoreApiPartialUpdateBook.ts'
 export type { CoreApiRegisterUserMutationKey } from './useCoreApiRegisterUser.ts'
 export { coreApiCheckUsernameQueryKey, coreApiCheckUsername, coreApiCheckUsernameQueryOptions, useCoreApiCheckUsername } from './useCoreApiCheckUsername.ts'
 export {
@@ -25,6 +27,7 @@ export {
   useCoreApiCheckUsernameSuspense,
 } from './useCoreApiCheckUsernameSuspense.ts'
 export { coreApiCreateBookMutationKey, coreApiCreateBook, useCoreApiCreateBook } from './useCoreApiCreateBook.ts'
+export { coreApiDeleteBookMutationKey, coreApiDeleteBook, useCoreApiDeleteBook } from './useCoreApiDeleteBook.ts'
 export { coreApiDeleteFileMutationKey, coreApiDeleteFile, useCoreApiDeleteFile } from './useCoreApiDeleteFile.ts'
 export { coreApiGetBookQueryKey, coreApiGetBook, coreApiGetBookQueryOptions, useCoreApiGetBook } from './useCoreApiGetBook.ts'
 export {
@@ -70,4 +73,5 @@ export {
   coreApiLogoutUserSuspenseQueryOptions,
   useCoreApiLogoutUserSuspense,
 } from './useCoreApiLogoutUserSuspense.ts'
+export { coreApiPartialUpdateBookMutationKey, coreApiPartialUpdateBook, useCoreApiPartialUpdateBook } from './useCoreApiPartialUpdateBook.ts'
 export { coreApiRegisterUserMutationKey, coreApiRegisterUser, useCoreApiRegisterUser } from './useCoreApiRegisterUser.ts'

@@ -3,15 +3,7 @@
  * Do not edit manually.
  */
 
-import type { GenericSchema } from './GenericSchema.ts'
 import type { PagedPrivateBookScehma } from './PagedPrivateBookScehma.ts'
-
-export type CoreApiListUserBooksPathParams = {
-  /**
-   * @type integer
-   */
-  user_id: number
-}
 
 export type CoreApiListUserBooksQueryParams = {
   /**
@@ -33,16 +25,10 @@ export type CoreApiListUserBooksQueryParams = {
  */
 export type CoreApiListUserBooks200 = PagedPrivateBookScehma
 
-/**
- * @description Not Found
- */
-export type CoreApiListUserBooks404 = GenericSchema
-
 export type CoreApiListUserBooksQueryResponse = CoreApiListUserBooks200
 
 export type CoreApiListUserBooksQuery = {
   Response: CoreApiListUserBooks200
-  PathParams: CoreApiListUserBooksPathParams
   QueryParams: CoreApiListUserBooksQueryParams
-  Errors: CoreApiListUserBooks404
+  Errors: any
 }

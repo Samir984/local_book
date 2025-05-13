@@ -4,6 +4,7 @@
  */
 
 export type PrivateBookScehma = {
+  id?: number | null
   /**
    * @maxLength 100
    * @type string

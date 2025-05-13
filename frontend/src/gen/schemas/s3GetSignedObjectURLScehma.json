@@ -1,1 +1,0 @@
-{"properties":{"url":{"title":"Url","type":"string"}},"required":["url"],"title":"S3GetSignedObjectURLScehma","type":"object","x-readme-ref-name":"S3GetSignedObjectURLScehma"}

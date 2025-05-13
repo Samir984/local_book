@@ -11,6 +11,7 @@ import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GeoLocationProvider from "./context/GeoLocationProvider";
 import BookDetailsPage from "./page/BookDetailsPage";
+import MyBook from "./page/MyBook";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/books/:bookId",
         element: <BookDetailsPage />,
+      },
+      {
+        path: "/mybooks",
+        element: <MyBook />,
       },
     ],
   },

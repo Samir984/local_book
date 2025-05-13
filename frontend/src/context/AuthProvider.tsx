@@ -59,7 +59,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     isLoading,
   };
 
-  console.log(user);
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );

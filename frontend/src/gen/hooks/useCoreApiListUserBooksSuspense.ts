@@ -4,36 +4,27 @@
  */
 
 import client from '@kubb/plugin-client/clients/axios'
-import type {
-  CoreApiListUserBooksQueryResponse,
-  CoreApiListUserBooksPathParams,
-  CoreApiListUserBooksQueryParams,
-  CoreApiListUserBooks404,
-} from '../types/CoreApiListUserBooks.ts'
+import type { CoreApiListUserBooksQueryResponse, CoreApiListUserBooksQueryParams } from '../types/CoreApiListUserBooks.ts'
 import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/axios'
 import type { QueryKey, QueryClient, UseSuspenseQueryOptions, UseSuspenseQueryResult } from '@tanstack/react-query'
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
 
-export const coreApiListUserBooksSuspenseQueryKey = (user_id: CoreApiListUserBooksPathParams['user_id'], params?: CoreApiListUserBooksQueryParams) =>
-  [{ url: '/api/v1/books/current_user/:user_id/', params: { user_id: user_id } }, ...(params ? [params] : [])] as const
+export const coreApiListUserBooksSuspenseQueryKey = (params?: CoreApiListUserBooksQueryParams) =>
+  [{ url: '/api/v1/books/current-users/' }, ...(params ? [params] : [])] as const
 
 export type CoreApiListUserBooksSuspenseQueryKey = ReturnType<typeof coreApiListUserBooksSuspenseQueryKey>
 
 /**
  * @description Get user book
  * @summary List User Books
- * {@link /api/v1/books/current_user/:user_id/}
+ * {@link /api/v1/books/current-users/}
  */
-export async function coreApiListUserBooksSuspense(
-  user_id: CoreApiListUserBooksPathParams['user_id'],
-  params?: CoreApiListUserBooksQueryParams,
-  config: Partial<RequestConfig> & { client?: typeof client } = {},
-) {
+export async function coreApiListUserBooksSuspense(params?: CoreApiListUserBooksQueryParams, config: Partial<RequestConfig> & { client?: typeof client } = {}) {
   const { client: request = client, ...requestConfig } = config
 
-  const res = await request<CoreApiListUserBooksQueryResponse, ResponseErrorConfig<CoreApiListUserBooks404>, unknown>({
+  const res = await request<CoreApiListUserBooksQueryResponse, ResponseErrorConfig<Error>, unknown>({
     method: 'GET',
-    url: `/api/v1/books/current_user/${user_id}/`,
+    url: `/api/v1/books/current-users/`,
     params,
     ...requestConfig,
   })
@@ -41,17 +32,15 @@ export async function coreApiListUserBooksSuspense(
 }
 
 export function coreApiListUserBooksSuspenseQueryOptions(
-  user_id: CoreApiListUserBooksPathParams['user_id'],
   params?: CoreApiListUserBooksQueryParams,
   config: Partial<RequestConfig> & { client?: typeof client } = {},
 ) {
-  const queryKey = coreApiListUserBooksSuspenseQueryKey(user_id, params)
-  return queryOptions<CoreApiListUserBooksQueryResponse, ResponseErrorConfig<CoreApiListUserBooks404>, CoreApiListUserBooksQueryResponse, typeof queryKey>({
-    enabled: !!user_id,
+  const queryKey = coreApiListUserBooksSuspenseQueryKey(params)
+  return queryOptions<CoreApiListUserBooksQueryResponse, ResponseErrorConfig<Error>, CoreApiListUserBooksQueryResponse, typeof queryKey>({
     queryKey,
     queryFn: async ({ signal }) => {
       config.signal = signal
-      return coreApiListUserBooksSuspense(user_id, params, config)
+      return coreApiListUserBooksSuspense(params, config)
     },
   })
 }
@@ -59,29 +48,26 @@ export function coreApiListUserBooksSuspenseQueryOptions(
 /**
  * @description Get user book
  * @summary List User Books
- * {@link /api/v1/books/current_user/:user_id/}
+ * {@link /api/v1/books/current-users/}
  */
 export function useCoreApiListUserBooksSuspense<TData = CoreApiListUserBooksQueryResponse, TQueryKey extends QueryKey = CoreApiListUserBooksSuspenseQueryKey>(
-  user_id: CoreApiListUserBooksPathParams['user_id'],
   params?: CoreApiListUserBooksQueryParams,
   options: {
-    query?: Partial<UseSuspenseQueryOptions<CoreApiListUserBooksQueryResponse, ResponseErrorConfig<CoreApiListUserBooks404>, TData, TQueryKey>> & {
-      client?: QueryClient
-    }
+    query?: Partial<UseSuspenseQueryOptions<CoreApiListUserBooksQueryResponse, ResponseErrorConfig<Error>, TData, TQueryKey>> & { client?: QueryClient }
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {
   const { query: { client: queryClient, ...queryOptions } = {}, client: config = {} } = options ?? {}
-  const queryKey = queryOptions?.queryKey ?? coreApiListUserBooksSuspenseQueryKey(user_id, params)
+  const queryKey = queryOptions?.queryKey ?? coreApiListUserBooksSuspenseQueryKey(params)
 
   const query = useSuspenseQuery(
     {
-      ...(coreApiListUserBooksSuspenseQueryOptions(user_id, params, config) as unknown as UseSuspenseQueryOptions),
+      ...(coreApiListUserBooksSuspenseQueryOptions(params, config) as unknown as UseSuspenseQueryOptions),
       queryKey,
       ...(queryOptions as unknown as Omit<UseSuspenseQueryOptions, 'queryKey'>),
     },
     queryClient,
-  ) as UseSuspenseQueryResult<TData, ResponseErrorConfig<CoreApiListUserBooks404>> & { queryKey: TQueryKey }
+  ) as UseSuspenseQueryResult<TData, ResponseErrorConfig<Error>> & { queryKey: TQueryKey }
 
   query.queryKey = queryKey as TQueryKey
 

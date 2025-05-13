@@ -1,19 +1,19 @@
 import os
 from datetime import datetime
-from typing import Optional
 
 from botocore.exceptions import ClientError
 from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
-from django.db import connection
+
+# from django.db import connection
 from django.db.models import F
 from django.db.models import Q
 from django.http import HttpRequest
-from django.shortcuts import get_list_or_404
 from django.shortcuts import get_object_or_404
 from ninja import NinjaAPI
+from ninja import PatchDict
 from ninja import Query
 from ninja import Router
 from ninja.pagination import paginate  # type: ignore
@@ -26,6 +26,7 @@ from core.schema import BookFilterScehma
 from core.schema import CreateBookSchema
 from core.schema import GenericSchema
 from core.schema import LoginSchema
+from core.schema import PartialUpdateBookSchema
 from core.schema import PrivateBookScehma
 from core.schema import PublicBookScehma
 from core.schema import RegisterSchema
@@ -37,14 +38,6 @@ from core.utils import BUCKET_NAME
 from core.utils import MAX_UPLOAD_SIZE
 from core.utils import MIME_TYPES
 from core.utils import s3_client
-
-# from core.schema import BookListSchema
-# from core.schema import BookDetailSchema
-# from core.schema import ReportSchema
-# from core.schema import ReportListSchema
-# from core.schema import RatingSchema
-# from core.schema import RatingListSchema
-
 
 user = Router()
 book = Router()
@@ -177,15 +170,17 @@ def get_upload_url(request: HttpRequest, filename: str):
 
 @s3.delete(
     "/delete-file",
-    response={200: S3GetSignedObjectURLScehma, 404: GenericSchema},
+    response={200: GenericSchema, 500: GenericSchema},
 )
 def delete_file(request: HttpRequest, key: str):
     """Deletes a file from S3 based on its key."""
     try:
+        # This return 204 ,even key is not valid.
         s3_client.delete_object(Bucket=BUCKET_NAME, Key=key)
-        return {"detail": "File deleted successfully"}
-    except ClientError as e:
-        return 404, {"detail": str(e)}
+        return 200, {"detail": "File deleted successfully."}
+
+    except Exception as e:
+        return 500, {"detail": "f{e}"}
 
 
 @s3.get(
@@ -321,6 +316,17 @@ def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  #
         return queryset
 
 
+@book.get("/current-users/", response={200: list[PrivateBookScehma]})
+@paginate
+def list_user_books(
+    request: HttpRequest,
+):
+    "Get user book"
+    user = request.user
+    books = Book.objects.filter(user=user).select_related("user")
+    return books
+
+
 @book.get(
     "/{id}/", response={200: BookDetailSchema, 404: GenericSchema}, auth=None
 )
@@ -331,16 +337,49 @@ def get_book(request: HttpRequest, id: int):
     return book
 
 
-@book.get(
-    "/current_user/{user_id}/",
-    response={200: list[PrivateBookScehma], 404: GenericSchema},
+@book.patch(
+    "/{id}/",
+    response={200: GenericSchema, 403: GenericSchema, 404: GenericSchema},
 )
-@paginate
-def list_user_books(request: HttpRequest, user_id: int):
-    "Get user book"
-    user_exists = User.objects.filter(id=user_id).exists()
-    if not user_exists:
-        return 404, {"detail": "User not found."}
+def partial_update_book(
+    request: HttpRequest,
+    id: int,
+    payload: PatchDict[PartialUpdateBookSchema],  # type: ignore
+):
+    """Patch book specified based on id"""
+    user = request.user
+    book = get_object_or_404(Book, id=id)
+    if book.user != user:
+        return 403, {"detail": "Permission denied."}
 
-    book = Book.objects.filter(user_id=user_id).select_related("user")
-    return book
+    for attr, value in payload.items():  # type: ignore
+        setattr(book, attr, value)  # type: ignore
+
+    book.save()
+    return {"detail": "Book updated successfully"}
+
+
+@book.delete(
+    "/{id}/",
+    response={
+        200: GenericSchema,
+        403: GenericSchema,
+        404: GenericSchema,
+        500: GenericSchema,
+    },
+)
+def delete_book(request: HttpRequest, id: int):
+    user = request.user
+    book = get_object_or_404(Book, pk=id)
+    if book.user != user:
+        return 403, {"detail": "Permission denied."}
+
+    try:
+        key = str(book.book_image)
+        s3_client.delete_object(Bucket=BUCKET_NAME, Key=key)
+    except Exception as e:
+        print(e)
+        return 500, {"detail": "Failed to delete image."}
+
+    book.delete()
+    return 200, {"detail": "Book successfully deleted."}

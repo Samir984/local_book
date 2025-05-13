@@ -87,6 +87,7 @@ class PrivateBookScehma(ModelSchema):
     class Meta:
         model = Book
         fields = [
+            "id",
             "name",
             "book_image",
             "condition",
@@ -97,6 +98,28 @@ class PrivateBookScehma(ModelSchema):
             "is_rejected",
             "is_sold",
         ]
+
+
+class PartialUpdateBookSchema(Schema):
+    name: Optional[str] = None
+    category: Optional[
+        Literal[
+            BookCategoryChoices.TEXTBOOK,
+            BookCategoryChoices.SOLUTION,
+            BookCategoryChoices.REFERENCE,
+            BookCategoryChoices.GUIDEBOOK,
+            BookCategoryChoices.OTHER,
+        ]
+    ] = None
+    condition: Optional[
+        Literal[
+            BookConditionChoices.LIKE_NEW,
+            BookConditionChoices.GOOD,
+            BookConditionChoices.MODERATE,
+            BookConditionChoices.POOR,
+        ]
+    ] = None
+    price: Optional[Decimal] = None
 
 
 class CreateBookSchema(Schema):

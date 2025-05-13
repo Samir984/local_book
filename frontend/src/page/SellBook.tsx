@@ -268,7 +268,7 @@ function SellBook() {
                         <Input
                           type="file"
                           id="book_image"
-                          accept="image/png, image/jpeg, "
+                          accept="image/png, image/jpeg, image/jpg "
                           className="absolute w-full h-full opacity-0 z-50 cursor-pointer"
                           onChange={(e) => {
                             handleImageChange(e);
