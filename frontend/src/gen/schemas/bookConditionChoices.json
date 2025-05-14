@@ -1,0 +1,1 @@
+{"enum":["LIKE NEW","GOOD","MODERATE","POOR"],"title":"BookConditionChoices","type":"string","x-readme-ref-name":"BookConditionChoices"}

@@ -78,7 +78,7 @@ const BookActions: React.FC<BookActionsProps> = ({ book, refetch }) => {
               async function deleteBook() {
                 await coreApiDeleteBook(book.id as number, {
                   headers: {
-                    "X-CSRFToken": Cookies.get("csrftoken")!,
+                    "X-CSRFToken": Cookies.get("csrftoken"),
                   },
                 });
                 toast.success("Book deleteSuccessfully by successfull");

@@ -1,9 +1,12 @@
 export type { CoreApiCheckUsernameQueryKey } from './hooks/useCoreApiCheckUsername.ts'
 export type { CoreApiCheckUsernameSuspenseQueryKey } from './hooks/useCoreApiCheckUsernameSuspense.ts'
 export type { CoreApiCreateBookMutationKey } from './hooks/useCoreApiCreateBook.ts'
+export type { CoreApiCreateBookmarkMutationKey } from './hooks/useCoreApiCreateBookmark.ts'
 export type { CoreApiDeleteBookMutationKey } from './hooks/useCoreApiDeleteBook.ts'
 export type { CoreApiDeleteFileMutationKey } from './hooks/useCoreApiDeleteFile.ts'
 export type { CoreApiGetBookQueryKey } from './hooks/useCoreApiGetBook.ts'
+export type { CoreApiGetBookmarkQueryKey } from './hooks/useCoreApiGetBookmark.ts'
+export type { CoreApiGetBookmarkSuspenseQueryKey } from './hooks/useCoreApiGetBookmarkSuspense.ts'
 export type { CoreApiGetBookSuspenseQueryKey } from './hooks/useCoreApiGetBookSuspense.ts'
 export type { CoreApiGetFileUrlQueryKey } from './hooks/useCoreApiGetFileUrl.ts'
 export type { CoreApiGetFileUrlSuspenseQueryKey } from './hooks/useCoreApiGetFileUrlSuspense.ts'
@@ -19,8 +22,14 @@ export type { CoreApiLogoutUserQueryKey } from './hooks/useCoreApiLogoutUser.ts'
 export type { CoreApiLogoutUserSuspenseQueryKey } from './hooks/useCoreApiLogoutUserSuspense.ts'
 export type { CoreApiPartialUpdateBookMutationKey } from './hooks/useCoreApiPartialUpdateBook.ts'
 export type { CoreApiRegisterUserMutationKey } from './hooks/useCoreApiRegisterUser.ts'
+export type { CoreApiRemoveBookmarkItemMutationKey } from './hooks/useCoreApiRemoveBookmarkItem.ts'
+export type { BookCategoryChoicesEnum, BookCategoryChoices } from './types/BookCategoryChoices.ts'
+export type { BookConditionChoicesEnum, BookConditionChoices } from './types/BookConditionChoices.ts'
 export type { BookDetailSchema } from './types/BookDetailSchema.ts'
-export type { BookFilterScehmaCategoryEnum, BookFilterScehmaConditionEnum, BookFilterScehma } from './types/BookFilterScehma.ts'
+export type { BookFilterScehma } from './types/BookFilterScehma.ts'
+export type { BookMarkBookScehma } from './types/BookMarkBookScehma.ts'
+export type { BookMarkItemSchema } from './types/BookMarkItemSchema.ts'
+export type { BookMarkScehma } from './types/BookMarkScehma.ts'
 export type {
   CoreApiCheckUsernameQueryParams,
   CoreApiCheckUsername200,
@@ -36,8 +45,15 @@ export type {
   CoreApiCreateBookMutation,
 } from './types/CoreApiCreateBook.ts'
 export type {
+  CoreApiCreateBookmark201,
+  CoreApiCreateBookmark400,
+  CoreApiCreateBookmarkMutationRequest,
+  CoreApiCreateBookmarkMutationResponse,
+  CoreApiCreateBookmarkMutation,
+} from './types/CoreApiCreateBookmark.ts'
+export type {
   CoreApiDeleteBookPathParams,
-  CoreApiDeleteBook204,
+  CoreApiDeleteBook200,
   CoreApiDeleteBook403,
   CoreApiDeleteBook404,
   CoreApiDeleteBook500,
@@ -58,6 +74,7 @@ export type {
   CoreApiGetBookQueryResponse,
   CoreApiGetBookQuery,
 } from './types/CoreApiGetBook.ts'
+export type { CoreApiGetBookmark200, CoreApiGetBookmark404, CoreApiGetBookmarkQueryResponse, CoreApiGetBookmarkQuery } from './types/CoreApiGetBookmark.ts'
 export type {
   CoreApiGetFileUrlQueryParams,
   CoreApiGetFileUrl200,
@@ -74,14 +91,7 @@ export type {
   CoreApiGetUploadUrlMutation,
 } from './types/CoreApiGetUploadUrl.ts'
 export type { CoreApiGetUser200, CoreApiGetUser401, CoreApiGetUserQueryResponse, CoreApiGetUserQuery } from './types/CoreApiGetUser.ts'
-export type {
-  CoreApiListBooksQueryParamsCategoryEnum,
-  CoreApiListBooksQueryParamsConditionEnum,
-  CoreApiListBooksQueryParams,
-  CoreApiListBooks200,
-  CoreApiListBooksQueryResponse,
-  CoreApiListBooksQuery,
-} from './types/CoreApiListBooks.ts'
+export type { CoreApiListBooksQueryParams, CoreApiListBooks200, CoreApiListBooksQueryResponse, CoreApiListBooksQuery } from './types/CoreApiListBooks.ts'
 export type {
   CoreApiListUserBooksQueryParams,
   CoreApiListUserBooks200,
@@ -112,20 +122,26 @@ export type {
   CoreApiRegisterUserMutationResponse,
   CoreApiRegisterUserMutation,
 } from './types/CoreApiRegisterUser.ts'
-export type { CreateBookSchemaCategoryEnum, CreateBookSchemaConditionEnum, CreateBookSchema } from './types/CreateBookSchema.ts'
+export type {
+  CoreApiRemoveBookmarkItem200,
+  CoreApiRemoveBookmarkItem404,
+  CoreApiRemoveBookmarkItemMutationRequest,
+  CoreApiRemoveBookmarkItemMutationResponse,
+  CoreApiRemoveBookmarkItemMutation,
+} from './types/CoreApiRemoveBookmarkItem.ts'
+export type { CreateBookMarkSchema } from './types/CreateBookMarkSchema.ts'
+export type { CreateBookSchema } from './types/CreateBookSchema.ts'
 export type { GenericSchema } from './types/GenericSchema.ts'
 export type { Input } from './types/Input.ts'
 export type { LoginSchema } from './types/LoginSchema.ts'
 export type { PagedPrivateBookScehma } from './types/PagedPrivateBookScehma.ts'
 export type { PagedPublicBookScehma } from './types/PagedPublicBookScehma.ts'
-export type {
-  PartialUpdateBookSchemaPatchCategoryEnum,
-  PartialUpdateBookSchemaPatchConditionEnum,
-  PartialUpdateBookSchemaPatch,
-} from './types/PartialUpdateBookSchemaPatch.ts'
+export type { PartialUpdateBookSchemaPatch } from './types/PartialUpdateBookSchemaPatch.ts'
 export type { PrivateBookScehma } from './types/PrivateBookScehma.ts'
 export type { PublicBookScehma } from './types/PublicBookScehma.ts'
 export type { RegisterSchema } from './types/RegisterSchema.ts'
+export type { RemoveBookMarkItemScehma } from './types/RemoveBookMarkItemScehma.ts'
+export type { S3GetSignedObjectURLScehma } from './types/S3GetSignedObjectURLScehma.ts'
 export type { S3UploadURLResponseScehma } from './types/S3UploadURLResponseScehma.ts'
 export type { UserSchema } from './types/UserSchema.ts'
 export {
@@ -141,9 +157,17 @@ export {
   useCoreApiCheckUsernameSuspense,
 } from './hooks/useCoreApiCheckUsernameSuspense.ts'
 export { coreApiCreateBookMutationKey, coreApiCreateBook, useCoreApiCreateBook } from './hooks/useCoreApiCreateBook.ts'
+export { coreApiCreateBookmarkMutationKey, coreApiCreateBookmark, useCoreApiCreateBookmark } from './hooks/useCoreApiCreateBookmark.ts'
 export { coreApiDeleteBookMutationKey, coreApiDeleteBook, useCoreApiDeleteBook } from './hooks/useCoreApiDeleteBook.ts'
 export { coreApiDeleteFileMutationKey, coreApiDeleteFile, useCoreApiDeleteFile } from './hooks/useCoreApiDeleteFile.ts'
 export { coreApiGetBookQueryKey, coreApiGetBook, coreApiGetBookQueryOptions, useCoreApiGetBook } from './hooks/useCoreApiGetBook.ts'
+export { coreApiGetBookmarkQueryKey, coreApiGetBookmark, coreApiGetBookmarkQueryOptions, useCoreApiGetBookmark } from './hooks/useCoreApiGetBookmark.ts'
+export {
+  coreApiGetBookmarkSuspenseQueryKey,
+  coreApiGetBookmarkSuspense,
+  coreApiGetBookmarkSuspenseQueryOptions,
+  useCoreApiGetBookmarkSuspense,
+} from './hooks/useCoreApiGetBookmarkSuspense.ts'
 export {
   coreApiGetBookSuspenseQueryKey,
   coreApiGetBookSuspense,
@@ -194,7 +218,6 @@ export {
 } from './hooks/useCoreApiLogoutUserSuspense.ts'
 export { coreApiPartialUpdateBookMutationKey, coreApiPartialUpdateBook, useCoreApiPartialUpdateBook } from './hooks/useCoreApiPartialUpdateBook.ts'
 export { coreApiRegisterUserMutationKey, coreApiRegisterUser, useCoreApiRegisterUser } from './hooks/useCoreApiRegisterUser.ts'
-export { bookFilterScehmaCategoryEnum, bookFilterScehmaConditionEnum } from './types/BookFilterScehma.ts'
-export { coreApiListBooksQueryParamsCategoryEnum, coreApiListBooksQueryParamsConditionEnum } from './types/CoreApiListBooks.ts'
-export { createBookSchemaCategoryEnum, createBookSchemaConditionEnum } from './types/CreateBookSchema.ts'
-export { partialUpdateBookSchemaPatchCategoryEnum, partialUpdateBookSchemaPatchConditionEnum } from './types/PartialUpdateBookSchemaPatch.ts'
+export { coreApiRemoveBookmarkItemMutationKey, coreApiRemoveBookmarkItem, useCoreApiRemoveBookmarkItem } from './hooks/useCoreApiRemoveBookmarkItem.ts'
+export { bookCategoryChoicesEnum } from './types/BookCategoryChoices.ts'
+export { bookConditionChoicesEnum } from './types/BookConditionChoices.ts'

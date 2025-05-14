@@ -3,29 +3,12 @@
  * Do not edit manually.
  */
 
-export const partialUpdateBookSchemaPatchCategoryEnum = {
-  TEXTBOOK: 'TEXTBOOK',
-  SOLUTION: 'SOLUTION',
-  REFERENCE: 'REFERENCE',
-  GUIDEBOOK: 'GUIDEBOOK',
-  OTHER: 'OTHER',
-} as const
-
-export type PartialUpdateBookSchemaPatchCategoryEnum = (typeof partialUpdateBookSchemaPatchCategoryEnum)[keyof typeof partialUpdateBookSchemaPatchCategoryEnum]
-
-export const partialUpdateBookSchemaPatchConditionEnum = {
-  'LIKE NEW': 'LIKE NEW',
-  GOOD: 'GOOD',
-  MODERATE: 'MODERATE',
-  POOR: 'POOR',
-} as const
-
-export type PartialUpdateBookSchemaPatchConditionEnum =
-  (typeof partialUpdateBookSchemaPatchConditionEnum)[keyof typeof partialUpdateBookSchemaPatchConditionEnum]
+import type { BookCategoryChoices } from './BookCategoryChoices.ts'
+import type { BookConditionChoices } from './BookConditionChoices.ts'
 
 export type PartialUpdateBookSchemaPatch = {
   name?: string | null
-  category?: PartialUpdateBookSchemaPatchCategoryEnum | null
-  condition?: PartialUpdateBookSchemaPatchConditionEnum | null
+  category?: BookCategoryChoices | null
+  condition?: BookConditionChoices | null
   price?: number | string | null
 }

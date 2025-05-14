@@ -1,4 +1,5 @@
 import os
+import time
 from datetime import datetime
 
 from botocore.exceptions import ClientError
@@ -6,9 +7,11 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
+from django.db import connection
 
 # from django.db import connection
 from django.db.models import F
+from django.db.models import Prefetch
 from django.db.models import Q
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
@@ -20,9 +23,14 @@ from ninja.pagination import paginate  # type: ignore
 from ninja.security import SessionAuth
 
 from core.models import Book
+from core.models import BookMark
+from core.models import BookMarkItem
 from core.models import User
 from core.schema import BookDetailSchema
 from core.schema import BookFilterScehma
+from core.schema import BookMarkScehma
+from core.schema import CreateBookMarkSchema  # Ensure this import exists
+from core.schema import RemoveBookMarkItemScehma
 from core.schema import CreateBookSchema
 from core.schema import GenericSchema
 from core.schema import LoginSchema
@@ -42,7 +50,7 @@ from core.utils import s3_client
 user = Router()
 book = Router()
 report = Router()
-rating = Router()
+bookmark = Router()
 s3 = Router()
 
 session_auth = SessionAuth()
@@ -56,7 +64,7 @@ api = NinjaAPI(
 api.add_router("/users/", user, tags=["Users"])
 api.add_router("/books/", book, tags=["books"])
 api.add_router("/reports/", report, tags=["reports"])
-api.add_router("/ratings/", rating, tags=["ratings"])
+api.add_router("/bookmarks/", bookmark, tags=["bookmarks"])
 api.add_router("/s3/", s3, tags=["s3"])
 
 
@@ -184,7 +192,9 @@ def delete_file(request: HttpRequest, key: str):
 
 
 @s3.get(
-    "/get-image", response={200: GenericSchema, 404: GenericSchema}, auth=None
+    "/get-image",
+    response={200: S3GetSignedObjectURLScehma, 404: GenericSchema},
+    auth=None,
 )
 def get_file_url(request: HttpRequest, key: str):
     """Generate s3 presigned url  based on its key"""
@@ -285,7 +295,7 @@ def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  #
         )
 
         results: list[PublicBookScehma] = []
-        #   this loop is for deserializing the distance objecct to string so that it can deserialized.
+        #   this loop is for converting the distance objecct to string so that it can deserialized.
         for book in queryset:
             results.append(
                 PublicBookScehma(
@@ -369,6 +379,7 @@ def partial_update_book(
     },
 )
 def delete_book(request: HttpRequest, id: int):
+    """Delete the book."""
     user = request.user
     book = get_object_or_404(Book, pk=id)
     if book.user != user:
@@ -383,3 +394,57 @@ def delete_book(request: HttpRequest, id: int):
 
     book.delete()
     return 200, {"detail": "Book successfully deleted."}
+
+
+@bookmark.post("/", response={201: GenericSchema, 400: GenericSchema})
+def create_bookmark(request: HttpRequest, data: CreateBookMarkSchema):
+    """Create book schema"""
+    user = request.user
+
+    book_exists = Book.objects.filter(id=data.book_id).exists()
+    if not book_exists:
+        return 400, {"detail": "Book does not exist."}
+    # create bookmark if don't exists
+    bookmark, created = BookMark.objects.get_or_create(user=user)
+
+    if BookMarkItem.objects.filter(
+        bookmark=bookmark, book_id=data.book_id
+    ).exists():
+        return 400, {"detail": "Book is already in your bookmark."}
+
+    BookMarkItem.objects.create(bookmark=bookmark, book_id=data.book_id)
+    return 201, {"detail": "Book added to bookmark successfully."}
+
+
+@bookmark.get("/", response={200: BookMarkScehma, 404: GenericSchema})
+def get_bookmark(request: HttpRequest):
+    """Get bookmark"""
+    user = request.user
+
+    bookmark = (
+        BookMark.objects.filter(user=user)
+        .prefetch_related(
+            Prefetch(
+                "items",
+                queryset=BookMarkItem.objects.select_related("book"),
+            )
+        )
+        .first()
+    )
+    # print(connection.queries)
+    return bookmark
+
+
+@bookmark.delete("/", response={200: GenericSchema, 404: GenericSchema})
+def remove_bookmark_item(request: HttpRequest, data: RemoveBookMarkItemScehma):
+    """Remove bookmark items"""
+    user = request.user
+    bookmark = get_object_or_404(BookMark, user=user)
+    print(bookmark, data)
+    bookmark_item = get_object_or_404(
+        BookMarkItem.objects.filter(bookmark=bookmark),
+        pk=data.bookmark_item_id,
+    )
+    print(bookmark_item, "isafas\n")
+    bookmark_item.delete()
+    return 200, {"detail": "Bookmark item delete successfull."}

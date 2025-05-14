@@ -26,8 +26,8 @@ import {
 } from "@/components/ui/form";
 import { toast } from "sonner";
 import {
-  createBookSchemaCategoryEnum,
-  createBookSchemaConditionEnum,
+  bookCategoryChoicesEnum,
+  bookConditionChoicesEnum,
   useCoreApiCreateBook,
 } from "@/gen";
 
@@ -52,11 +52,11 @@ const CreateBookSchema = z.object({
   book_image: z.string(),
   name: z.string().min(1, { message: "Book name is required" }),
   category: z.enum([
-    createBookSchemaCategoryEnum.TEXTBOOK,
-    createBookSchemaCategoryEnum.SOLUTION,
-    createBookSchemaCategoryEnum.REFERENCE,
-    createBookSchemaCategoryEnum.GUIDEBOOK,
-    createBookSchemaCategoryEnum.OTHER,
+    bookCategoryChoicesEnum.TEXTBOOK,
+    bookCategoryChoicesEnum.SOLUTION,
+    bookCategoryChoicesEnum.REFERENCE,
+    bookCategoryChoicesEnum.GUIDEBOOK,
+    bookCategoryChoicesEnum.OTHER,
   ]),
   publication: z.string().optional(),
   edition: z.number().optional(),
@@ -66,10 +66,10 @@ const CreateBookSchema = z.object({
   is_bachlore_book: z.boolean().optional(),
   description: z.string().min(1, { message: "Description is required" }),
   condition: z.enum([
-    createBookSchemaConditionEnum["LIKE NEW"],
-    createBookSchemaConditionEnum.GOOD,
-    createBookSchemaConditionEnum.MODERATE,
-    createBookSchemaConditionEnum.POOR,
+    bookConditionChoicesEnum["LIKE NEW"],
+    bookConditionChoicesEnum.GOOD,
+    bookConditionChoicesEnum.MODERATE,
+    bookConditionChoicesEnum.POOR,
   ]),
   price: z.number().min(0, "Price cannot be negative."),
 });

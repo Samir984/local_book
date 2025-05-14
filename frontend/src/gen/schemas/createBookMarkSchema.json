@@ -1,0 +1,1 @@
+{"properties":{"book_id":{"title":"Book Id","type":"integer"}},"required":["book_id"],"title":"CreateBookMarkSchema","type":"object","x-readme-ref-name":"CreateBookMarkSchema"}

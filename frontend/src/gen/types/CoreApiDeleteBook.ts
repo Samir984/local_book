@@ -13,9 +13,9 @@ export type CoreApiDeleteBookPathParams = {
 }
 
 /**
- * @description No Content
+ * @description OK
  */
-export type CoreApiDeleteBook204 = GenericSchema
+export type CoreApiDeleteBook200 = GenericSchema
 
 /**
  * @description Forbidden
@@ -32,10 +32,10 @@ export type CoreApiDeleteBook404 = GenericSchema
  */
 export type CoreApiDeleteBook500 = GenericSchema
 
-export type CoreApiDeleteBookMutationResponse = CoreApiDeleteBook204
+export type CoreApiDeleteBookMutationResponse = CoreApiDeleteBook200
 
 export type CoreApiDeleteBookMutation = {
-  Response: CoreApiDeleteBook204
+  Response: CoreApiDeleteBook200
   PathParams: CoreApiDeleteBookPathParams
   Errors: CoreApiDeleteBook403 | CoreApiDeleteBook404 | CoreApiDeleteBook500
 }

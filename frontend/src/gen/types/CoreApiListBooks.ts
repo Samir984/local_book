@@ -3,32 +3,15 @@
  * Do not edit manually.
  */
 
+import type { BookCategoryChoices } from './BookCategoryChoices.ts'
+import type { BookConditionChoices } from './BookConditionChoices.ts'
 import type { PagedPublicBookScehma } from './PagedPublicBookScehma.ts'
-
-export const coreApiListBooksQueryParamsCategoryEnum = {
-  TEXTBOOK: 'TEXTBOOK',
-  SOLUTION: 'SOLUTION',
-  REFERENCE: 'REFERENCE',
-  GUIDEBOOK: 'GUIDEBOOK',
-  OTHER: 'OTHER',
-} as const
-
-export type CoreApiListBooksQueryParamsCategoryEnum = (typeof coreApiListBooksQueryParamsCategoryEnum)[keyof typeof coreApiListBooksQueryParamsCategoryEnum]
-
-export const coreApiListBooksQueryParamsConditionEnum = {
-  'LIKE NEW': 'LIKE NEW',
-  GOOD: 'GOOD',
-  MODERATE: 'MODERATE',
-  POOR: 'POOR',
-} as const
-
-export type CoreApiListBooksQueryParamsConditionEnum = (typeof coreApiListBooksQueryParamsConditionEnum)[keyof typeof coreApiListBooksQueryParamsConditionEnum]
 
 export type CoreApiListBooksQueryParams = {
   name?: string | null
   publication?: string | null
-  category?: CoreApiListBooksQueryParamsCategoryEnum | null
-  condition?: CoreApiListBooksQueryParamsConditionEnum | null
+  category?: BookCategoryChoices | null
+  condition?: BookConditionChoices | null
   is_school_book?: boolean | null
   is_college_book?: boolean | null
   is_bachlore_book?: boolean | null

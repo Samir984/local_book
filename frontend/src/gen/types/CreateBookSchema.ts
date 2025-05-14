@@ -3,24 +3,8 @@
  * Do not edit manually.
  */
 
-export const createBookSchemaCategoryEnum = {
-  TEXTBOOK: 'TEXTBOOK',
-  SOLUTION: 'SOLUTION',
-  REFERENCE: 'REFERENCE',
-  GUIDEBOOK: 'GUIDEBOOK',
-  OTHER: 'OTHER',
-} as const
-
-export type CreateBookSchemaCategoryEnum = (typeof createBookSchemaCategoryEnum)[keyof typeof createBookSchemaCategoryEnum]
-
-export const createBookSchemaConditionEnum = {
-  'LIKE NEW': 'LIKE NEW',
-  GOOD: 'GOOD',
-  MODERATE: 'MODERATE',
-  POOR: 'POOR',
-} as const
-
-export type CreateBookSchemaConditionEnum = (typeof createBookSchemaConditionEnum)[keyof typeof createBookSchemaConditionEnum]
+import type { BookCategoryChoices } from './BookCategoryChoices.ts'
+import type { BookConditionChoices } from './BookConditionChoices.ts'
 
 export type CreateBookSchema = {
   /**
@@ -34,7 +18,7 @@ export type CreateBookSchema = {
   /**
    * @type string
    */
-  category: CreateBookSchemaCategoryEnum
+  category: BookCategoryChoices
   publication?: string | null
   /**
    * @minLength 0
@@ -65,7 +49,7 @@ export type CreateBookSchema = {
   /**
    * @type string
    */
-  condition: CreateBookSchemaConditionEnum
+  condition: BookConditionChoices
   /**
    * @default "0.00"
    */

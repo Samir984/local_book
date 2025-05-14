@@ -1,0 +1,1 @@
+{"properties":{"bookmark_item_id":{"title":"Bookmark Item Id","type":"integer"}},"required":["bookmark_item_id"],"title":"RemoveBookMarkItemScehma","type":"object","x-readme-ref-name":"RemoveBookMarkItemScehma"}

@@ -20,6 +20,7 @@ export const coreApiDeleteBookMutationKey = () => [{ url: '/api/v1/books/{id}/' 
 export type CoreApiDeleteBookMutationKey = ReturnType<typeof coreApiDeleteBookMutationKey>
 
 /**
+ * @description Delete the book.
  * @summary Delete Book
  * {@link /api/v1/books/:id/}
  */
@@ -35,6 +36,7 @@ export async function coreApiDeleteBook(id: CoreApiDeleteBookPathParams['id'], c
 }
 
 /**
+ * @description Delete the book.
  * @summary Delete Book
  * {@link /api/v1/books/:id/}
  */

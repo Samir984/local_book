@@ -4,6 +4,7 @@
  */
 
 import type { GenericSchema } from './GenericSchema.ts'
+import type { S3GetSignedObjectURLScehma } from './S3GetSignedObjectURLScehma.ts'
 
 export type CoreApiGetFileUrlQueryParams = {
   /**
@@ -15,7 +16,7 @@ export type CoreApiGetFileUrlQueryParams = {
 /**
  * @description OK
  */
-export type CoreApiGetFileUrl200 = GenericSchema
+export type CoreApiGetFileUrl200 = S3GetSignedObjectURLScehma
 
 /**
  * @description Not Found
