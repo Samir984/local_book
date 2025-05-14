@@ -106,7 +106,7 @@ class BookMark(models.Model):
 
 class BookMarkItem(models.Model):
     bookmark = models.ForeignKey(
-        BookMark, on_delete=models.CASCADE, related_name="bookmark_items"
+        BookMark, on_delete=models.CASCADE, related_name="items"
     )
     book = models.ForeignKey(
         Book, on_delete=models.CASCADE, related_name="bookmark_items"
