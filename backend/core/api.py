@@ -10,7 +10,10 @@ from django.contrib.gis.geos import Point
 from django.db import connection
 
 # from django.db import connection
+from django.db.models import BooleanField
+from django.db.models import Exists
 from django.db.models import F
+from django.db.models import OuterRef
 from django.db.models import Prefetch
 from django.db.models import Q
 from django.http import HttpRequest
@@ -30,7 +33,6 @@ from core.schema import BookDetailSchema
 from core.schema import BookFilterScehma
 from core.schema import BookMarkScehma
 from core.schema import CreateBookMarkSchema  # Ensure this import exists
-from core.schema import RemoveBookMarkItemScehma
 from core.schema import CreateBookSchema
 from core.schema import GenericSchema
 from core.schema import LoginSchema
@@ -38,6 +40,7 @@ from core.schema import PartialUpdateBookSchema
 from core.schema import PrivateBookScehma
 from core.schema import PublicBookScehma
 from core.schema import RegisterSchema
+from core.schema import RemoveBookMarkItemScehma
 from core.schema import S3GetSignedObjectURLScehma
 from core.schema import S3UploadURLResponseScehma
 from core.schema import UserSchema
@@ -253,12 +256,18 @@ def create_book(request: HttpRequest, data: CreateBookSchema):
         }
 
 
+from django.db.models import Count
+
+
 @book.get("/", response={200: list[PublicBookScehma]}, auth=None)
 @paginate
 def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  # type: ignore
     "List books based on provided filters."
+    user = request.user
 
-    queryset = Book.objects.all()
+    queryset = Book.objects.filter(
+        # is_sold=True, is_reviewed=True ,is_accepted=True
+    )
 
     filter_conditions = Q()
     if filters.name:
@@ -281,21 +290,29 @@ def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  #
     if filters.is_bachlore_book is not None:
         queryset = queryset.filter(is_bachlore_book=filters.is_bachlore_book)
 
+    if user.is_authenticated:
+        queryset = queryset.annotate(
+            is_bookmarked=Exists(
+                BookMarkItem.objects.filter(
+                    bookmark__user=user, book=OuterRef("pk")
+                )
+            )
+        )
+    queryset = queryset.annotate(
+        owner_first_name=F("user__first_name"),
+        owner_last_name=F("user__last_name"),
+        owner_location=F("user__location"),
+    )
     if filters.latitude and filters.longitude:
         user_location = Point(filters.longitude, filters.latitude, srid=4326)
         queryset = (
             queryset.filter(filter_conditions)
-            .annotate(
-                distance=Distance("location", user_location),
-                owner_first_name=F("user__first_name"),
-                owner_last_name=F("user__last_name"),
-                owner_location=F("user__location"),
-            )
+            .annotate(distance=Distance("location", user_location))
             .order_by("distance")
         )
 
         results: list[PublicBookScehma] = []
-        #   this loop is for converting the distance objecct to string so that it can deserialized.
+        #   this loop is for converting the distance object to string so that it can deserialized.(temp solution)
         for book in queryset:
             results.append(
                 PublicBookScehma(
@@ -313,15 +330,12 @@ def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  #
                     is_college_book=book.is_college_book,  # type: ignore
                     is_bachlore_book=book.is_bachlore_book,  # type: ignore
                     grade=book.grade,  # type: ignore
+                    is_bookmarked=book.is_bookmarked,  # type: ignore
                 )
             )
         return results
     else:
-        queryset = queryset.filter(filter_conditions).annotate(
-            owner_first_name=F("user__first_name"),
-            owner_last_name=F("user__last_name"),
-            owner_location=F("user__location"),
-        )
+        queryset = queryset.filter(filter_conditions)
 
         return queryset
 
@@ -333,8 +347,9 @@ def list_user_books(
 ):
     "Get user book"
     user = request.user
-    books = Book.objects.filter(user=user).select_related("user")
-    return books
+    queryset = Book.objects.filter(user=user).select_related("user")
+
+    return queryset
 
 
 @book.get(
@@ -342,8 +357,16 @@ def list_user_books(
 )
 def get_book(request: HttpRequest, id: int):
     "Get book details"
-    book = get_object_or_404(Book.objects.select_related("user"), pk=id)
-    # print(connection.queries)
+    queryset = Book.objects.select_related("user")
+    if request.user.is_authenticated:
+        queryset = queryset.annotate(
+            is_bookmarked=Exists(
+                BookMarkItem.objects.filter(
+                    bookmark__user=request.user, book=OuterRef("pk")
+                )
+            )
+        )
+    book = get_object_or_404(queryset, pk=id)
     return book
 
 
@@ -443,8 +466,8 @@ def remove_bookmark_item(request: HttpRequest, data: RemoveBookMarkItemScehma):
     print(bookmark, data)
     bookmark_item = get_object_or_404(
         BookMarkItem.objects.filter(bookmark=bookmark),
-        pk=data.bookmark_item_id,
+        book_id=data.book_id,
     )
-    print(bookmark_item, "isafas\n")
+    print(bookmark_item, "item\n")
     bookmark_item.delete()
     return 200, {"detail": "Bookmark item delete successfull."}

@@ -1,12 +1,19 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useCoreApiGetBook } from "@/gen";
 
 import {
-  Loader,
-  Loader2,
-  Loader2Icon,
+  RemoveBookMarkItemScehma,
+  useCoreApiCreateBookmark,
+  useCoreApiGetBook,
+  useCoreApiRemoveBookmarkItem,
+} from "@/gen";
+import { useQueryClient } from "@tanstack/react-query";
+import Cookies from "js-cookie";
+
+import {
+  BookmarkIcon,
+  BookmarkMinus,
+  BookmarkPlus,
   LoaderIcon,
   MapPin,
   MessageSquare,
@@ -15,9 +22,45 @@ import {
 import { useEffect } from "react";
 
 import { Link, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 function BookDetailsPage() {
   const { bookId } = useParams();
+  const queryClient = useQueryClient();
+
+  const addBookMark = useCoreApiCreateBookmark({
+    mutation: {
+      onSuccess: () => {
+        toast.success("Book mark addedd successfully");
+        // inValidate all catch
+        queryClient.invalidateQueries();
+      },
+      onError: () => {},
+    },
+    client: {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken")!,
+        "Content-Type": " application/json",
+      },
+    },
+  });
+
+  const removeBookMark = useCoreApiRemoveBookmarkItem({
+    mutation: {
+      onSuccess: () => {
+        toast.success("Book mark remove successfully");
+        // inValidate all catch
+        queryClient.invalidateQueries();
+      },
+      onError: () => {},
+    },
+    client: {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken")!,
+        "Content-Type": " application/json",
+      },
+    },
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -25,6 +68,16 @@ function BookDetailsPage() {
 
   const book = useCoreApiGetBook(Number(bookId));
 
+  const onBookMarkChange = function () {
+    const payload: RemoveBookMarkItemScehma = {
+      book_id: book.data?.id as number,
+    };
+    if (book.data?.is_bookmarked === true) {
+      removeBookMark.mutate({ data: payload });
+    } else if (book.data?.is_bookmarked === false) {
+      addBookMark.mutate({ data: payload });
+    }
+  };
   return (
     <div className="w-full ">
       <div className="max-w-7xl mx-auto py-8 ">
@@ -62,9 +115,22 @@ function BookDetailsPage() {
             </div>
             <div className="flex-1  bg-white p-4">
               <div className="bg-white p-4 rounded-lg mx-auto border-3 border-gray-200 md:min-w-96 h-full">
-                <h1 className="text-2xl md:text-3xl font-serif font-bold mb-2">
-                  {book.data?.name}
-                </h1>
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold line-clamp-2 ">
+                    {book.data?.name}
+                  </h3>
+                  {book.data?.is_sold && (
+                    <Badge
+                      variant="outline"
+                      className="bg-gray-100 text-red-600 hover:bg-red-100 "
+                    >
+                      {book.data.is_sold && "Not Avilable"}
+                    </Badge>
+                  )}
+                  {book.data?.is_bookmarked && (
+                    <BookmarkIcon className="fill-orange-600" />
+                  )}
+                </div>
                 <p className="text-lg text-bookworm-gray mb-4">
                   by {book.data?.user.first_name} {book.data?.user.last_name}
                 </p>
@@ -87,6 +153,7 @@ function BookDetailsPage() {
                     >
                       {book.data?.condition}
                     </Badge>
+
                     {book.data?.grade && (
                       <Badge
                         variant="outline"
@@ -133,12 +200,26 @@ function BookDetailsPage() {
                   </div>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button className="flex-1">
+                  <Button className="flex-1" variant="outline">
+                    <MessageSquare className="mr-2 h-4 w-4" />
                     Chat with Seller
-                    <MessageSquare className="ml-2 h-4 w-4" />
                   </Button>
-                  <Button variant="outline" className="flex-1">
-                    Save to Favorites
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={onBookMarkChange}
+                  >
+                    {book.data?.is_bookmarked ? (
+                      <>
+                        <BookmarkMinus className="mr-2 h-4 w-4" />
+                        Remove Bookmark
+                      </>
+                    ) : (
+                      <>
+                        <BookmarkPlus className="mr-2 h-4 w-4" />
+                        Add Bookmark
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>

@@ -7,5 +7,5 @@ export type RemoveBookMarkItemScehma = {
   /**
    * @type integer
    */
-  bookmark_item_id: number
+  book_id: number
 }

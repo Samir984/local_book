@@ -1,1 +1,1 @@
-{"properties":{"bookmark_item_id":{"title":"Bookmark Item Id","type":"integer"}},"required":["bookmark_item_id"],"title":"RemoveBookMarkItemScehma","type":"object","x-readme-ref-name":"RemoveBookMarkItemScehma"}
+{"properties":{"book_id":{"title":"Book Id","type":"integer"}},"required":["book_id"],"title":"RemoveBookMarkItemScehma","type":"object","x-readme-ref-name":"RemoveBookMarkItemScehma"}

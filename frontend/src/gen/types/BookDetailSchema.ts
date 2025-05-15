@@ -10,6 +10,7 @@ export type BookDetailSchema = {
    * @type object
    */
   user: UserSchema
+  is_bookmarked?: boolean | null
   id?: number | null
   /**
    * @maxLength 100
@@ -58,6 +59,11 @@ export type BookDetailSchema = {
    */
   is_bachlore_book?: boolean
   grade?: number | null
+  /**
+   * @default false
+   * @type boolean | undefined
+   */
+  is_sold?: boolean
   /**
    * @type string, date-time
    */

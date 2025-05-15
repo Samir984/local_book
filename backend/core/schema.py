@@ -46,6 +46,7 @@ class PublicBookScehma(ModelSchema):
     owner_first_name: str = ""
     owner_last_name: str = ""
     owner_location: str = ""
+    is_bookmarked: Optional[bool] = None
 
     class Meta:
         model = Book
@@ -65,6 +66,7 @@ class PublicBookScehma(ModelSchema):
 
 class BookDetailSchema(ModelSchema):
     user: UserSchema
+    is_bookmarked: Optional[bool] = None
 
     class Meta:
         model = Book
@@ -82,6 +84,7 @@ class BookDetailSchema(ModelSchema):
             "is_college_book",
             "is_bachlore_book",
             "grade",
+            "is_sold",
             "date_created",
         ]
 
@@ -162,7 +165,7 @@ class CreateBookMarkSchema(Schema):
 
 
 class RemoveBookMarkItemScehma(Schema):
-    bookmark_item_id: int
+    book_id: int
 
 
 class BookMarkBookScehma(ModelSchema):

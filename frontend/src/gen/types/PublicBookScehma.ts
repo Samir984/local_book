@@ -20,6 +20,7 @@ export type PublicBookScehma = {
    * @type string | undefined
    */
   owner_location?: string
+  is_bookmarked?: boolean | null
   id?: number | null
   /**
    * @maxLength 100

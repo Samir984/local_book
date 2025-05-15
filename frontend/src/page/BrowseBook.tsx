@@ -8,8 +8,8 @@ import { useSearchParams } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BookPagination } from "@/components/BookPagination";
 import {
-  CoreApiListBooksQueryParamsCategoryEnum,
-  CoreApiListBooksQueryParamsConditionEnum,
+  BookCategoryChoicesEnum,
+  BookConditionChoicesEnum,
   useCoreApiListBooks,
 } from "@/gen";
 
@@ -25,12 +25,8 @@ export default function BrowseBook() {
   const books = useCoreApiListBooks(
     {
       name: searchParams.get("name"),
-      condition: searchParams.get(
-        "condition"
-      ) as CoreApiListBooksQueryParamsConditionEnum,
-      category: searchParams.get(
-        "category"
-      ) as CoreApiListBooksQueryParamsCategoryEnum,
+      condition: searchParams.get("condition") as BookConditionChoicesEnum,
+      category: searchParams.get("category") as BookCategoryChoicesEnum,
       publication: searchParams.get("publication"),
       edition:
         searchParams.get("edition") === null ||

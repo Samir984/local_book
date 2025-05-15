@@ -2,19 +2,17 @@ import { Link } from "react-router-dom";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, BookIcon, Bookmark, BookmarkIcon } from "lucide-react";
-import { PublicBookScehma } from "@/gen";
+import { MapPin, BookIcon } from "lucide-react";
+import { BookMarkItemSchema, BookMarkScehma } from "@/gen";
 
-interface BookCardProps {
-  book: PublicBookScehma & { is_sold?: boolean };
+interface BookMarkCardProps {
+  book: BookMarkItemSchema;
 }
 
-const BookCard = ({ book }: BookCardProps) => {
+const BookMarkCard = ({ book }: BookMarkCardProps) => {
   return (
     <Link to={`/books/${book.id}`}>
-      <Card
-        className={` h-full flex flex-col min-w-[320px] duration-300 hover:shadow-md hover:-translate-y-1 transition-all ${book.is_sold && "bg-red-50"}`}
-      >
+      <Card className=" h-full flex flex-col min-w-[320px] duration-300 hover:shadow-md hover:-translate-y-1 transition-all">
         <div className="relative pt-[56.25%] bg-bookworm-light">
           <img
             src={book.book_image}
@@ -28,10 +26,7 @@ const BookCard = ({ book }: BookCardProps) => {
           </Badge>
         </div>
         <CardContent className="px-4 flex-grow flex flex-col">
-          <div className="flex justify-between items-center">
-            <h3 className="text-xl font-semibold line-clamp-2 ">{book.name}</h3>
-            {book.is_bookmarked && <BookmarkIcon className="fill-orange-600" />}
-          </div>
+          <h3 className="text-xl font-semibold line-clamp-2 ">{book.name}</h3>
 
           {book.distance && book.distance !== "None" && (
             <div className="text-base font-medium mt-1 text-green-600 ">
@@ -48,14 +43,6 @@ const BookCard = ({ book }: BookCardProps) => {
                 >
                   {book.condition}
                 </Badge>
-                {book.is_sold && (
-                  <Badge
-                    variant="outline"
-                    className="bg-gray-100 text-red-600 hover:bg-red-100 "
-                  >
-                    {book.is_sold && "Not Avilable"}
-                  </Badge>
-                )}
                 {(book.is_school_book ||
                   book.is_college_book ||
                   book.is_bachlore_book) && (
@@ -118,4 +105,4 @@ const BookCard = ({ book }: BookCardProps) => {
   );
 };
 
-export default BookCard;
+export default BookMarkCard;
