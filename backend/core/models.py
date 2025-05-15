@@ -59,6 +59,7 @@ class Book(models.Model):
     )
 
     is_sold = models.BooleanField(default=False)
+    is_disabled = models.BooleanField(default=False)
     is_reviewed = models.BooleanField(default=False)
     is_accepted = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)

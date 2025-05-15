@@ -3,6 +3,9 @@ from django.contrib import messages
 from django.contrib.auth.admin import UserAdmin
 from django.http import HttpRequest
 
+from core.actions import accept_book
+from core.actions import disable_book
+
 from .models import Book
 from .models import BookMark
 from .models import BookMarkItem
@@ -61,25 +64,28 @@ class BookAdmin(admin.ModelAdmin[Book]):
     list_display = (
         "id",
         "name",
-        "category",
+        "book_image",
+        "is_disabled",
+        "is_reviewed",
+        "is_accepted",
+        "is_rejected",
+        "is_sold",
         "user",
+        "price",
+        "category",
         "publication",
         "grade",
         "is_school_book",
         "is_bachlore_book",
         "is_college_book",
-        "book_image",
         "edition",
         "condition",
-        "price",
-        "is_sold",
-        "is_accepted",
-        "is_rejected",
         "latitude",
         "longitude",
         "date_created",
         "location",
     )
+    actions = (accept_book, disable_book)
     list_filter = (
         "user",
         "is_school_book",
