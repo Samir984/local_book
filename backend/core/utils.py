@@ -19,3 +19,7 @@ MIME_TYPES = {
     ".jpeg": "image/jpeg",
     ".png": "image/png",
 }
+
+
+def delete_image_from_s3(key: str):
+    s3_client.delete_object(Bucket=BUCKET_NAME, Key=key)

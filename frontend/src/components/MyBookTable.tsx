@@ -13,7 +13,18 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ChevronDown, MoreHorizontal } from "lucide-react";
+import {
+  Blocks,
+  Check,
+  CheckCheck,
+  CheckCheckIcon,
+  ChevronDown,
+  Delete,
+  DeleteIcon,
+  EditIcon,
+  MoreHorizontal,
+  X,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -35,6 +46,7 @@ import {
 } from "@/components/ui/table";
 import {
   coreApiDeleteBook,
+  coreApiMarkedAsSold,
   PrivateBookScehma,
   useCoreApiListUserBooks,
 } from "@/gen";
@@ -43,6 +55,7 @@ import Cookies from "js-cookie";
 import EditBookForm from "./EditForm";
 import ModalPopover from "./ModelPopOver";
 import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 interface BookActionsProps {
   book: PrivateBookScehma;
@@ -67,27 +80,61 @@ const BookActions: React.FC<BookActionsProps> = ({ book, refetch }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
-            className="flex gap-2 hover:bg-gray-100"
-            onSelect={() => setOpen(true)}
+            className="flex gap-2 transition-colors duration-150 ease-in-out hover:bg-gray-200 hover:text-green-600"
+            disabled={book.is_sold}
+            onClick={() => {
+              async function markedAsSold() {
+                try {
+                  const res = await coreApiMarkedAsSold(book.id as number, {
+                    headers: {
+                      "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
+                  });
+
+                  toast.success(res.detail);
+                  refetch();
+                } catch (err) {
+                  console.log(err, "dddd");
+                  toast.error(
+                    err.response.data.detail || "Some thing went wrong"
+                  );
+                }
+              }
+
+              markedAsSold();
+            }}
           >
-            Edit
+            <CheckCheck />
+            <span>Mark as sold</span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            className="flex gap-2 hover:bg-gray-100"
+            disabled={book.is_sold}
+            className="flex gap-2 transition-colors duration-150 ease-in-out hover:bg-gray-200 hover:text-green-600"
+            onSelect={() => setOpen(true)}
+          >
+            <EditIcon />
+            <span>Edit</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="flex gap-2 transition-colors duration-150 ease-in-out hover:bg-gray-200 hover:text-orange-700"
             onClick={() => {
               async function deleteBook() {
-                await coreApiDeleteBook(book.id as number, {
+                const res = await coreApiDeleteBook(book.id as number, {
                   headers: {
                     "X-CSRFToken": Cookies.get("csrftoken"),
                   },
                 });
-                toast.success("Book deleteSuccessfully by successfull");
+
+                toast.success(res.detail);
+
                 refetch();
               }
+
               deleteBook();
             }}
           >
-            Delete
+            <Delete />
+            <span>Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -134,14 +181,16 @@ export const columns: ColumnDef<PrivateBookScehma>[] = [
     },
   },
   {
-    accessorKey: "is_reviewed",
+    accessorKey: "status",
     header: () => <div className="text-right ">Status</div>,
     cell: ({ row }) => {
+      console.log(row);
+      const book = row.original;
       return (
         <div className="text-right font-medium">
-          {row.getValue("is_reviewed") && row.getValue("is_accepted")
+          {book.is_reviewed && book.is_accepted
             ? "Accepted"
-            : row.getValue("is_reviewed") && row.getValue("is_rejected")
+            : book.is_reviewed && book.is_rejected
               ? "Rejected"
               : "Pending"}
         </div>
@@ -149,12 +198,12 @@ export const columns: ColumnDef<PrivateBookScehma>[] = [
     },
   },
   {
-    accessorKey: "condition",
-    header: () => <div className="text-right ">Condition</div>,
+    accessorKey: "is_sold",
+    header: () => <div className="text-right ">Sold</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-right font-medium">
-          {row.getValue("condition")}
+        <div className="text-center flex  justify-end font-medium">
+          {row.getValue("is_sold") ? <CheckCheckIcon /> : <X />}
         </div>
       );
     },
@@ -198,7 +247,6 @@ export function MyBookTable() {
   const {
     data: books,
     isFetching,
-    isLoading,
     refetch,
   } = useCoreApiListUserBooks(
     {
@@ -212,7 +260,7 @@ export function MyBookTable() {
         },
       },
       query: {
-        staleTime: 1000 * 300,
+        staleTime: 1000 * 30,
         queryKey: ["mybooks", page],
       },
     }

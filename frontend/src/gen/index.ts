@@ -20,6 +20,7 @@ export type { CoreApiListUserBooksSuspenseQueryKey } from './hooks/useCoreApiLis
 export type { CoreApiLoginUserMutationKey } from './hooks/useCoreApiLoginUser.ts'
 export type { CoreApiLogoutUserQueryKey } from './hooks/useCoreApiLogoutUser.ts'
 export type { CoreApiLogoutUserSuspenseQueryKey } from './hooks/useCoreApiLogoutUserSuspense.ts'
+export type { CoreApiMarkedAsSoldMutationKey } from './hooks/useCoreApiMarkedAsSold.ts'
 export type { CoreApiPartialUpdateBookMutationKey } from './hooks/useCoreApiPartialUpdateBook.ts'
 export type { CoreApiRegisterUserMutationKey } from './hooks/useCoreApiRegisterUser.ts'
 export type { CoreApiRemoveBookmarkItemMutationKey } from './hooks/useCoreApiRemoveBookmarkItem.ts'
@@ -106,6 +107,15 @@ export type {
   CoreApiLoginUserMutation,
 } from './types/CoreApiLoginUser.ts'
 export type { CoreApiLogoutUser200, CoreApiLogoutUser401, CoreApiLogoutUserQueryResponse, CoreApiLogoutUserQuery } from './types/CoreApiLogoutUser.ts'
+export type {
+  CoreApiMarkedAsSoldPathParams,
+  CoreApiMarkedAsSold200,
+  CoreApiMarkedAsSold400,
+  CoreApiMarkedAsSold403,
+  CoreApiMarkedAsSold404,
+  CoreApiMarkedAsSoldMutationResponse,
+  CoreApiMarkedAsSoldMutation,
+} from './types/CoreApiMarkedAsSold.ts'
 export type {
   CoreApiPartialUpdateBookPathParams,
   CoreApiPartialUpdateBook200,
@@ -216,6 +226,7 @@ export {
   coreApiLogoutUserSuspenseQueryOptions,
   useCoreApiLogoutUserSuspense,
 } from './hooks/useCoreApiLogoutUserSuspense.ts'
+export { coreApiMarkedAsSoldMutationKey, coreApiMarkedAsSold, useCoreApiMarkedAsSold } from './hooks/useCoreApiMarkedAsSold.ts'
 export { coreApiPartialUpdateBookMutationKey, coreApiPartialUpdateBook, useCoreApiPartialUpdateBook } from './hooks/useCoreApiPartialUpdateBook.ts'
 export { coreApiRegisterUserMutationKey, coreApiRegisterUser, useCoreApiRegisterUser } from './hooks/useCoreApiRegisterUser.ts'
 export { coreApiRemoveBookmarkItemMutationKey, coreApiRemoveBookmarkItem, useCoreApiRemoveBookmarkItem } from './hooks/useCoreApiRemoveBookmarkItem.ts'

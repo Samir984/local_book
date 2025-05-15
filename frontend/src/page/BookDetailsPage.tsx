@@ -30,6 +30,7 @@ function BookDetailsPage() {
 
   const addBookMark = useCoreApiCreateBookmark({
     mutation: {
+
       onSuccess: () => {
         toast.success("Book mark addedd successfully");
         // inValidate all catch

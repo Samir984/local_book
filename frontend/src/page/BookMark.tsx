@@ -3,7 +3,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useCoreApiGetBookmark } from "@/gen";
 
 export default function BookMark() {
-  const { data: bookmarks, isFetching } = useCoreApiGetBookmark();
+  const { data: bookmarks, isFetching } = useCoreApiGetBookmark({
+    query: {
+      staleTime: 30 * 1000,
+    },
+  });
   console.log(bookmarks);
 
   return (

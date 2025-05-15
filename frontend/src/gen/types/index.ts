@@ -76,6 +76,15 @@ export type {
 } from './CoreApiLoginUser.ts'
 export type { CoreApiLogoutUser200, CoreApiLogoutUser401, CoreApiLogoutUserQueryResponse, CoreApiLogoutUserQuery } from './CoreApiLogoutUser.ts'
 export type {
+  CoreApiMarkedAsSoldPathParams,
+  CoreApiMarkedAsSold200,
+  CoreApiMarkedAsSold400,
+  CoreApiMarkedAsSold403,
+  CoreApiMarkedAsSold404,
+  CoreApiMarkedAsSoldMutationResponse,
+  CoreApiMarkedAsSoldMutation,
+} from './CoreApiMarkedAsSold.ts'
+export type {
   CoreApiPartialUpdateBookPathParams,
   CoreApiPartialUpdateBook200,
   CoreApiPartialUpdateBook403,

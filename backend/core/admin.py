@@ -1,11 +1,14 @@
 from django.contrib import admin
+from django.contrib import messages
 from django.contrib.auth.admin import UserAdmin
+from django.http import HttpRequest
 
 from .models import Book
 from .models import BookMark
 from .models import BookMarkItem
 from .models import Report
 from .models import User
+from .utils import delete_image_from_s3  # Import the function
 
 
 @admin.register(User)
@@ -96,6 +99,18 @@ class BookAdmin(admin.ModelAdmin[Book]):
     ordering = ("-date_created",)
 
     readonly_fields = ("date_created", "data_modified")
+
+    def delete_model(self, request: HttpRequest, obj: Book):
+        try:
+            delete_image_from_s3(str(obj.book_image))
+            super().delete_model(request, obj)
+
+        except Exception as e:
+            messages.error(
+                request,
+                "Failed to delete the image associated with book"
+                f" '{obj.name}'. The book itself was not deleted. Error: {e}",
+            )
 
 
 @admin.register(Report)

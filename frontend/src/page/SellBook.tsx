@@ -84,15 +84,7 @@ function SellBook() {
 
   const form = useForm<CreateBookSchemaType>({
     resolver: zodResolver(CreateBookSchema),
-    defaultValues: {
-      book_image: "3",
-      name: "red",
-      category: "REFERENCE",
-      price: 0,
-      edition: 1,
-      description: "test",
-      condition: "GOOD",
-    },
+    defaultValues: {},
   });
 
   const createBookMutation = useCoreApiCreateBook({
@@ -100,7 +92,9 @@ function SellBook() {
       onSuccess: (data) => {
         console.log(data);
         toast.success(data.detail);
-        form.reset(); // Reset form on successful submission
+        form.reset();
+        setBookImage(null)
+        setImageFile(null)
       },
       onError: (error) => {
         console.log("Error:", error);

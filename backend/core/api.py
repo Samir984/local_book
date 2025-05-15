@@ -11,6 +11,7 @@ from django.db import connection
 
 # from django.db import connection
 from django.db.models import BooleanField
+from django.db.models import Count
 from django.db.models import Exists
 from django.db.models import F
 from django.db.models import OuterRef
@@ -48,6 +49,7 @@ from core.utils import ALLOWED_EXTENSIONS
 from core.utils import BUCKET_NAME
 from core.utils import MAX_UPLOAD_SIZE
 from core.utils import MIME_TYPES
+from core.utils import delete_image_from_s3
 from core.utils import s3_client
 
 user = Router()
@@ -185,13 +187,12 @@ def get_upload_url(request: HttpRequest, filename: str):
 )
 def delete_file(request: HttpRequest, key: str):
     """Deletes a file from S3 based on its key."""
+    # This return 204 ,even key is not valid.
     try:
-        # This return 204 ,even key is not valid.
-        s3_client.delete_object(Bucket=BUCKET_NAME, Key=key)
-        return 200, {"detail": "File deleted successfully."}
-
+        delete_image_from_s3(key)
     except Exception as e:
-        return 500, {"detail": "f{e}"}
+        print(e)
+        return 500, {"detail": "Fail to delete image"}
 
 
 @s3.get(
@@ -254,9 +255,6 @@ def create_book(request: HttpRequest, data: CreateBookSchema):
         return 500, {
             "detail": "Failed to create book due to an unexpected error."
         }
-
-
-from django.db.models import Count
 
 
 @book.get("/", response={200: list[PublicBookScehma]}, auth=None)
@@ -371,8 +369,39 @@ def get_book(request: HttpRequest, id: int):
 
 
 @book.patch(
+    "/mark-as-sold/{id}/",
+    response={
+        200: GenericSchema,
+        400: GenericSchema,
+        403: GenericSchema,
+        404: GenericSchema,
+    },
+)
+def marked_as_sold(request: HttpRequest, id: int):
+    user = request.user
+    book = get_object_or_404(Book, id=id)
+
+    if book.user != user:
+        return 403, {"detail": "Permission denied."}
+
+    if book.is_sold:
+        return 400, {"detail": "Book is already marked as sold."}
+
+    book.is_sold = True
+    book.save()
+    return 200, {
+        "detail": "Book status update to marked as sold successfully."
+    }
+
+
+@book.patch(
     "/{id}/",
-    response={200: GenericSchema, 403: GenericSchema, 404: GenericSchema},
+    response={
+        200: GenericSchema,
+        400: GenericSchema,
+        403: GenericSchema,
+        404: GenericSchema,
+    },
 )
 def partial_update_book(
     request: HttpRequest,
@@ -384,12 +413,14 @@ def partial_update_book(
     book = get_object_or_404(Book, id=id)
     if book.user != user:
         return 403, {"detail": "Permission denied."}
+    if book.is_sold:
+        return 400, {"detail": "You can't edit sold book."}
 
     for attr, value in payload.items():  # type: ignore
         setattr(book, attr, value)  # type: ignore
 
     book.save()
-    return {"detail": "Book updated successfully"}
+    return 200, {"detail": "Book updated successfully"}
 
 
 @book.delete(
@@ -409,8 +440,8 @@ def delete_book(request: HttpRequest, id: int):
         return 403, {"detail": "Permission denied."}
 
     try:
-        key = str(book.book_image)
-        s3_client.delete_object(Bucket=BUCKET_NAME, Key=key)
+
+        delete_image_from_s3(str(book.book_image))
     except Exception as e:
         print(e)
         return 500, {"detail": "Failed to delete image."}
