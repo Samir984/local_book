@@ -93,8 +93,8 @@ function SellBook() {
         console.log(data);
         toast.success(data.detail);
         form.reset();
-        setBookImage(null)
-        setImageFile(null)
+        setBookImage(null);
+        setImageFile(null);
       },
       onError: (error) => {
         console.log("Error:", error);
@@ -263,7 +263,7 @@ function SellBook() {
                           type="file"
                           id="book_image"
                           accept="image/png, image/jpeg, image/jpg "
-                          className="absolute w-full h-full opacity-0 z-50 cursor-pointer"
+                          className="absolute w-full h-full opacity-0 z-10 cursor-pointer"
                           onChange={(e) => {
                             handleImageChange(e);
                             field.onChange(e);

@@ -55,7 +55,6 @@ import Cookies from "js-cookie";
 import EditBookForm from "./EditForm";
 import ModalPopover from "./ModelPopOver";
 import { toast } from "sonner";
-import { AxiosError } from "axios";
 
 interface BookActionsProps {
   book: PrivateBookScehma;
@@ -300,6 +299,9 @@ export function MyBookTable() {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
+        <div className="flex gap-4">
+
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

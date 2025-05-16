@@ -30,7 +30,6 @@ function BookDetailsPage() {
 
   const addBookMark = useCoreApiCreateBookmark({
     mutation: {
-
       onSuccess: () => {
         toast.success("Book mark addedd successfully");
         // inValidate all catch
@@ -120,17 +119,20 @@ function BookDetailsPage() {
                   <h3 className="text-xl font-semibold line-clamp-2 ">
                     {book.data?.name}
                   </h3>
-                  {book.data?.is_sold && (
-                    <Badge
-                      variant="outline"
-                      className="bg-gray-100 text-red-600 hover:bg-red-100 "
-                    >
-                      {book.data.is_sold && "Not Avilable"}
-                    </Badge>
-                  )}
-                  {book.data?.is_bookmarked && (
-                    <BookmarkIcon className="fill-orange-600" />
-                  )}
+                  <div className="flex gap-4">
+                    {book.data?.is_sold && (
+                      <Badge
+                        variant="outline"
+                        className="bg-gray-100 text-red-600 hover:bg-red-100 "
+                      >
+                        {book.data.is_sold && "Not Avilable"}
+                      </Badge>
+                    )}
+                    {book.data?.is_bookmarked && (
+                      <BookmarkIcon className="fill-orange-600" />
+                    )}
+                    
+                  </div>
                 </div>
                 <p className="text-lg text-bookworm-gray mb-4">
                   by {book.data?.user.first_name} {book.data?.user.last_name}

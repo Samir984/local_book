@@ -1,5 +1,5 @@
 import { Input } from "./ui/input";
-import { Newspaper, Search, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 import {
   Select,
