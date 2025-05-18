@@ -8,6 +8,7 @@ import type {
   CoreApiPartialUpdateBookMutationRequest,
   CoreApiPartialUpdateBookMutationResponse,
   CoreApiPartialUpdateBookPathParams,
+  CoreApiPartialUpdateBook400,
   CoreApiPartialUpdateBook403,
   CoreApiPartialUpdateBook404,
 } from '../types/CoreApiPartialUpdateBook.ts'
@@ -33,7 +34,7 @@ export async function coreApiPartialUpdateBook(
 
   const res = await request<
     CoreApiPartialUpdateBookMutationResponse,
-    ResponseErrorConfig<CoreApiPartialUpdateBook403 | CoreApiPartialUpdateBook404>,
+    ResponseErrorConfig<CoreApiPartialUpdateBook400 | CoreApiPartialUpdateBook403 | CoreApiPartialUpdateBook404>,
     CoreApiPartialUpdateBookMutationRequest
   >({ method: 'PATCH', url: `/api/v1/books/${id}/`, data, ...requestConfig })
   return res.data
@@ -48,7 +49,7 @@ export function useCoreApiPartialUpdateBook<TContext>(
   options: {
     mutation?: UseMutationOptions<
       CoreApiPartialUpdateBookMutationResponse,
-      ResponseErrorConfig<CoreApiPartialUpdateBook403 | CoreApiPartialUpdateBook404>,
+      ResponseErrorConfig<CoreApiPartialUpdateBook400 | CoreApiPartialUpdateBook403 | CoreApiPartialUpdateBook404>,
       { id: CoreApiPartialUpdateBookPathParams['id']; data?: CoreApiPartialUpdateBookMutationRequest },
       TContext
     > & { client?: QueryClient }
@@ -60,7 +61,7 @@ export function useCoreApiPartialUpdateBook<TContext>(
 
   return useMutation<
     CoreApiPartialUpdateBookMutationResponse,
-    ResponseErrorConfig<CoreApiPartialUpdateBook403 | CoreApiPartialUpdateBook404>,
+    ResponseErrorConfig<CoreApiPartialUpdateBook400 | CoreApiPartialUpdateBook403 | CoreApiPartialUpdateBook404>,
     { id: CoreApiPartialUpdateBookPathParams['id']; data?: CoreApiPartialUpdateBookMutationRequest },
     TContext
   >(

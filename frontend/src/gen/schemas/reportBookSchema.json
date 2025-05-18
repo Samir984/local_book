@@ -1,0 +1,1 @@
+{"properties":{"book_id":{"title":"Book Id","type":"integer"},"reason":{"title":"Reason","type":"string"}},"required":["book_id","reason"],"title":"ReportBookSchema","type":"object","x-readme-ref-name":"ReportBookSchema"}

@@ -24,6 +24,7 @@ export type { CoreApiMarkedAsSoldMutationKey } from './useCoreApiMarkedAsSold.ts
 export type { CoreApiPartialUpdateBookMutationKey } from './useCoreApiPartialUpdateBook.ts'
 export type { CoreApiRegisterUserMutationKey } from './useCoreApiRegisterUser.ts'
 export type { CoreApiRemoveBookmarkItemMutationKey } from './useCoreApiRemoveBookmarkItem.ts'
+export type { CoreApiReportBookMutationKey } from './useCoreApiReportBook.ts'
 export { coreApiCheckUsernameQueryKey, coreApiCheckUsername, coreApiCheckUsernameQueryOptions, useCoreApiCheckUsername } from './useCoreApiCheckUsername.ts'
 export {
   coreApiCheckUsernameSuspenseQueryKey,
@@ -90,3 +91,4 @@ export { coreApiMarkedAsSoldMutationKey, coreApiMarkedAsSold, useCoreApiMarkedAs
 export { coreApiPartialUpdateBookMutationKey, coreApiPartialUpdateBook, useCoreApiPartialUpdateBook } from './useCoreApiPartialUpdateBook.ts'
 export { coreApiRegisterUserMutationKey, coreApiRegisterUser, useCoreApiRegisterUser } from './useCoreApiRegisterUser.ts'
 export { coreApiRemoveBookmarkItemMutationKey, coreApiRemoveBookmarkItem, useCoreApiRemoveBookmarkItem } from './useCoreApiRemoveBookmarkItem.ts'
+export { coreApiReportBookMutationKey, coreApiReportBook, useCoreApiReportBook } from './useCoreApiReportBook.ts'

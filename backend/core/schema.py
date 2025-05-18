@@ -193,3 +193,8 @@ class BookMarkScehma(ModelSchema):
     class Meta:
         model = BookMark
         fields = ["id", "user"]
+
+
+class ReportBookSchema(Schema):
+    book_id: int
+    reason: str

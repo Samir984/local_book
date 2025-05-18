@@ -19,6 +19,11 @@ export type CoreApiPartialUpdateBookPathParams = {
 export type CoreApiPartialUpdateBook200 = GenericSchema
 
 /**
+ * @description Bad Request
+ */
+export type CoreApiPartialUpdateBook400 = GenericSchema
+
+/**
  * @description Forbidden
  */
 export type CoreApiPartialUpdateBook403 = GenericSchema
@@ -36,5 +41,5 @@ export type CoreApiPartialUpdateBookMutation = {
   Response: CoreApiPartialUpdateBook200
   Request: CoreApiPartialUpdateBookMutationRequest
   PathParams: CoreApiPartialUpdateBookPathParams
-  Errors: CoreApiPartialUpdateBook403 | CoreApiPartialUpdateBook404
+  Errors: CoreApiPartialUpdateBook400 | CoreApiPartialUpdateBook403 | CoreApiPartialUpdateBook404
 }

@@ -59,9 +59,9 @@ const CreateBookSchema = z.object({
     bookCategoryChoicesEnum.OTHER,
   ]),
   publication: z.string().optional(),
-  edition: z.number().optional(),
+  edition: z.number().min(1, "Edition cannot be less then 1.").optional(),
   is_school_book: z.boolean().optional(),
-  grade: z.number().optional(),
+  grade: z.number().min(1, "Edition cannot be less then 1"),
   is_college_book: z.boolean().optional(),
   is_bachlore_book: z.boolean().optional(),
   description: z.string().min(1, { message: "Description is required" }),
@@ -119,8 +119,8 @@ function SellBook() {
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && file.size > 2097152) {
-      toast.error("File not accepted, file size must be less then 2MB");
+    if (file && file.size > 5242880) {
+      toast.error("File not accepted, file size must be less then 5MB");
       return;
     }
     // return;
@@ -253,9 +253,8 @@ function SellBook() {
                               Click to upload or select an image
                             </span>
                             <p className="text-gray-700 text-center ">
-                              {" "}
                               (PNG or JPG format){" "}
-                              <strong> & size &lt; 2MB</strong>
+                              <strong> & size &lt; 5MB</strong>
                             </p>
                           </div>
                         </div>
@@ -458,7 +457,11 @@ function SellBook() {
                           const parsedValue = value === "" ? 1 : Number(value);
                           field.onChange(parsedValue);
                         }}
-                        className="mt-1 block w-full"
+                        className={cn(
+                          "mt-1 block w-full",
+                          errors.edition &&
+                            "border-red-500 focus:ring-red-500 focus:border-red-500"
+                        )}
                       />
                     </FormControl>
                     <FormMessage />

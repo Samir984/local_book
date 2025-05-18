@@ -24,6 +24,7 @@ export type { CoreApiMarkedAsSoldMutationKey } from './hooks/useCoreApiMarkedAsS
 export type { CoreApiPartialUpdateBookMutationKey } from './hooks/useCoreApiPartialUpdateBook.ts'
 export type { CoreApiRegisterUserMutationKey } from './hooks/useCoreApiRegisterUser.ts'
 export type { CoreApiRemoveBookmarkItemMutationKey } from './hooks/useCoreApiRemoveBookmarkItem.ts'
+export type { CoreApiReportBookMutationKey } from './hooks/useCoreApiReportBook.ts'
 export type { BookCategoryChoicesEnum, BookCategoryChoices } from './types/BookCategoryChoices.ts'
 export type { BookConditionChoicesEnum, BookConditionChoices } from './types/BookConditionChoices.ts'
 export type { BookDetailSchema } from './types/BookDetailSchema.ts'
@@ -119,6 +120,7 @@ export type {
 export type {
   CoreApiPartialUpdateBookPathParams,
   CoreApiPartialUpdateBook200,
+  CoreApiPartialUpdateBook400,
   CoreApiPartialUpdateBook403,
   CoreApiPartialUpdateBook404,
   CoreApiPartialUpdateBookMutationRequest,
@@ -139,6 +141,13 @@ export type {
   CoreApiRemoveBookmarkItemMutationResponse,
   CoreApiRemoveBookmarkItemMutation,
 } from './types/CoreApiRemoveBookmarkItem.ts'
+export type {
+  CoreApiReportBook201,
+  CoreApiReportBook400,
+  CoreApiReportBookMutationRequest,
+  CoreApiReportBookMutationResponse,
+  CoreApiReportBookMutation,
+} from './types/CoreApiReportBook.ts'
 export type { CreateBookMarkSchema } from './types/CreateBookMarkSchema.ts'
 export type { CreateBookSchema } from './types/CreateBookSchema.ts'
 export type { GenericSchema } from './types/GenericSchema.ts'
@@ -151,6 +160,7 @@ export type { PrivateBookScehma } from './types/PrivateBookScehma.ts'
 export type { PublicBookScehma } from './types/PublicBookScehma.ts'
 export type { RegisterSchema } from './types/RegisterSchema.ts'
 export type { RemoveBookMarkItemScehma } from './types/RemoveBookMarkItemScehma.ts'
+export type { ReportBookSchema } from './types/ReportBookSchema.ts'
 export type { S3GetSignedObjectURLScehma } from './types/S3GetSignedObjectURLScehma.ts'
 export type { S3UploadURLResponseScehma } from './types/S3UploadURLResponseScehma.ts'
 export type { UserSchema } from './types/UserSchema.ts'
@@ -230,5 +240,6 @@ export { coreApiMarkedAsSoldMutationKey, coreApiMarkedAsSold, useCoreApiMarkedAs
 export { coreApiPartialUpdateBookMutationKey, coreApiPartialUpdateBook, useCoreApiPartialUpdateBook } from './hooks/useCoreApiPartialUpdateBook.ts'
 export { coreApiRegisterUserMutationKey, coreApiRegisterUser, useCoreApiRegisterUser } from './hooks/useCoreApiRegisterUser.ts'
 export { coreApiRemoveBookmarkItemMutationKey, coreApiRemoveBookmarkItem, useCoreApiRemoveBookmarkItem } from './hooks/useCoreApiRemoveBookmarkItem.ts'
+export { coreApiReportBookMutationKey, coreApiReportBook, useCoreApiReportBook } from './hooks/useCoreApiReportBook.ts'
 export { bookCategoryChoicesEnum } from './types/BookCategoryChoices.ts'
 export { bookConditionChoicesEnum } from './types/BookConditionChoices.ts'

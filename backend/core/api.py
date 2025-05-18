@@ -29,6 +29,7 @@ from ninja.security import SessionAuth
 from core.models import Book
 from core.models import BookMark
 from core.models import BookMarkItem
+from core.models import Report
 from core.models import User
 from core.schema import BookDetailSchema
 from core.schema import BookFilterScehma
@@ -42,6 +43,7 @@ from core.schema import PrivateBookScehma
 from core.schema import PublicBookScehma
 from core.schema import RegisterSchema
 from core.schema import RemoveBookMarkItemScehma
+from core.schema import ReportBookSchema
 from core.schema import S3GetSignedObjectURLScehma
 from core.schema import S3UploadURLResponseScehma
 from core.schema import UserSchema
@@ -53,10 +55,10 @@ from core.utils import delete_image_from_s3
 from core.utils import s3_client
 
 user = Router()
-book = Router()
-report = Router()
-bookmark = Router()
 s3 = Router()
+book = Router()
+bookmark = Router()
+report = Router()
 
 session_auth = SessionAuth()
 
@@ -502,3 +504,19 @@ def remove_bookmark_item(request: HttpRequest, data: RemoveBookMarkItemScehma):
     print(bookmark_item, "item\n")
     bookmark_item.delete()
     return 200, {"detail": "Bookmark item delete successfull."}
+
+
+@report.post(
+    "/report-book/",
+    response={201: GenericSchema, 400: GenericSchema},
+)
+def report_book(request: HttpRequest, data: ReportBookSchema):
+    """Report book"""
+    user = request.user
+    book = get_object_or_404(Book, id=data.book_id)
+    Report.objects.create(
+        user=user,
+        book=book,
+        reason=data.reason,
+    )
+    return 201, {"detail": "Book reported successfully."}

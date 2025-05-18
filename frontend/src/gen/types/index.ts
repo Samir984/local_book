@@ -87,6 +87,7 @@ export type {
 export type {
   CoreApiPartialUpdateBookPathParams,
   CoreApiPartialUpdateBook200,
+  CoreApiPartialUpdateBook400,
   CoreApiPartialUpdateBook403,
   CoreApiPartialUpdateBook404,
   CoreApiPartialUpdateBookMutationRequest,
@@ -107,6 +108,13 @@ export type {
   CoreApiRemoveBookmarkItemMutationResponse,
   CoreApiRemoveBookmarkItemMutation,
 } from './CoreApiRemoveBookmarkItem.ts'
+export type {
+  CoreApiReportBook201,
+  CoreApiReportBook400,
+  CoreApiReportBookMutationRequest,
+  CoreApiReportBookMutationResponse,
+  CoreApiReportBookMutation,
+} from './CoreApiReportBook.ts'
 export type { CreateBookMarkSchema } from './CreateBookMarkSchema.ts'
 export type { CreateBookSchema } from './CreateBookSchema.ts'
 export type { GenericSchema } from './GenericSchema.ts'
@@ -119,6 +127,7 @@ export type { PrivateBookScehma } from './PrivateBookScehma.ts'
 export type { PublicBookScehma } from './PublicBookScehma.ts'
 export type { RegisterSchema } from './RegisterSchema.ts'
 export type { RemoveBookMarkItemScehma } from './RemoveBookMarkItemScehma.ts'
+export type { ReportBookSchema } from './ReportBookSchema.ts'
 export type { S3GetSignedObjectURLScehma } from './S3GetSignedObjectURLScehma.ts'
 export type { S3UploadURLResponseScehma } from './S3UploadURLResponseScehma.ts'
 export type { UserSchema } from './UserSchema.ts'

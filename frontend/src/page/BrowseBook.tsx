@@ -22,7 +22,11 @@ export default function BrowseBook() {
 
   const [page, setPage] = useState(1);
 
-  const books = useCoreApiListBooks(
+  const {
+    data: books,
+    isFetching,
+    isError,
+  } = useCoreApiListBooks(
     {
       name: searchParams.get("name"),
       condition: searchParams.get("condition") as BookConditionChoicesEnum,
@@ -54,8 +58,6 @@ export default function BrowseBook() {
       },
     }
   );
-
-  console.log(books.isError, books.error);
 
   return (
     <div className="px-4 py-6 flex flex-wrap gap-6 h-full flex-col  sidebar:flex-row relative">
@@ -91,7 +93,7 @@ export default function BrowseBook() {
       {/* Books */}
 
       <div className="flex-1 w-full  flex item-start flex-col ">
-        {books.isError && (
+        {isError && (
           <div className="mt-24 w-full flex items-center justify-center text-red-500 flex-col">
             <p className="text-xl font-semibold mb-2">
               Oops! Something went wrong.
@@ -101,7 +103,7 @@ export default function BrowseBook() {
             </p>
           </div>
         )}
-        {books.isFetching ? (
+        {isFetching ? (
           <div className="grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
             {Array(6)
               .fill(null)
@@ -112,7 +114,7 @@ export default function BrowseBook() {
                 />
               ))}
           </div>
-        ) : books.data?.count === 0 ? (
+        ) : books?.count === 0 ? (
           <div className="mt-24 w-full flex items-center justify-center flex-col">
             <Search className="h-12 w-12 mx-auto mb-4 text-gray-400" />
             <p className="text-xl font-semibold text-gray-500">
@@ -121,16 +123,14 @@ export default function BrowseBook() {
           </div>
         ) : (
           <div className="grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-            {books.data?.items.map((book) => (
-              <BookCard book={book} key={book.id} />
-            ))}
+            {books?.items.map((book) => <BookCard book={book} key={book.id} />)}
           </div>
         )}
-        {books.data && books.data?.count > 0 && (
+        {books && books?.count > 0 && (
           <div className="mt-auto pt-8">
             <BookPagination
               currentPage={page}
-              totalPage={books.data.count / LIMIT}
+              totalPage={books.count / LIMIT}
               setPage={setPage}
             />
           </div>

@@ -1,5 +1,8 @@
+import ModalPopover from "@/components/ModelPopOver";
+import ReportForm from "@/components/ReportForm";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 import {
   RemoveBookMarkItemScehma,
@@ -7,6 +10,12 @@ import {
   useCoreApiGetBook,
   useCoreApiRemoveBookmarkItem,
 } from "@/gen";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@radix-ui/react-tooltip";
 import { useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 
@@ -14,17 +23,19 @@ import {
   BookmarkIcon,
   BookmarkMinus,
   BookmarkPlus,
+  Flag,
   LoaderIcon,
   MapPin,
   MessageSquare,
   Phone,
 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 function BookDetailsPage() {
+  const [openReportModal, setOpenReportModal] = useState(false);
   const { bookId } = useParams();
   const queryClient = useQueryClient();
 
@@ -119,7 +130,7 @@ function BookDetailsPage() {
                   <h3 className="text-xl font-semibold line-clamp-2 ">
                     {book.data?.name}
                   </h3>
-                  <div className="flex gap-4">
+                  <div className="flex  items-center gap-4">
                     {book.data?.is_sold && (
                       <Badge
                         variant="outline"
@@ -131,7 +142,32 @@ function BookDetailsPage() {
                     {book.data?.is_bookmarked && (
                       <BookmarkIcon className="fill-orange-600" />
                     )}
-                    
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div
+                            className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 hover:text-red-500 cursor-pointer"
+                            onClick={() => setOpenReportModal(true)}
+                          >
+                            <Flag />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-white text-black p-2 rounded-md border border-gray-200 shadow-md">
+                          <p>Report this book</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    {openReportModal && (
+                      <ModalPopover
+                        isOpen={openReportModal}
+                        closePopOver={() => setOpenReportModal(false)}
+                      >
+                        <ReportForm
+                          bookId={book.data?.id as number}
+                          closeModal={() => setOpenReportModal(false)}
+                        />
+                      </ModalPopover>
+                    )}
                   </div>
                 </div>
                 <p className="text-lg text-bookworm-gray mb-4">
