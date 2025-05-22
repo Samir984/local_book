@@ -12,6 +12,11 @@ import type { GenericSchema } from './GenericSchema.ts'
 export type CoreApiCreateBook201 = GenericSchema
 
 /**
+ * @description Bad Request
+ */
+export type CoreApiCreateBook400 = GenericSchema
+
+/**
  * @description Internal Server Error
  */
 export type CoreApiCreateBook500 = GenericSchema
@@ -23,5 +28,5 @@ export type CoreApiCreateBookMutationResponse = CoreApiCreateBook201
 export type CoreApiCreateBookMutation = {
   Response: CoreApiCreateBook201
   Request: CoreApiCreateBookMutationRequest
-  Errors: CoreApiCreateBook500
+  Errors: CoreApiCreateBook400 | CoreApiCreateBook500
 }

@@ -1,3 +1,3 @@
-# near_book
+# LocalBook
 
 A platform that enables reuse of old books.

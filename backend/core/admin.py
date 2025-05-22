@@ -1,11 +1,13 @@
 from django.contrib import admin
 from django.contrib import messages
 from django.contrib.auth.admin import UserAdmin
+from django.db.models import QuerySet
 from django.http import HttpRequest
 
 from core.actions import accept_book
 from core.actions import disable_book
 
+# from .forms import CustomUserCreationForm
 from .models import Book
 from .models import BookMark
 from .models import BookMarkItem
@@ -16,8 +18,17 @@ from .utils import delete_image_from_s3  # Import the function
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
+
     fieldsets = (
-        (None, {"fields": ("username", "password")}),
+        (
+            None,
+            {
+                "fields": (
+                    "username",
+                    "password",
+                )
+            },
+        ),
         (
             "Personal info",
             {"fields": ("first_name", "last_name", "email", "phone_number")},
@@ -108,7 +119,9 @@ class BookAdmin(admin.ModelAdmin[Book]):
 
     def delete_model(self, request: HttpRequest, obj: Book):
         try:
+            print(f"Deleting image from S3: {obj.book_image}")
             delete_image_from_s3(str(obj.book_image))
+            print(f"Deleted image from S3: {obj.book_image}")
             super().delete_model(request, obj)
 
         except Exception as e:
@@ -116,6 +129,20 @@ class BookAdmin(admin.ModelAdmin[Book]):
                 request,
                 "Failed to delete the image associated with book"
                 f" '{obj.name}'. The book itself was not deleted. Error: {e}",
+            )
+
+    def delete_queryset(self, request: HttpRequest, queryset: QuerySet[Book]):
+        try:
+            for obj in queryset:
+                print(f"Deleting image from S3: {obj.book_image}")
+                delete_image_from_s3(str(obj.book_image))
+            super().delete_queryset(request, queryset)
+
+        except Exception as e:
+            messages.error(
+                request,
+                "Failed to delete the images associated with books. "
+                "The books themselves were not deleted. Error: {e}",
             )
 
 

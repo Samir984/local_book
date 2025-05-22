@@ -61,7 +61,11 @@ const CreateBookSchema = z.object({
   publication: z.string().optional(),
   edition: z.number().min(1, "Edition cannot be less then 1.").optional(),
   is_school_book: z.boolean().optional(),
-  grade: z.number().min(1, "Edition cannot be less then 1"),
+  grade: z
+    .number()
+    .min(1, "Grade cannot be less then 1")
+    .max(10, "Grade cannot be greater than 10")
+    .optional(),
   is_college_book: z.boolean().optional(),
   is_bachlore_book: z.boolean().optional(),
   description: z.string().min(1, { message: "Description is required" }),
@@ -80,11 +84,25 @@ function SellBook() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [fileNotSetError, setFileNotSetError] = useState(false);
   const [triggerAlertBox, setTriggerAlertBox] = useState(false);
-  const geolocation = useGeoLocation();
+  const { latitude, longitude } = useGeoLocation();
+  const [issubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<CreateBookSchemaType>({
     resolver: zodResolver(CreateBookSchema),
-    defaultValues: {},
+    defaultValues: {
+      book_image: "",
+      name: "",
+      category: bookCategoryChoicesEnum.TEXTBOOK,
+      publication: "",
+      grade: 1,
+      edition: 1,
+      is_school_book: false,
+      is_college_book: false,
+      is_bachlore_book: false,
+      description: "",
+      condition: bookConditionChoicesEnum.GOOD,
+      price: 0,
+    },
   });
 
   const createBookMutation = useCoreApiCreateBook({
@@ -92,13 +110,18 @@ function SellBook() {
       onSuccess: (data) => {
         console.log(data);
         toast.success(data.detail);
-        form.reset();
         setBookImage(null);
+        form.reset();
         setImageFile(null);
+        setIsSubmitting(false);
+        setTriggerAlertBox(false);
       },
       onError: (error) => {
         console.log("Error:", error);
-        toast.error(`Error: Fail to submit book.`);
+        toast.error(
+          error.response?.data.detail || `Error: Fail to submit book.`
+        );
+        setIsSubmitting(false);
       },
     },
     client: {
@@ -111,7 +134,7 @@ function SellBook() {
 
   const {
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     watch,
     setValue,
     getValues,
@@ -145,17 +168,25 @@ function SellBook() {
   const watchIs_school_book = watch("is_school_book");
 
   const onSubmit = async function (data: CreateBookSchemaType) {
+    console.log(data);
     if (!imageFile) {
       toast.error("File is not selected");
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       setFileNotSetError(true);
       return;
     }
-    if (!geolocation) {
+    console.log(latitude, longitude);
+    if (!latitude || !longitude) {
       setTriggerAlertBox(true);
       return;
     }
-    handleSubmitFormWithGeoLocation(data);
+    const validData =
+      data.is_school_book === true
+        ? { ...data }
+        : { ...data, grade: undefined };
+
+    console.log(validData);
+    handleSubmitFormWithGeoLocation(validData);
   };
 
   const handleSubmitFormWithGeoLocation = async function (
@@ -163,14 +194,15 @@ function SellBook() {
   ) {
     if (!imageFile) return toast.error("File is not selected");
     try {
+      setIsSubmitting(true);
       const key = await uploadToS3(imageFile);
       data.book_image = key;
 
-      createBookMutation.mutate({
+      await createBookMutation.mutateAsync({
         data: {
           ...data,
-          latitude: geolocation?.latitude,
-          longitude: geolocation?.longitude,
+          latitude: latitude,
+          longitude: longitude,
         },
       });
     } catch (error) {
@@ -185,23 +217,28 @@ function SellBook() {
       toast.error("File is not selected");
       return;
     }
+    const validData =
+      data.is_school_book === true
+        ? { ...data }
+        : { ...data, grade: undefined };
 
     try {
+      setIsSubmitting(true);
+
       const key = await uploadToS3(imageFile);
       data.book_image = key;
 
-      createBookMutation.mutate({
+      await createBookMutation.mutateAsync({
         data: {
-          ...data,
+          ...validData,
         },
       });
     } catch (error) {
       console.log(error);
       setTimeout(() => toast.error("Submit failed."), 1000);
-    } finally {
-      setTriggerAlertBox(false);
     }
   };
+  console.log(triggerAlertBox);
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
@@ -306,10 +343,7 @@ function SellBook() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Category *</FormLabel>
-                    <Select
-                      defaultValue={field.value}
-                      onValueChange={field.onChange}
-                    >
+                    <Select value={field.value} onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger
                           className={cn(
@@ -401,6 +435,9 @@ function SellBook() {
                               type="number"
                               disabled={!watchIs_school_book}
                               placeholder="Enter your class "
+                              min={1}
+                              className="w-32"
+                              max={10}
                               {...field}
                               onChange={(e) => {
                                 const value = e.target.value;
@@ -449,6 +486,7 @@ function SellBook() {
                     <FormControl>
                       <Input
                         type="number"
+                        min={1}
                         placeholder="Enter book edition "
                         {...field}
                         onChange={(e) => {
@@ -480,6 +518,7 @@ function SellBook() {
                       <Input
                         type="number"
                         placeholder="Enter price"
+                        min={0}
                         {...field}
                         onChange={(e) => {
                           const value = e.target.value;
@@ -506,10 +545,7 @@ function SellBook() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Condition *</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger
                           className={cn(
@@ -558,12 +594,8 @@ function SellBook() {
 
               {/* Submit Button */}
               <div className="text-right">
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`${isSubmitting && "bg-red-500"}`}
-                >
-                  {isSubmitting ? "Submitting..." : "Submit"}
+                <Button type="submit" disabled={issubmitting}>
+                  Submit
                 </Button>
               </div>
             </form>
@@ -583,26 +615,21 @@ function SellBook() {
                   is on and site has permission to read location.
                 </strong>
                 <br />
-                This information is used to help users nearby discover your
-                book. Would you like to proceed with the submission without
-                geolocation data?
+                Sharing your location helps nearby users discover your book. If
+                you proceed without it, local buyers might not find it as
+                easily.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel
-                className="bg-green-600 text-white hover:bg-green-700 hover:text-white"
-                onClick={() => setTriggerAlertBox(false)}
-              >
+              <AlertDialogCancel className="bg-green-600 text-white hover:bg-green-700 hover:text-white">
                 No, cancel submission
               </AlertDialogCancel>
               <AlertDialogAction
                 className="bg-red-600 text-white hover:bg-red-700"
                 onClick={handleSubmitWithoutGeoLocation}
-                disabled={isSubmitting}
+                disabled={createBookMutation.isPending}
               >
-                {isSubmitting
-                  ? "Submitting..."
-                  : "Yes, continue without location"}
+                Yes, continue without location
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

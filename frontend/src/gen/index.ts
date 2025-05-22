@@ -41,6 +41,7 @@ export type {
 } from './types/CoreApiCheckUsername.ts'
 export type {
   CoreApiCreateBook201,
+  CoreApiCreateBook400,
   CoreApiCreateBook500,
   CoreApiCreateBookMutationRequest,
   CoreApiCreateBookMutationResponse,
@@ -76,7 +77,7 @@ export type {
   CoreApiGetBookQueryResponse,
   CoreApiGetBookQuery,
 } from './types/CoreApiGetBook.ts'
-export type { CoreApiGetBookmark200, CoreApiGetBookmark404, CoreApiGetBookmarkQueryResponse, CoreApiGetBookmarkQuery } from './types/CoreApiGetBookmark.ts'
+export type { CoreApiGetBookmark200, CoreApiGetBookmarkQueryResponse, CoreApiGetBookmarkQuery } from './types/CoreApiGetBookmark.ts'
 export type {
   CoreApiGetFileUrlQueryParams,
   CoreApiGetFileUrl200,

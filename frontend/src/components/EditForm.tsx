@@ -55,10 +55,13 @@ function EditBookForm({
         toast.success(data.detail);
         form.reset();
         refetch();
+        closePopOver();
       },
       onError: (error) => {
         console.log("Error:", error);
-        toast.error(`Error: Fail to submit book.`);
+        toast.error(
+          error.response?.data.detail || `Error: Fail to submit book.`
+        );
       },
     },
     client: {
@@ -72,7 +75,7 @@ function EditBookForm({
   const {
     handleSubmit,
     getValues,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = form;
 
   const onSubmit = async function (data: PartialUpdateBookSchemaPatch) {
@@ -97,12 +100,10 @@ function EditBookForm({
       toast.message("form value is not changed");
       return;
     }
-    EditBookMutation.mutate({
+    await EditBookMutation.mutateAsync({
       data,
       id: defaultValue.id as number,
     });
-
-    closePopOver();
   };
 
   return (
@@ -111,6 +112,7 @@ function EditBookForm({
         <div className=" max-w-7xl  w-full py-8 px-6 rounded-lg">
           <Form {...form}>
             <form
+              // @ts-ignore
               onSubmit={handleSubmit(onSubmit)}
               className="w-full space-y-6"
             >
@@ -241,11 +243,7 @@ function EditBookForm({
 
               {/* Submit Button */}
               <div className="text-right">
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`${isSubmitting && "bg-red-500"}`}
-                >
+                <Button type="submit" disabled={EditBookMutation.isPending}>
                   Save
                 </Button>
               </div>

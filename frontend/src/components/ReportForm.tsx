@@ -39,7 +39,9 @@ export default function ReportForm({
     } catch (err) {
       setIsSubmitting(false);
       console.log(err);
-      toast.error(err?.res.data.detail || "Something went wrong");
+
+      // @ts-ignore
+      toast.error(err.response.data.detail || "Something went wrong");
     }
 
     console.log(e);

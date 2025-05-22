@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, BookIcon } from "lucide-react";
-import { BookMarkItemSchema, BookMarkScehma } from "@/gen";
+import { PublicBookScehma } from "@/gen";
 
 interface BookMarkCardProps {
-  book: BookMarkItemSchema;
+  book: PublicBookScehma;
 }
 
 const BookMarkCard = ({ book }: BookMarkCardProps) => {

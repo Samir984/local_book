@@ -1,4 +1,4 @@
-Django
+Django==5.2
 django-ninja
 django-storages[s3]
 boto3-stubs[s3]

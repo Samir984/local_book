@@ -13,7 +13,6 @@ import GeoLocationProvider from "./context/GeoLocationProvider";
 import BookDetailsPage from "./page/BookDetailsPage";
 
 import BookMark from "./page/BookMark";
-import { MyBookTable } from "./components/MyBookTable";
 import MyBook from "./page/MyBook";
 
 const queryClient = new QueryClient({

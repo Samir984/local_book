@@ -9,7 +9,6 @@ from pydantic import EmailStr
 
 from core.models import Book
 from core.models import BookMark
-from core.models import BookMarkItem
 
 from .choices import BookCategoryChoices
 from .choices import BookConditionChoices
@@ -188,7 +187,7 @@ class BookMarkItemSchema(Schema):
 
 
 class BookMarkScehma(ModelSchema):
-    bookmark_item: list[BookMarkItemSchema] = Field(..., alias="items")
+    bookmark_item: list[BookMarkItemSchema] = Field([], alias="items")
 
     class Meta:
         model = BookMark

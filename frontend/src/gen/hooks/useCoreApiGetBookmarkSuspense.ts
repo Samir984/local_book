@@ -4,7 +4,7 @@
  */
 
 import client from '@kubb/plugin-client/clients/axios'
-import type { CoreApiGetBookmarkQueryResponse, CoreApiGetBookmark404 } from '../types/CoreApiGetBookmark.ts'
+import type { CoreApiGetBookmarkQueryResponse } from '../types/CoreApiGetBookmark.ts'
 import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/axios'
 import type { QueryKey, QueryClient, UseSuspenseQueryOptions, UseSuspenseQueryResult } from '@tanstack/react-query'
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
@@ -21,7 +21,7 @@ export type CoreApiGetBookmarkSuspenseQueryKey = ReturnType<typeof coreApiGetBoo
 export async function coreApiGetBookmarkSuspense(config: Partial<RequestConfig> & { client?: typeof client } = {}) {
   const { client: request = client, ...requestConfig } = config
 
-  const res = await request<CoreApiGetBookmarkQueryResponse, ResponseErrorConfig<CoreApiGetBookmark404>, unknown>({
+  const res = await request<CoreApiGetBookmarkQueryResponse, ResponseErrorConfig<Error>, unknown>({
     method: 'GET',
     url: `/api/v1/bookmarks/`,
     ...requestConfig,
@@ -31,7 +31,7 @@ export async function coreApiGetBookmarkSuspense(config: Partial<RequestConfig> 
 
 export function coreApiGetBookmarkSuspenseQueryOptions(config: Partial<RequestConfig> & { client?: typeof client } = {}) {
   const queryKey = coreApiGetBookmarkSuspenseQueryKey()
-  return queryOptions<CoreApiGetBookmarkQueryResponse, ResponseErrorConfig<CoreApiGetBookmark404>, CoreApiGetBookmarkQueryResponse, typeof queryKey>({
+  return queryOptions<CoreApiGetBookmarkQueryResponse, ResponseErrorConfig<Error>, CoreApiGetBookmarkQueryResponse, typeof queryKey>({
     queryKey,
     queryFn: async ({ signal }) => {
       config.signal = signal
@@ -47,9 +47,7 @@ export function coreApiGetBookmarkSuspenseQueryOptions(config: Partial<RequestCo
  */
 export function useCoreApiGetBookmarkSuspense<TData = CoreApiGetBookmarkQueryResponse, TQueryKey extends QueryKey = CoreApiGetBookmarkSuspenseQueryKey>(
   options: {
-    query?: Partial<UseSuspenseQueryOptions<CoreApiGetBookmarkQueryResponse, ResponseErrorConfig<CoreApiGetBookmark404>, TData, TQueryKey>> & {
-      client?: QueryClient
-    }
+    query?: Partial<UseSuspenseQueryOptions<CoreApiGetBookmarkQueryResponse, ResponseErrorConfig<Error>, TData, TQueryKey>> & { client?: QueryClient }
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {
@@ -63,7 +61,7 @@ export function useCoreApiGetBookmarkSuspense<TData = CoreApiGetBookmarkQueryRes
       ...(queryOptions as unknown as Omit<UseSuspenseQueryOptions, 'queryKey'>),
     },
     queryClient,
-  ) as UseSuspenseQueryResult<TData, ResponseErrorConfig<CoreApiGetBookmark404>> & { queryKey: TQueryKey }
+  ) as UseSuspenseQueryResult<TData, ResponseErrorConfig<Error>> & { queryKey: TQueryKey }
 
   query.queryKey = queryKey as TQueryKey
 

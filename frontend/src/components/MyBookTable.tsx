@@ -14,13 +14,10 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {
-  Blocks,
-  Check,
   CheckCheck,
   CheckCheckIcon,
   ChevronDown,
   Delete,
-  DeleteIcon,
   EditIcon,
   MoreHorizontal,
   X,
@@ -80,7 +77,7 @@ const BookActions: React.FC<BookActionsProps> = ({ book, refetch }) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
             className="flex gap-2 transition-colors duration-150 ease-in-out hover:bg-gray-200 hover:text-green-600"
-            disabled={book.is_sold}
+            disabled={book.is_sold || !book.is_reviewed}
             onClick={() => {
               async function markedAsSold() {
                 try {
@@ -93,8 +90,8 @@ const BookActions: React.FC<BookActionsProps> = ({ book, refetch }) => {
                   toast.success(res.detail);
                   refetch();
                 } catch (err) {
-                  console.log(err, "dddd");
                   toast.error(
+                    // @ts-ignore
                     err.response.data.detail || "Some thing went wrong"
                   );
                 }
@@ -220,6 +217,7 @@ export const columns: ColumnDef<PrivateBookScehma>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row, table }) => {
+      // @ts-ignore
       const { refetch } = table.options.meta;
 
       const book = row.original;
@@ -299,9 +297,7 @@ export function MyBookTable() {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <div className="flex gap-4">
-
-        </div>
+        <div className="flex gap-4"></div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

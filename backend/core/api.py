@@ -1,5 +1,4 @@
 import os
-import time
 from datetime import datetime
 
 from botocore.exceptions import ClientError
@@ -7,11 +6,6 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
-from django.db import connection
-
-# from django.db import connection
-from django.db.models import BooleanField
-from django.db.models import Count
 from django.db.models import Exists
 from django.db.models import F
 from django.db.models import OuterRef
@@ -53,6 +47,9 @@ from core.utils import MAX_UPLOAD_SIZE
 from core.utils import MIME_TYPES
 from core.utils import delete_image_from_s3
 from core.utils import s3_client
+
+# from django.db import connection
+
 
 user = Router()
 s3 = Router()
@@ -218,12 +215,19 @@ def get_file_url(request: HttpRequest, key: str):
 
 @book.post(
     "/create/",
-    response={201: GenericSchema, 500: GenericSchema},
+    response={201: GenericSchema, 400: GenericSchema, 500: GenericSchema},
 )
 def create_book(request: HttpRequest, data: CreateBookSchema):
     """Create book"""
     user = request.user
     book_location = None
+    if (
+        data.is_bachlore_book or data.is_college_book
+    ) and data.grade is not None:
+        return 400, {
+            "detail": "Grade cannot be provided for bachelor or college books."
+        }
+
     if data.latitude and data.longitude:
         book_location = Point(data.longitude, data.latitude, srid=4326)
         print(book_location)
@@ -289,8 +293,8 @@ def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  #
         queryset = queryset.filter(is_college_book=filters.is_college_book)
     if filters.is_bachlore_book is not None:
         queryset = queryset.filter(is_bachlore_book=filters.is_bachlore_book)
-
     if user.is_authenticated:
+
         queryset = queryset.annotate(
             is_bookmarked=Exists(
                 BookMarkItem.objects.filter(
@@ -330,7 +334,7 @@ def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  #
                     is_college_book=book.is_college_book,  # type: ignore
                     is_bachlore_book=book.is_bachlore_book,  # type: ignore
                     grade=book.grade,  # type: ignore
-                    is_bookmarked=book.is_bookmarked,  # type: ignore
+                    is_bookmarked=getattr(book, "is_bookmarked", None),  # type: ignore
                 )
             )
         return results
@@ -388,6 +392,8 @@ def marked_as_sold(request: HttpRequest, id: int):
 
     if book.is_sold:
         return 400, {"detail": "Book is already marked as sold."}
+    if not book.is_reviewed:
+        return 400, {"detail": "Unreviewed book can't be mark as sold."}
 
     book.is_sold = True
     book.save()
@@ -417,6 +423,9 @@ def partial_update_book(
         return 403, {"detail": "Permission denied."}
     if book.is_sold:
         return 400, {"detail": "You can't edit sold book."}
+
+    if book.is_reviewed and book.is_rejected:
+        return 400, {"detail": "You can't edit rejected book."}
 
     for attr, value in payload.items():  # type: ignore
         setattr(book, attr, value)  # type: ignore
@@ -456,7 +465,7 @@ def delete_book(request: HttpRequest, id: int):
 def create_bookmark(request: HttpRequest, data: CreateBookMarkSchema):
     """Create book schema"""
     user = request.user
-
+    # Bookmark is already created using signal
     book_exists = Book.objects.filter(id=data.book_id).exists()
     if not book_exists:
         return 400, {"detail": "Book does not exist."}
@@ -476,18 +485,18 @@ def create_bookmark(request: HttpRequest, data: CreateBookMarkSchema):
 def get_bookmark(request: HttpRequest):
     """Get bookmark"""
     user = request.user
+    user_bookmarks = BookMark.objects.filter(user=user)
+    if not user_bookmarks.exists():
+        return 404, BookMarkScehma()
 
-    bookmark = (
-        BookMark.objects.filter(user=user)
-        .prefetch_related(
-            Prefetch(
-                "items",
-                queryset=BookMarkItem.objects.select_related("book"),
-            )
+    bookmark = user_bookmarks.prefetch_related(
+        Prefetch(
+            "items",
+            queryset=BookMarkItem.objects.select_related("book"),
         )
-        .first()
-    )
+    ).first()
     # print(connection.queries)
+    print(bookmark, "bookmark")
     return bookmark
 
 
