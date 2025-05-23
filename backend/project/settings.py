@@ -65,7 +65,7 @@ MIDDLEWARE = [
 
 WHITENOISE_SPA_ROOT = BASE_DIR / "dist"
 WHITENOISE_SPA_URL_PATTERN = (
-    r"^/(?:|login(?:/.*)?|book/?|register/?|sell/?|mybooks/?|bookmarks/?|)$"
+    r"^/(?:|login(?:/.*)?|books/?|register/?|sell/?|mybooks/?|bookmarks/?|)$"
 )
 
 ROOT_URLCONF = "project.urls"

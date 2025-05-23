@@ -7,7 +7,7 @@ class Environment(BaseSettings):
     DEBUG: bool = True
     POSTGRES_HOST: str = "localhost"
     POSTGRES_USER: str = "postgres"
-    POSTGRES_DB: str = "near_book_db"
+    POSTGRES_DB: str = "local_book_db"
     POSTGRES_PASSWORD: str = "postgres"
     POSTGRES_PORT: int = 5432
     ALLOWED_HOSTS: str = "*"

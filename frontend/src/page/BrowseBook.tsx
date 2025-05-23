@@ -13,7 +13,7 @@ import {
   useCoreApiListBooks,
 } from "@/gen";
 
-const LIMIT = 25;
+const LIMIT = 6;
 
 export default function BrowseBook() {
   const { latitude, longitude } = useGeoLocation();

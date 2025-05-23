@@ -230,7 +230,7 @@ def create_book(request: HttpRequest, data: CreateBookSchema):
 
     if data.latitude and data.longitude:
         book_location = Point(data.longitude, data.latitude, srid=4326)
-        print(book_location)
+        # print(book_location)
 
     try:
         Book.objects.create(

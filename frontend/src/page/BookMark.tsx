@@ -25,7 +25,7 @@ export default function BookMark() {
                 />
               ))}
           </div>
-        ) : bookmarks?.bookmark_item.length === 0 ? (
+        ) : bookmarks?.bookmark_item?.length === 0 ? (
           <div className="mt-24 w-full flex items-center justify-center flex-col">
             <p className="text-xl font-semibold text-gray-500">
               No bookmarks found 📚
