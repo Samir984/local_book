@@ -1,6 +1,4 @@
 FROM python:3.11-alpine
-# curl is used for healthchecks
-RUN apk --no-cache add curl
 RUN apk update && \
     apk add --no-cache \
         # General build dependencies
