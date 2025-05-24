@@ -37,6 +37,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -293,7 +294,6 @@ export function MyBookTable() {
       },
       query: {
         staleTime: 1000 * 3,
-
         queryKey: ["mybooks", page, filters],
       },
     }
@@ -318,7 +318,6 @@ export function MyBookTable() {
     }
   }, [isFetching, books, isError]);
 
-  console.log(books, isError);
   const table = useReactTable({
     data: books?.items || [],
     columns,
@@ -342,6 +341,11 @@ export function MyBookTable() {
     },
   });
 
+  const handleFilterChange = (filter: string) => {
+    setFilters(filter);
+    setPage(1);
+  };
+
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
@@ -349,31 +353,31 @@ export function MyBookTable() {
           <div className="flex flex-1  justify-end pr-2">
             <div className="flex items-center gap-2 justify-end ">
               <Button
-                onClick={() => setFilters("all")}
+                onClick={() => handleFilterChange("all")}
                 className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "all" ? "bg-orange-700 text-white" : ""}`}
               >
                 All
               </Button>
               <Button
-                onClick={() => setFilters("sold")}
+                onClick={() => handleFilterChange("sold")}
                 className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "sold" ? "bg-orange-700 text-white" : ""}`}
               >
                 Sold
               </Button>
               <Button
-                onClick={() => setFilters("unreviewed")}
+                onClick={() => handleFilterChange("unreviewed")}
                 className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "unreviewed" ? "bg-orange-700 text-white" : ""}`}
               >
                 Unreviewed
               </Button>
               <Button
-                onClick={() => setFilters("accepted")}
+                onClick={() => handleFilterChange("accepted")}
                 className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "accepted" ? "bg-orange-700 text-white" : ""}`}
               >
                 Accepted
               </Button>
               <Button
-                onClick={() => setFilters("rejected")}
+                onClick={() => handleFilterChange("rejected")}
                 className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "rejected" ? "bg-orange-700 text-white" : ""}`}
               >
                 Rejected
@@ -465,6 +469,9 @@ export function MyBookTable() {
             )}
           </TableBody>
         </Table>
+      </div>
+      <div className="flex-1 text-sm text-muted-foreground">
+        Count: {books?.count || 0} | Page: {page} of {totalPage}
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="space-x-2">

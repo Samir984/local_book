@@ -34,10 +34,9 @@ const BookCard = ({ book }: BookCardProps) => {
           </div>
 
           {book.distance && book.distance !== "None" && (
-            <div className="text-base font-medium mt-1 text-green-600 ">
-              {Number(book.distance.trim().replace("m", "")).toFixed(2)} m away
-              you
-            </div>
+            <Badge variant="default" className="text-sm  mt-1 ">
+              {Number(book.distance.trim().replace("m", "")).toFixed(2)} m AWAY
+            </Badge>
           )}
           <div className="flex justify-between items-center mt-auto pt-3">
             <div className="flex items-center text-sm">

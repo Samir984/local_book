@@ -14,6 +14,7 @@ import BookDetailsPage from "./page/BookDetailsPage";
 
 import BookMark from "./page/BookMark";
 import MyBook from "./page/MyBook";
+import PageNotFound from "./page/PageNotFound";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
         <Register />
       </ProtectedRoute>
     ),
+  },
+  {
+    path: "*",
+    element: <PageNotFound />,
   },
 ]);
 
