@@ -2,6 +2,7 @@ import ModalPopover from "@/components/ModelPopOver";
 import ReportForm from "@/components/ReportForm";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthProvider";
 
 import {
   RemoveBookMarkItemScehma,
@@ -30,10 +31,13 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 function BookDetailsPage() {
+  const { isLoggedIn } = useAuth();
+
+  const navigate = useNavigate();
   const [openReportModal, setOpenReportModal] = useState(false);
   const { bookId } = useParams();
   const queryClient = useQueryClient();
@@ -79,6 +83,9 @@ function BookDetailsPage() {
   const book = useCoreApiGetBook(Number(bookId));
 
   const onBookMarkChange = function () {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
     const payload: RemoveBookMarkItemScehma = {
       book_id: book.data?.id as number,
     };
@@ -99,7 +106,7 @@ function BookDetailsPage() {
             ← Back to Books
           </Link>
         </div>
-        {book.isFetching ? (
+        {book.isLoading ? (
           <div className="flex justify-center items-center min-h-96">
             <LoaderIcon className="animate-spin h-6 w-6 mr-2" />
             <span>Loading ...</span>
@@ -246,6 +253,7 @@ function BookDetailsPage() {
                     variant="outline"
                     className="flex-1"
                     onClick={onBookMarkChange}
+                    disabled={book.isFetching}
                   >
                     {book.data?.is_bookmarked ? (
                       <>

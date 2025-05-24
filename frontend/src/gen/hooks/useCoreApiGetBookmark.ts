@@ -4,7 +4,7 @@
  */
 
 import client from '@kubb/plugin-client/clients/axios'
-import type { CoreApiGetBookmarkQueryResponse } from '../types/CoreApiGetBookmark.ts'
+import type { CoreApiGetBookmarkQueryResponse, CoreApiGetBookmark404 } from '../types/CoreApiGetBookmark.ts'
 import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/axios'
 import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
 import { queryOptions, useQuery } from '@tanstack/react-query'
@@ -21,7 +21,7 @@ export type CoreApiGetBookmarkQueryKey = ReturnType<typeof coreApiGetBookmarkQue
 export async function coreApiGetBookmark(config: Partial<RequestConfig> & { client?: typeof client } = {}) {
   const { client: request = client, ...requestConfig } = config
 
-  const res = await request<CoreApiGetBookmarkQueryResponse, ResponseErrorConfig<Error>, unknown>({
+  const res = await request<CoreApiGetBookmarkQueryResponse, ResponseErrorConfig<CoreApiGetBookmark404>, unknown>({
     method: 'GET',
     url: `/api/v1/bookmarks/`,
     ...requestConfig,
@@ -31,7 +31,7 @@ export async function coreApiGetBookmark(config: Partial<RequestConfig> & { clie
 
 export function coreApiGetBookmarkQueryOptions(config: Partial<RequestConfig> & { client?: typeof client } = {}) {
   const queryKey = coreApiGetBookmarkQueryKey()
-  return queryOptions<CoreApiGetBookmarkQueryResponse, ResponseErrorConfig<Error>, CoreApiGetBookmarkQueryResponse, typeof queryKey>({
+  return queryOptions<CoreApiGetBookmarkQueryResponse, ResponseErrorConfig<CoreApiGetBookmark404>, CoreApiGetBookmarkQueryResponse, typeof queryKey>({
     queryKey,
     queryFn: async ({ signal }) => {
       config.signal = signal
@@ -51,7 +51,9 @@ export function useCoreApiGetBookmark<
   TQueryKey extends QueryKey = CoreApiGetBookmarkQueryKey,
 >(
   options: {
-    query?: Partial<QueryObserverOptions<CoreApiGetBookmarkQueryResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>> & { client?: QueryClient }
+    query?: Partial<QueryObserverOptions<CoreApiGetBookmarkQueryResponse, ResponseErrorConfig<CoreApiGetBookmark404>, TData, TQueryData, TQueryKey>> & {
+      client?: QueryClient
+    }
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {
@@ -65,7 +67,7 @@ export function useCoreApiGetBookmark<
       ...(queryOptions as unknown as Omit<QueryObserverOptions, 'queryKey'>),
     },
     queryClient,
-  ) as UseQueryResult<TData, ResponseErrorConfig<Error>> & { queryKey: TQueryKey }
+  ) as UseQueryResult<TData, ResponseErrorConfig<CoreApiGetBookmark404>> & { queryKey: TQueryKey }
 
   query.queryKey = queryKey as TQueryKey
 

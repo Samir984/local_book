@@ -1,4 +1,5 @@
 from decimal import Decimal
+from typing import Literal
 from typing import Optional
 
 from ninja import Field
@@ -103,6 +104,12 @@ class PrivateBookScehma(ModelSchema):
             "is_rejected",
             "is_sold",
         ]
+
+
+class PrivateBookFilter(FilterSchema):
+    filter_by: Literal["all", "accepted", "rejected", "unreviewed", "sold"] = (
+        "all"
+    )
 
 
 class PartialUpdateBookSchema(Schema):

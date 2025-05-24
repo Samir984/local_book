@@ -44,7 +44,7 @@ export type {
   CoreApiDeleteFileMutation,
 } from './CoreApiDeleteFile.ts'
 export type { CoreApiGetBookPathParams, CoreApiGetBook200, CoreApiGetBook404, CoreApiGetBookQueryResponse, CoreApiGetBookQuery } from './CoreApiGetBook.ts'
-export type { CoreApiGetBookmark200, CoreApiGetBookmarkQueryResponse, CoreApiGetBookmarkQuery } from './CoreApiGetBookmark.ts'
+export type { CoreApiGetBookmark200, CoreApiGetBookmark404, CoreApiGetBookmarkQueryResponse, CoreApiGetBookmarkQuery } from './CoreApiGetBookmark.ts'
 export type {
   CoreApiGetFileUrlQueryParams,
   CoreApiGetFileUrl200,
@@ -63,6 +63,7 @@ export type {
 export type { CoreApiGetUser200, CoreApiGetUser401, CoreApiGetUserQueryResponse, CoreApiGetUserQuery } from './CoreApiGetUser.ts'
 export type { CoreApiListBooksQueryParams, CoreApiListBooks200, CoreApiListBooksQueryResponse, CoreApiListBooksQuery } from './CoreApiListBooks.ts'
 export type {
+  CoreApiListUserBooksQueryParamsFilterByEnum,
   CoreApiListUserBooksQueryParams,
   CoreApiListUserBooks200,
   CoreApiListUserBooksQueryResponse,
@@ -124,6 +125,7 @@ export type { LoginSchema } from './LoginSchema.ts'
 export type { PagedPrivateBookScehma } from './PagedPrivateBookScehma.ts'
 export type { PagedPublicBookScehma } from './PagedPublicBookScehma.ts'
 export type { PartialUpdateBookSchemaPatch } from './PartialUpdateBookSchemaPatch.ts'
+export type { PrivateBookFilterFilterByEnum, PrivateBookFilter } from './PrivateBookFilter.ts'
 export type { PrivateBookScehma } from './PrivateBookScehma.ts'
 export type { PublicBookScehma } from './PublicBookScehma.ts'
 export type { RegisterSchema } from './RegisterSchema.ts'
@@ -134,3 +136,5 @@ export type { S3UploadURLResponseScehma } from './S3UploadURLResponseScehma.ts'
 export type { UserSchema } from './UserSchema.ts'
 export { bookCategoryChoicesEnum } from './BookCategoryChoices.ts'
 export { bookConditionChoicesEnum } from './BookConditionChoices.ts'
+export { coreApiListUserBooksQueryParamsFilterByEnum } from './CoreApiListUserBooks.ts'
+export { privateBookFilterFilterByEnum } from './PrivateBookFilter.ts'

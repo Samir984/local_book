@@ -48,9 +48,12 @@ export default function ReportForm({
   };
   return (
     <div className="p-4">
-      <h3 className="text-lg font-semibold mb-2">Report Book</h3>
+      <h3 className="text-lg font-semibold mb-2 text-red-700">
+        Report This Book
+      </h3>
+      {/* Title in red */}
       <p className="text-gray-600 mb-4">
-        Please provide a reason for reporting this book.
+        Please provide a detailed reason for reporting the book.
       </p>
       <form>
         <Textarea
@@ -64,7 +67,7 @@ export default function ReportForm({
             Cancel
           </Button>
           <Button
-            className="ml-2"
+            className="ml-2 bg-red-600 hover:bg-red-700 text-white"
             type="submit"
             onClick={handleSubmit}
             disabled={isSubmitting || reason.length <= 0}

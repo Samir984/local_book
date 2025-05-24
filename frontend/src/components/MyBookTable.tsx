@@ -43,6 +43,7 @@ import {
 } from "@/components/ui/table";
 import {
   coreApiDeleteBook,
+  CoreApiListUserBooksQueryParamsFilterByEnum,
   coreApiMarkedAsSold,
   PrivateBookScehma,
   useCoreApiListUserBooks,
@@ -52,6 +53,7 @@ import Cookies from "js-cookie";
 import EditBookForm from "./EditForm";
 import ModalPopover from "./ModelPopOver";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface BookActionsProps {
   book: PrivateBookScehma;
@@ -150,7 +152,9 @@ export const columns: ColumnDef<PrivateBookScehma>[] = [
   {
     accessorKey: "name",
     header: () => <div className="px-4">Name</div>,
-    cell: ({ row }) => <div className="px-4">{row.getValue("name")}</div>,
+    cell: ({ row }) => (
+      <div className="px-4 font-semibold font-base">{row.getValue("name")}</div>
+    ),
   },
   {
     accessorKey: "book_image",
@@ -171,7 +175,13 @@ export const columns: ColumnDef<PrivateBookScehma>[] = [
     cell: ({ row }) => {
       return (
         <div className="text-right font-medium">
-          Rs. {parseFloat(row.getValue("price"))}
+          {parseFloat(row.getValue("price")) === 0 ? (
+            <span className="text-xs font-semibold px-2 py-1 rounded-md bg-blue-100 text-blue-700">
+              Donate
+            </span>
+          ) : (
+            `Rs. ${parseFloat(row.getValue("price")).toFixed(2)}`
+          )}
         </div>
       );
     },
@@ -183,12 +193,22 @@ export const columns: ColumnDef<PrivateBookScehma>[] = [
       console.log(row);
       const book = row.original;
       return (
-        <div className="text-right font-medium">
-          {book.is_reviewed && book.is_accepted
-            ? "Accepted"
-            : book.is_reviewed && book.is_rejected
-              ? "Rejected"
-              : "Pending"}
+        <div className="text-right font-medium ">
+          <span
+            className={`text-xs font-semibold px-2 py-1 rounded-md ${
+              book.is_reviewed && book.is_accepted
+                ? "bg-green-100 text-green-700"
+                : book.is_reviewed && book.is_rejected
+                  ? "bg-red-100 text-red-700"
+                  : "bg-orange-100 text-orange-700"
+            }`}
+          >
+            {book.is_reviewed && book.is_accepted
+              ? "Accepted"
+              : book.is_reviewed && book.is_rejected
+                ? "Rejected"
+                : "Unreviewed"}
+          </span>
         </div>
       );
     },
@@ -198,8 +218,16 @@ export const columns: ColumnDef<PrivateBookScehma>[] = [
     header: () => <div className="text-right ">Sold</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-center flex  justify-end font-medium">
-          {row.getValue("is_sold") ? <CheckCheckIcon /> : <X />}
+        <div className="text-center flex justify-end font-medium">
+          {row.getValue("is_sold") ? (
+            <span className="text-xs font-semibold px-2 py-1 rounded-md bg-green-100 text-green-700 flex items-center gap-1">
+              <CheckCheckIcon className="h-4 w-4" /> sold
+            </span>
+          ) : (
+            <span className="text-xs font-semibold px-2 py-1 rounded-md bg-red-100 text-red-700 flex items-center gap-1">
+              <X className="h-4 w-4" /> not-sold
+            </span>
+          )}
         </div>
       );
     },
@@ -229,8 +257,11 @@ export const columns: ColumnDef<PrivateBookScehma>[] = [
     },
   },
 ];
-const LIMIT = 2;
+const LIMIT = 10;
 export function MyBookTable() {
+  // const { isLoggedIn } = useAuth();
+
+  const [filters, setFilters] = React.useState("all");
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -240,13 +271,17 @@ export function MyBookTable() {
   const [rowSelection, setRowSelection] = React.useState({});
   const [page, setPage] = React.useState(1);
   const [totalPage, setTotalPage] = React.useState(1);
+  const queryClient = useQueryClient();
 
   const {
     data: books,
     isFetching,
+    isLoading,
+    isError,
     refetch,
   } = useCoreApiListUserBooks(
     {
+      filter_by: filters as CoreApiListUserBooksQueryParamsFilterByEnum,
       limit: LIMIT,
       offset: (page - 1) * LIMIT,
     },
@@ -257,19 +292,33 @@ export function MyBookTable() {
         },
       },
       query: {
-        staleTime: 1000 * 30,
-        queryKey: ["mybooks", page],
+        staleTime: 1000 * 3,
+
+        queryKey: ["mybooks", page, filters],
       },
     }
   );
 
   React.useEffect(() => {
-    if (!isFetching && books) {
+    if (isError) {
+      queryClient.setQueryData(["mybooks", page], () => {
+        return {
+          items: [],
+          count: 0,
+        };
+      });
+      setPage(1);
+      setTotalPage(0);
+    }
+  }, [isError, page, queryClient]);
+
+  React.useEffect(() => {
+    if (!isFetching && books && !isError) {
       setTotalPage(Math.ceil(books.count / LIMIT || 0));
     }
-  }, [isFetching, books]);
+  }, [isFetching, books, isError]);
 
-  console.log(books);
+  console.log(books, isError);
   const table = useReactTable({
     data: books?.items || [],
     columns,
@@ -292,13 +341,45 @@ export function MyBookTable() {
       refetch,
     },
   });
-  console.log(books);
 
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <div className="flex gap-4"></div>
         <DropdownMenu>
+          <div className="flex flex-1  justify-end pr-2">
+            <div className="flex items-center gap-2 justify-end ">
+              <Button
+                onClick={() => setFilters("all")}
+                className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "all" ? "bg-orange-700 text-white" : ""}`}
+              >
+                All
+              </Button>
+              <Button
+                onClick={() => setFilters("sold")}
+                className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "sold" ? "bg-orange-700 text-white" : ""}`}
+              >
+                Sold
+              </Button>
+              <Button
+                onClick={() => setFilters("unreviewed")}
+                className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "unreviewed" ? "bg-orange-700 text-white" : ""}`}
+              >
+                Unreviewed
+              </Button>
+              <Button
+                onClick={() => setFilters("accepted")}
+                className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "accepted" ? "bg-orange-700 text-white" : ""}`}
+              >
+                Accepted
+              </Button>
+              <Button
+                onClick={() => setFilters("rejected")}
+                className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "rejected" ? "bg-orange-700 text-white" : ""}`}
+              >
+                Rejected
+              </Button>
+            </div>
+          </div>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
               Columns <ChevronDown />
@@ -347,7 +428,7 @@ export function MyBookTable() {
             ))}
           </TableHeader>
           <TableBody>
-            {isFetching === true ? (
+            {isLoading === true ? (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
@@ -356,7 +437,7 @@ export function MyBookTable() {
                   loading ...
                 </TableCell>
               </TableRow>
-            ) : table.getRowModel().rows?.length ? (
+            ) : !isError && table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -378,7 +459,7 @@ export function MyBookTable() {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No results found.
                 </TableCell>
               </TableRow>
             )}
@@ -386,14 +467,9 @@ export function MyBookTable() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"
-            size="sm"
             disabled={page <= 1}
             onClick={() => setPage(page - 1)}
           >
@@ -401,7 +477,6 @@ export function MyBookTable() {
           </Button>
           <Button
             variant="outline"
-            size="sm"
             disabled={totalPage <= page}
             onClick={() => setPage(page + 1)}
           >

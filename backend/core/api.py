@@ -33,6 +33,7 @@ from core.schema import CreateBookSchema
 from core.schema import GenericSchema
 from core.schema import LoginSchema
 from core.schema import PartialUpdateBookSchema
+from core.schema import PrivateBookFilter
 from core.schema import PrivateBookScehma
 from core.schema import PublicBookScehma
 from core.schema import RegisterSchema
@@ -348,10 +349,21 @@ def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  #
 @paginate
 def list_user_books(
     request: HttpRequest,
+    filters: PrivateBookFilter = Query(...),
 ):
     "Get user book"
     user = request.user
+    filter_by = filters.filter_by
+
     queryset = Book.objects.filter(user=user).select_related("user")
+    if filter_by == "sold":
+        queryset = queryset.filter(is_sold=True)
+    elif filter_by == "unreviewed":
+        queryset = queryset.filter(is_reviewed=False)
+    elif filter_by == "rejected":
+        queryset = queryset.filter(is_reviewed=True, is_rejected=True)
+    elif filter_by == "accepted":
+        queryset = queryset.filter(is_reviewed=True, is_accepted=True)
 
     return queryset
 
@@ -451,7 +463,6 @@ def delete_book(request: HttpRequest, id: int):
         return 403, {"detail": "Permission denied."}
 
     try:
-
         delete_image_from_s3(str(book.book_image))
     except Exception as e:
         print(e)

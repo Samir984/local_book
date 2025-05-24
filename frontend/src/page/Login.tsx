@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock, AlertCircle } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useCoreApiLoginUser } from "@/gen";
@@ -53,14 +53,13 @@ function Login() {
         toast.error(
           `Error: ${error.response?.data.detail || "Fail to login."}`
         );
-        reset();
       },
     },
   });
 
-  const onSubmit = (data: LoginSchemaType) => {
+  const onSubmit = async (data: LoginSchemaType) => {
     console.log(data);
-    LoginMutation.mutate({ data });
+    await LoginMutation.mutateAsync({ data });
   };
 
   return (
@@ -114,12 +113,20 @@ function Login() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button className="w-full">Login</Button>
+            {LoginMutation.isError && (
+              <div className="flex items-center justify-center gap-2 text-red-400 font-semibold text-lg text-center p-2 rounded-md bg-red-50 border border-red-200 w-full">
+                <AlertCircle className="w-5 h-5" />
+                <span>Invalid Credentials</span>
+              </div>
+            )}
+            <Button className="w-full" disabled={LoginMutation.isPending}>
+              Login
+            </Button>
             <div className="text-sm text-center">
               Don't have an account?{" "}
               <Link
                 to="/register"
-                className="font-medium text-primary hover:text-primary/80"
+                className="font-medium text-blue-500 hover:text-blue-600/80"
               >
                 Register
               </Link>

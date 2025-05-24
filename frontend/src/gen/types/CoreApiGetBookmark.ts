@@ -4,15 +4,21 @@
  */
 
 import type { BookMarkScehma } from './BookMarkScehma.ts'
+import type { GenericSchema } from './GenericSchema.ts'
 
 /**
  * @description OK
  */
 export type CoreApiGetBookmark200 = BookMarkScehma
 
+/**
+ * @description Not Found
+ */
+export type CoreApiGetBookmark404 = GenericSchema
+
 export type CoreApiGetBookmarkQueryResponse = CoreApiGetBookmark200
 
 export type CoreApiGetBookmarkQuery = {
   Response: CoreApiGetBookmark200
-  Errors: any
+  Errors: CoreApiGetBookmark404
 }

@@ -259,7 +259,7 @@ export default function BookFilter() {
 
         {/* Sort by */}
         <div className="flex flex-col gap-2">
-          <span className="text-sm font-medium">Sort by</span>
+          <span className="text-sm font-medium">Sort by price</span>
           <div className="relative">
             <X
               className={`absolute top-2 p-1 rounded-full bg-gray-100 text-black right-2 cursor-pointer ${getQueryValue("sortBy") === "" && "hidden"}`}
@@ -273,8 +273,8 @@ export default function BookFilter() {
                 <SelectValue placeholder="Sort by price" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="asc">Low to heigh</SelectItem>
-                <SelectItem value="dec">high to low</SelectItem>
+                <SelectItem value="asc">Low to high</SelectItem>
+                <SelectItem value="desc">high to low</SelectItem>
               </SelectContent>
             </Select>
           </div>

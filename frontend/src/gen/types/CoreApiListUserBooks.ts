@@ -5,7 +5,23 @@
 
 import type { PagedPrivateBookScehma } from './PagedPrivateBookScehma.ts'
 
+export const coreApiListUserBooksQueryParamsFilterByEnum = {
+  all: 'all',
+  accepted: 'accepted',
+  rejected: 'rejected',
+  reviewed: 'reviewed',
+  sold: 'sold',
+} as const
+
+export type CoreApiListUserBooksQueryParamsFilterByEnum =
+  (typeof coreApiListUserBooksQueryParamsFilterByEnum)[keyof typeof coreApiListUserBooksQueryParamsFilterByEnum]
+
 export type CoreApiListUserBooksQueryParams = {
+  /**
+   * @default "all"
+   * @type string | undefined
+   */
+  filter_by?: CoreApiListUserBooksQueryParamsFilterByEnum
   /**
    * @minLength 1
    * @default 100

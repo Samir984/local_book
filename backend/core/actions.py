@@ -25,10 +25,11 @@ def accept_book(
             book.is_reviewed = True
             book.is_accepted = True
             book.save(update_fields=["is_reviewed", "is_accepted"])
-            return messages.success(
-                request,
-                f"{count} books are reviewed as accepted.",
-            )
+
+    return messages.success(
+        request,
+        f"{count} books are reviewed as accepted.",
+    )
 
 
 def disable_book(

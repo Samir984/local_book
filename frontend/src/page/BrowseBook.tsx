@@ -10,8 +10,11 @@ import { BookPagination } from "@/components/BookPagination";
 import {
   BookCategoryChoicesEnum,
   BookConditionChoicesEnum,
+  PagedPublicBookScehma,
+  PublicBookScehma,
   useCoreApiListBooks,
 } from "@/gen";
+
 
 const LIMIT = 6;
 
@@ -58,6 +61,37 @@ export default function BrowseBook() {
       },
     }
   );
+
+  function sortByPrice(
+    books: PagedPublicBookScehma | undefined,
+    sortBy: string | null
+  ) {
+    if (!sortBy || !books) return books;
+    else if (sortBy === "asc") {
+      return {
+        ...books,
+        items: books.items.sort(
+          (a: PublicBookScehma, b: PublicBookScehma) =>
+            Number(a.price) - Number(b.price)
+        ),
+        count: books.items.length,
+      };
+    } else if (sortBy === "desc") {
+      return {
+        ...books,
+        items: books.items.sort(
+          (a: PublicBookScehma, b: PublicBookScehma) =>
+            Number(b.price) - Number(a.price)
+        ),
+        count: books.items.length,
+      };
+    }
+  }
+
+  const sortBy = searchParams.get("sortBy");
+  const filterBooks = sortByPrice(books, sortBy);
+
+  console.log(books);
 
   return (
     <div className="px-4 py-6 flex flex-wrap gap-6 h-full flex-col  sidebar:flex-row relative">
@@ -123,7 +157,7 @@ export default function BrowseBook() {
           </div>
         ) : (
           <div className="grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-            {books?.items.map((book) => <BookCard book={book} key={book.id} />)}
+            {filterBooks?.items.map((book) => <BookCard book={book} key={book.id} />)}
           </div>
         )}
         {books && books?.count > 0 && (

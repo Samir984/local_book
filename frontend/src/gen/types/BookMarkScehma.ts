@@ -6,6 +6,13 @@
 import type { BookMarkItemSchema } from './BookMarkItemSchema.ts'
 
 export type BookMarkScehma = {
-  bookmark_item?: BookMarkItemSchema[] | null
+  /**
+   * @type array | undefined
+   */
+  bookmark_item?: BookMarkItemSchema[]
   id?: number | null
+  /**
+   * @type integer
+   */
+  user: number
 }

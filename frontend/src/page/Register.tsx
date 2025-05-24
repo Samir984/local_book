@@ -9,7 +9,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Lock, Phone, LocateFixed } from "lucide-react";
@@ -42,11 +42,24 @@ const RegisterSchema = z.object({
 type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 
 function Register() {
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<RegisterSchemaType>({
+    resolver: zodResolver(RegisterSchema),
+    defaultValues: {},
+  });
   const signupMutation = useCoreApiRegisterUser({
     mutation: {
       onSuccess: (data) => {
         console.log("response:", data);
         toast.success(data.detail);
+        navigate("/login");
+        reset();
       },
       onError: (error) => {
         console.error("Error registering user", error);
@@ -55,16 +68,6 @@ function Register() {
         );
       },
     },
-  });
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<RegisterSchemaType>({
-    resolver: zodResolver(RegisterSchema),
-    defaultValues: {},
   });
   const username = watch("username");
   const debounceUsername = useDebounce(username || "");
@@ -246,7 +249,7 @@ function Register() {
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="font-medium text-primary hover:text-primary/80"
+                className="font-medium text-blue-500 hover:text-blue-600/80"
               >
                 Sign in
               </Link>
