@@ -81,11 +81,13 @@ def register_user(request: HttpRequest, data: RegisterSchema):
 
     if User.objects.filter(username=data.username).exists():
         return 400, {"detail": "Username already exists."}
+    if User.objects.filter(email=data.email).exists():
+        return 400, {"detail": "Email already exists."}
 
     user = User(
         **data.dict(exclude={"password"}),
     )
-    print(user)
+
     user.set_password(data.password)
     user.save()
     return 201, {"detail": "User registered successfully."}

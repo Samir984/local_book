@@ -46,6 +46,7 @@ import {
 import Cookies from "js-cookie";
 import { uploadToS3 } from "@/utils/utils";
 import { useGeoLocation } from "@/context/GeoLocationProvider";
+import { useAuth } from "@/context/AuthProvider";
 
 // Define your schema
 const CreateBookSchema = z.object({
@@ -80,6 +81,7 @@ const CreateBookSchema = z.object({
 type CreateBookSchemaType = z.infer<typeof CreateBookSchema>;
 
 function SellBook() {
+  const { isLoggedIn } = useAuth();
   const [bookImage, setBookImage] = useState<string | ArrayBuffer | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [fileNotSetError, setFileNotSetError] = useState(false);
@@ -111,7 +113,7 @@ function SellBook() {
         console.log(data);
         toast.success(data.detail);
         setBookImage(null);
-        form.reset();
+        form.reset({});
         setImageFile(null);
         setIsSubmitting(false);
         setTriggerAlertBox(false);
@@ -175,7 +177,10 @@ function SellBook() {
       setFileNotSetError(true);
       return;
     }
-    console.log(latitude, longitude);
+    if (!isLoggedIn) {
+      return toast.error("Please loggin to Submit form");
+    }
+
     if (!latitude || !longitude) {
       setTriggerAlertBox(true);
       return;
@@ -207,6 +212,7 @@ function SellBook() {
       });
     } catch (error) {
       console.log(error);
+      setIsSubmitting(false);
       toast.error("Failed to submit form");
     }
   };
@@ -235,10 +241,10 @@ function SellBook() {
       });
     } catch (error) {
       console.log(error);
+      setIsSubmitting(false);
       setTimeout(() => toast.error("Submit failed."), 1000);
     }
   };
-  console.log(triggerAlertBox);
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">

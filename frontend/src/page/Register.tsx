@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Lock, Phone, LocateFixed } from "lucide-react";
 
 import { z } from "zod";
-import { useCoreApiCheckUsername, useCoreApiRegisterUser } from "@/gen";
+import { coreApiCheckUsername, useCoreApiRegisterUser } from "@/gen";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import useDebounce from "@/hooks/useDebounce";
@@ -48,11 +48,17 @@ function Register() {
     handleSubmit,
     watch,
     reset,
+    setError,
+    getValues,
+    clearErrors,
+    setFocus,
+
     formState: { errors },
   } = useForm<RegisterSchemaType>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {},
   });
+
   const signupMutation = useCoreApiRegisterUser({
     mutation: {
       onSuccess: (data) => {
@@ -62,38 +68,65 @@ function Register() {
         reset();
       },
       onError: (error) => {
-        console.error("Error registering user", error);
-        toast.error(
-          `Error: ${error.response?.data.detail || "Fail to resister."}`
-        );
+        console.error(error);
+
+        const errorMessage = String(error.response?.data.detail || "");
+        toast.error(error.response?.data.detail || "Failed to register.");
+
+        if (errorMessage.toLowerCase().includes("email")) {
+          setError("email", {
+            type: "emailExits",
+            message: errorMessage,
+          });
+          setFocus("email");
+        }
+        // Fallback for general errors if specific conditions aren't met
       },
     },
   });
   const username = watch("username");
-  const debounceUsername = useDebounce(username || "");
-  const {
-    data: checkUserName,
-    isFetching: isCheckingUserName,
-    refetch: refetchCheckUsername,
-  } = useCoreApiCheckUsername({
-    username: debounceUsername,
-  });
+  const debounceUsername = useDebounce(username || "", 300);
 
   const onSubmit = (data: RegisterSchemaType) => {
-    if (!checkUserName?.detail) {
-      toast.error("Form validation failed.");
+    if (errors.username?.message) {
+      setError("username", {
+        type: "userNameCheck",
+        message: errors.username?.message,
+      });
+      setFocus("username");
       return;
     }
+
     signupMutation.mutate({ data });
   };
 
   useEffect(() => {
-    function checkUsername() {
-      refetchCheckUsername();
+    async function checkUsername() {
+      try {
+        await coreApiCheckUsername({ username: debounceUsername });
+
+        if (errors.username?.type === "userNameCheck") {
+          clearErrors("username");
+        }
+      } catch (error) {
+        if (error) {
+          const err = error as { response?: { data?: { detail?: string } } };
+          setError("username", {
+            type: "userNameCheck",
+            message: err.response?.data?.detail || "Username already exists",
+          });
+        }
+      }
     }
 
     checkUsername();
-  }, [debounceUsername, refetchCheckUsername]);
+  }, [
+    debounceUsername,
+    getValues,
+    setError,
+    clearErrors,
+    errors.username?.type,
+  ]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -150,14 +183,11 @@ function Register() {
                   id="username"
                   type="text"
                   placeholder="johndoe"
-                  className={`${username && !checkUserName?.detail ? "border-red-600" : ""}`}
+                  className={`${errors.username?.message ? "border-red-600" : ""}`}
                   {...register("username")}
                 />
                 {
                   <p className="text-[12px]  text-red-500 ">
-                    {!isCheckingUserName &&
-                      !checkUserName?.detail &&
-                      `${debounceUsername} is already taken`}
                     {errors.username?.message}
                   </p>
                 }
@@ -210,13 +240,13 @@ function Register() {
                   id="location"
                   type="text"
                   placeholder="location"
-                  className={`pl-10 ${errors.phone_number ? "border-red-600" : ""}`}
+                  className={`pl-10 ${errors.location ? "border-red-600" : ""}`}
                   {...register("location")}
                   required
                 />
                 {
                   <p className="text-[12px]  text-red-500 ">
-                    {errors.phone_number?.message}
+                    {errors.location?.message}
                   </p>
                 }
               </div>

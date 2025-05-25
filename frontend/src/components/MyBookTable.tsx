@@ -37,7 +37,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -118,17 +117,22 @@ const BookActions: React.FC<BookActionsProps> = ({ book, refetch }) => {
             className="flex gap-2 transition-colors duration-150 ease-in-out hover:bg-gray-200 hover:text-orange-700"
             onClick={() => {
               async function deleteBook() {
-                const res = await coreApiDeleteBook(book.id as number, {
-                  headers: {
-                    "X-CSRFToken": Cookies.get("csrftoken"),
-                  },
-                });
+                try {
+                  const res = await coreApiDeleteBook(book.id as number, {
+                    headers: {
+                      "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
+                  });
 
-                toast.success(res.detail);
-
-                refetch();
+                  toast.success(res.detail);
+                  refetch();
+                } catch (err) {
+                  toast.error(
+                    // @ts-ignore
+                    err.response.data.detail || "Some thing went wrong"
+                  );
+                }
               }
-
               deleteBook();
             }}
           >
