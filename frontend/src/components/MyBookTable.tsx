@@ -351,37 +351,37 @@ export function MyBookTable() {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 ">
         <DropdownMenu>
-          <div className="flex flex-1  justify-end pr-2">
-            <div className="flex items-center gap-2 justify-end ">
+          <div className="flex  justify-end pr-2 min-w-40   ">
+            <div className="flex items-center gap-2  flex-wrap">
               <Button
                 onClick={() => handleFilterChange("all")}
-                className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "all" ? "bg-orange-700 text-white" : ""}`}
+                className={`text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "all" ? "bg-orange-700 text-white" : ""}`}
               >
                 All
               </Button>
               <Button
                 onClick={() => handleFilterChange("sold")}
-                className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "sold" ? "bg-orange-700 text-white" : ""}`}
+                className={`text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "sold" ? "bg-orange-700 text-white" : ""}`}
               >
                 Sold
               </Button>
               <Button
                 onClick={() => handleFilterChange("unreviewed")}
-                className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "unreviewed" ? "bg-orange-700 text-white" : ""}`}
+                className={`text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "unreviewed" ? "bg-orange-700 text-white" : ""}`}
               >
                 Unreviewed
               </Button>
               <Button
                 onClick={() => handleFilterChange("accepted")}
-                className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "accepted" ? "bg-orange-700 text-white" : ""}`}
+                className={`text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "accepted" ? "bg-orange-700 text-white" : ""}`}
               >
                 Accepted
               </Button>
               <Button
                 onClick={() => handleFilterChange("rejected")}
-                className={`px-2  text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "rejected" ? "bg-orange-700 text-white" : ""}`}
+                className={`text-black  bg-transparent hover:bg-orange-700 hover:text-white ${filters === "rejected" ? "bg-orange-700 text-white" : ""}`}
               >
                 Rejected
               </Button>

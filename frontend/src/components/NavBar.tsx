@@ -15,7 +15,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-md py-4 sticky top-0 z-40">
-      <div className="max-w-[1440px] mx-auto px-4">
+      <div className="max-w-[1440px] mx-auto  px-0 md:px-4">
         <div className="flex justify-between items-center">
           {/* Logo & Brand */}
           <Link to="/" className="flex items-center space-x-2">
@@ -28,7 +28,7 @@ const Navbar = () => {
           </Link>
 
           {/* Navigation Links - Desktop */}
-          <div className="hidden md:flex space-x-4 items-center">
+          <div className="hidden md:flex md:space-x-0 lg:space-x-6  items-center">
             <Link
               to="/books"
               className="text-bookworm-gray hover:text-bookworm-primary px-3 py-2 text-sm font-medium"
@@ -60,14 +60,14 @@ const Navbar = () => {
             ) : isLoggedIn ? (
               <Profile user={user} />
             ) : (
-              <>
+              <div className="flex gap-2">
                 <Link to="/login">
                   <Button variant="outline">Sign In</Button>
                 </Link>
                 <Link to="/register">
                   <Button>Register</Button>
                 </Link>
-              </>
+              </div>
             )}
           </div>
 
@@ -85,14 +85,14 @@ const Navbar = () => {
               ) : isLoggedIn ? (
                 <Profile user={user} />
               ) : (
-                <>
+                <div className="flex gap-2">
                   <Link to="/login">
                     <Button variant="outline">Sign In</Button>
                   </Link>
                   <Link to="/register">
                     <Button>Register</Button>
                   </Link>
-                </>
+                </div>
               )}
             </div>
           </div>
