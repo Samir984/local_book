@@ -80,18 +80,22 @@ function BookDetailsPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  const book = useCoreApiGetBook(Number(bookId));
+  const {
+    data: book,
+    isLoading,
+    isFetching,
+  } = useCoreApiGetBook(Number(bookId));
 
   const onBookMarkChange = function () {
     if (!isLoggedIn) {
       navigate("/login");
     }
     const payload: RemoveBookMarkItemScehma = {
-      book_id: book.data?.id as number,
+      book_id: book?.id as number,
     };
-    if (book.data?.is_bookmarked === true) {
+    if (book?.is_bookmarked === true) {
       removeBookMark.mutate({ data: payload });
-    } else if (book.data?.is_bookmarked === false) {
+    } else if (book?.is_bookmarked === false) {
       addBookMark.mutate({ data: payload });
     }
   };
@@ -106,7 +110,7 @@ function BookDetailsPage() {
             ← Back to Books
           </Link>
         </div>
-        {book.isLoading ? (
+        {isLoading ? (
           <div className="flex justify-center items-center min-h-96">
             <LoaderIcon className="animate-spin h-6 w-6 mr-2" />
             <span>Loading ...</span>
@@ -116,17 +120,17 @@ function BookDetailsPage() {
             <div className="bg-white flex flex-col gap-2 justify-center border-2 border-gray-200 shadow-sm duration-300 transition-all  p-4">
               <div className=" p-4 min-w-96  min-h-96  rounded-lg flex justify-center items-center ">
                 <img
-                  src={book.data?.book_image}
-                  alt={book.data?.name}
+                  src={book?.book_image}
+                  alt={book?.name}
                   className="w-full  rounded-md"
                 />
               </div>
 
               <div className="  text-center">
                 <Badge className="bg-orange-700 mx-auto">
-                  {Number(book.data?.price) <= 0
+                  {Number(book?.price) <= 0
                     ? "Donate"
-                    : `Rs. ${Number(book.data?.price).toFixed(2)}`}
+                    : `Rs. ${Number(book?.price).toFixed(2)}`}
                 </Badge>
               </div>
             </div>
@@ -134,18 +138,18 @@ function BookDetailsPage() {
               <div className="bg-white p-4 rounded-lg mx-auto border-3 border-gray-200 md:min-w-96 h-full">
                 <div className="flex justify-between items-center">
                   <h3 className="text-xl font-semibold line-clamp-2 ">
-                    {book.data?.name}
+                    {book?.name}
                   </h3>
                   <div className="flex  items-center gap-4">
-                    {book.data?.is_sold && (
+                    {book?.is_sold && (
                       <Badge
                         variant="outline"
                         className="bg-gray-100 text-red-600 hover:bg-red-100 "
                       >
-                        {book.data.is_sold && "Not Avilable"}
+                        {book.is_sold && "Not Avilable"}
                       </Badge>
                     )}
-                    {book.data?.is_bookmarked && (
+                    {book?.is_bookmarked && (
                       <BookmarkIcon className="fill-orange-600" />
                     )}
                     <TooltipProvider>
@@ -169,7 +173,7 @@ function BookDetailsPage() {
                         closePopOver={() => setOpenReportModal(false)}
                       >
                         <ReportForm
-                          bookId={book.data?.id as number}
+                          bookId={book?.id as number}
                           closeModal={() => setOpenReportModal(false)}
                         />
                       </ModalPopover>
@@ -177,34 +181,34 @@ function BookDetailsPage() {
                   </div>
                 </div>
                 <p className="text-lg text-bookworm-gray mb-4">
-                  by {book.data?.user.first_name} {book.data?.user.last_name}
+                  by {book?.user.first_name} {book?.user.last_name}
                 </p>
 
                 <div className="mb-6">
                   <h3 className="font-semibold mb-2">Description</h3>
-                  <p className="text-bookworm-gray">{book.data?.description}</p>
+                  <p className="text-bookworm-gray">{book?.description}</p>
                 </div>
                 <div className="mb-6">
                   <div className="flex items-center mb-2 gap-2">
                     <Badge
                       variant="outline"
-                      className={`bg-gray-100 text-gray-600 hover:bg-gray-200 ${book.data?.category === "POOR" && "text-red-600"}`}
+                      className={`bg-gray-100 text-gray-600 hover:bg-gray-200 ${book?.category === "POOR" && "text-red-600"}`}
                     >
-                      {book.data?.category}
+                      {book?.category}
                     </Badge>
                     <Badge
                       variant="outline"
-                      className={`bg-gray-100 text-green-600 hover:bg-gray-200 ${book.data?.category === "POOR" && "text-red-600"}`}
+                      className={`bg-gray-100 text-green-600 hover:bg-gray-200 ${book?.category === "POOR" && "text-red-600"}`}
                     >
-                      {book.data?.condition}
+                      {book?.condition}
                     </Badge>
 
-                    {book.data?.grade && (
+                    {book?.grade && (
                       <Badge
                         variant="outline"
-                        className={`bg-gray-100 text-green-600 hover:bg-gray-200 ${book.data?.category === "POOR" && "text-red-600"}`}
+                        className={`bg-gray-100 text-green-600 hover:bg-gray-200 ${book?.category === "POOR" && "text-red-600"}`}
                       >
-                        {book.data?.grade}
+                        {book?.grade}
                       </Badge>
                     )}
                   </div>
@@ -215,11 +219,13 @@ function BookDetailsPage() {
                   <h3 className="font-semibold mb-3">Owner Information</h3>
                   <div className="flex items-center">
                     <div className="w-9 h-9 rounded-lg shadow-2xl flex justify-center items-center text-lg font-medium bg-orange-700 text-white">
-                      {book.data?.user?.first_name[0].toUpperCase()}
+                      {book?.user?.first_name === ""
+                        ? book.user.username[0].toUpperCase()
+                        : book?.user.first_name[0].toUpperCase()}
                     </div>
                     <div className="ml-4">
                       <p className="font-medium">
-                        {book.data?.user.first_name} {book.data?.user.last_name}
+                        {book?.user.first_name} {book?.user.last_name}
                       </p>
                     </div>
                   </div>
@@ -229,7 +235,7 @@ function BookDetailsPage() {
                         <span className="font-medium text-lg">Location:</span>
                         <MapPin className="h-4 w-4 " />
                         <span className="font-medium">
-                          {book.data?.user.location}
+                          {book?.user.location}
                         </span>
                       </div>
                       <div className="flex gap-2 items-center">
@@ -238,7 +244,7 @@ function BookDetailsPage() {
                         </span>
                         <Phone className="h-4 w-4 " />
                         <span className="font-medium">
-                          {book.data?.user.phone_number}
+                          {book?.user.phone_number}
                         </span>
                       </div>
                     </div>
@@ -253,9 +259,9 @@ function BookDetailsPage() {
                     variant="outline"
                     className="flex-1"
                     onClick={onBookMarkChange}
-                    disabled={book.isFetching}
+                    disabled={isFetching}
                   >
-                    {book.data?.is_bookmarked ? (
+                    {book?.is_bookmarked ? (
                       <>
                         <BookmarkMinus className="mr-2 h-4 w-4" />
                         Remove Bookmark
