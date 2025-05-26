@@ -50,7 +50,7 @@ import { useAuth } from "@/context/AuthProvider";
 
 // Define your schema
 const CreateBookSchema = z.object({
-  book_image: z.string(),
+  book_image: z.string().nonempty("Image field is required"),
   name: z.string().min(1, { message: "Book name is required" }),
   category: z.enum([
     bookCategoryChoicesEnum.TEXTBOOK,
@@ -82,9 +82,10 @@ type CreateBookSchemaType = z.infer<typeof CreateBookSchema>;
 
 function SellBook() {
   const { isLoggedIn } = useAuth();
-  const [bookImage, setBookImage] = useState<string | ArrayBuffer | null>(null);
+  const [bookImageToDisplay, setBookImageToDisplay] = useState<
+    string | ArrayBuffer | null
+  >(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [fileNotSetError, setFileNotSetError] = useState(false);
   const [triggerAlertBox, setTriggerAlertBox] = useState(false);
   const { latitude, longitude } = useGeoLocation();
   const [issubmitting, setIsSubmitting] = useState(false);
@@ -112,7 +113,7 @@ function SellBook() {
       onSuccess: (data) => {
         console.log(data);
         toast.success(data.detail);
-        setBookImage(null);
+        setBookImageToDisplay(null);
         form.reset({});
         setImageFile(null);
         setIsSubmitting(false);
@@ -148,19 +149,18 @@ function SellBook() {
       toast.error("File not accepted, file size must be less then 5MB");
       return;
     }
-    // return;
+
     if (!file) {
-      setBookImage(null);
-      setFileNotSetError(true);
+      setBookImageToDisplay(null);
       setImageFile(null);
       return;
     }
-    setFileNotSetError(false);
+
     setImageFile(file);
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setBookImage(reader.result);
+        setBookImageToDisplay(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -170,17 +170,9 @@ function SellBook() {
   const watchIs_school_book = watch("is_school_book");
 
   const onSubmit = async function (data: CreateBookSchemaType) {
-    console.log(data);
-    if (!imageFile) {
-      toast.error("File is not selected");
-      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      setFileNotSetError(true);
-      return;
-    }
     if (!isLoggedIn) {
       return toast.error("Please loggin to Submit form");
     }
-
     if (!latitude || !longitude) {
       setTriggerAlertBox(true);
       return;
@@ -192,6 +184,12 @@ function SellBook() {
 
     console.log(validData);
     handleSubmitFormWithGeoLocation(validData);
+  };
+
+  const onError = function () {
+    if (errors.book_image?.message) {
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    }
   };
 
   const handleSubmitFormWithGeoLocation = async function (
@@ -232,11 +230,11 @@ function SellBook() {
       setIsSubmitting(true);
 
       const key = await uploadToS3(imageFile);
-      data.book_image = key;
 
       await createBookMutation.mutateAsync({
         data: {
           ...validData,
+          book_image: key,
         },
       });
     } catch (error) {
@@ -255,7 +253,7 @@ function SellBook() {
         <div className=" max-w-7xl bg-gray-50 w-full py-8 px-6 rounded-lg">
           <Form {...form}>
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(onSubmit, onError)}
               className="w-full space-y-6"
             >
               {/* Book Images */}
@@ -274,15 +272,17 @@ function SellBook() {
                           "hover:bg-gray-100 dark:border-gray-800 dark:hover:border-gray-500",
                           "dark:hover:bg-gray-600",
 
-                          fileNotSetError === true ? "border-red-500" : ""
+                          errors.book_image?.message ? "border-red-500" : ""
                         )}
                       >
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                          {bookImage ? (
+                          {bookImageToDisplay ? (
                             <div className="w-60 h-[80%] mb-4 ">
                               <img
                                 src={
-                                  typeof bookImage === "string" ? bookImage : ""
+                                  typeof bookImageToDisplay === "string"
+                                    ? bookImageToDisplay
+                                    : ""
                                 }
                                 className="mx-auto inset-0 object-contain rounded-md"
                                 alt="book image"

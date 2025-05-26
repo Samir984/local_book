@@ -33,7 +33,6 @@ function Login() {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<LoginSchemaType>({
     resolver: zodResolver(LoginSchema),
   });

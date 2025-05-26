@@ -215,7 +215,7 @@ function BookDetailsPage() {
                   <h3 className="font-semibold mb-3">Owner Information</h3>
                   <div className="flex items-center">
                     <div className="w-9 h-9 rounded-lg shadow-2xl flex justify-center items-center text-lg font-medium bg-orange-700 text-white">
-                      {book.data?.user.first_name[0].toUpperCase()}
+                      {book.data?.user?.first_name[0].toUpperCase()}
                     </div>
                     <div className="ml-4">
                       <p className="font-medium">

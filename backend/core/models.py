@@ -23,7 +23,7 @@ class Book(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="books"
     )
-    book_image = models.ImageField(upload_to="book/")
+    book_image = models.ImageField(upload_to="books/")
     name = models.CharField(max_length=100)
     category = models.CharField(
         max_length=20,

@@ -351,7 +351,7 @@ def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  #
 @paginate
 def list_user_books(
     request: HttpRequest,
-    filters: PrivateBookFilter = Query(...),
+    filters: PrivateBookFilter = Query(...),  # type: ignore
 ):
     "Get user book"
     user = request.user

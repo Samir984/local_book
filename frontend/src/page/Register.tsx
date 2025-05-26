@@ -19,6 +19,7 @@ import { coreApiCheckUsername, useCoreApiRegisterUser } from "@/gen";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import useDebounce from "@/hooks/useDebounce";
+import { AxiosError } from "axios";
 
 const RegisterSchema = z.object({
   first_name: z
@@ -109,16 +110,21 @@ function Register() {
           clearErrors("username");
         }
       } catch (error) {
-        if (error) {
-          const err = error as { response?: { data?: { detail?: string } } };
-          setError("username", {
-            type: "userNameCheck",
-            message: err.response?.data?.detail || "Username already exists",
-          });
+        const axiosError = error as AxiosError;
+        if (axiosError.status === 500) {
+          toast.error("Some things went wrong. Please try later.");
+          return;
         }
+
+        setError("username", {
+          type: "userNameCheck",
+          message:
+            // @ts-ignore
+            axiosError.response?.data?.detail || "Username already exists",
+        });
       }
     }
-
+    if (debounceUsername.length <= 3) return;
     checkUsername();
   }, [
     debounceUsername,
