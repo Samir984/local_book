@@ -8,10 +8,9 @@ export default function ProtectedRoute({
   children: React.ReactNode;
 }) {
   const { isLoggedIn, isLoading } = useAuth();
-  console.log(isLoading);
 
   const navigate = useNavigate();
-  console.log(isLoggedIn, location);
+
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/", { replace: true });

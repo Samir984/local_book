@@ -42,7 +42,6 @@ function Login() {
   const LoginMutation = useCoreApiLoginUser({
     mutation: {
       onSuccess: (data) => {
-        console.log("response:", data);
         login(data);
         toast.success("Logged in successfully.");
         navigate("/");
@@ -57,7 +56,6 @@ function Login() {
   });
 
   const onSubmit = async (data: LoginSchemaType) => {
-    console.log(data);
     await LoginMutation.mutateAsync({ data });
   };
 

@@ -195,7 +195,6 @@ export const columns: ColumnDef<PrivateBookScehma>[] = [
     accessorKey: "status",
     header: () => <div className="text-right ">Status</div>,
     cell: ({ row }) => {
-      console.log(row);
       const book = row.original;
       return (
         <div className="text-right font-medium ">

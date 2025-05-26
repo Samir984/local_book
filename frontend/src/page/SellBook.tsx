@@ -111,7 +111,6 @@ function SellBook() {
   const createBookMutation = useCoreApiCreateBook({
     mutation: {
       onSuccess: (data) => {
-        console.log(data);
         toast.success(data.detail);
         setBookImageToDisplay(null);
         form.reset({});
@@ -120,7 +119,7 @@ function SellBook() {
         setTriggerAlertBox(false);
       },
       onError: (error) => {
-        console.log("Error:", error);
+        console.error("Error:", error);
         toast.error(
           error.response?.data.detail || `Error: Fail to submit book.`
         );
@@ -182,7 +181,6 @@ function SellBook() {
         ? { ...data }
         : { ...data, grade: undefined };
 
-    console.log(validData);
     handleSubmitFormWithGeoLocation(validData);
   };
 
@@ -209,7 +207,7 @@ function SellBook() {
         },
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setIsSubmitting(false);
       toast.error("Failed to submit form");
     }
@@ -238,7 +236,7 @@ function SellBook() {
         },
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setIsSubmitting(false);
       setTimeout(() => toast.error("Submit failed."), 1000);
     }

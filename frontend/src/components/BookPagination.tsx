@@ -26,7 +26,7 @@ export function BookPagination({
     setPage(currentPage + 1);
   };
 
-  console.log(currentPage);
+
   const handleMenstionPage = function (page: number) {
     if (page > totalPage) return;
     setPage(page);

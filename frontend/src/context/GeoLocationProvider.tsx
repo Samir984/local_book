@@ -48,7 +48,7 @@ export default function GeoLocationProvider({
             });
           } else {
             toast.error(
-              "Location  estimatedError is too hight. Make sure your GPS is turn on."
+              "Location  estimatedError is too high. Make sure your GPS is turn on."
             );
           }
         },

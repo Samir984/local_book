@@ -13,7 +13,6 @@ export default function BookMark() {
       staleTime: 30 * 1000,
     },
   });
-  console.log(bookmarks);
 
   return (
     <div className="max-w-7xl mx-auto py-8">

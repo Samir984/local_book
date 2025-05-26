@@ -51,14 +51,13 @@ function EditBookForm({
   const EditBookMutation = useCoreApiPartialUpdateBook({
     mutation: {
       onSuccess: (data) => {
-        console.log(data);
         toast.success(data.detail);
         form.reset();
         refetch();
         closePopOver();
       },
       onError: (error) => {
-        console.log("Error:", error);
+        console.error("Error:", error);
         toast.error(
           error.response?.data.detail || `Error: Fail to submit book.`
         );
@@ -79,18 +78,6 @@ function EditBookForm({
   } = form;
 
   const onSubmit = async function (data: PartialUpdateBookSchemaPatch) {
-    console.log(data);
-
-    console.log(
-      defaultValue.category,
-      getValues("category"),
-      defaultValue.condition,
-      getValues("condition"),
-      defaultValue.price,
-      getValues("price"),
-      defaultValue.name,
-      getValues("name")
-    );
     if (
       defaultValue.category === getValues("category") &&
       defaultValue.condition === getValues("condition") &&

@@ -28,14 +28,13 @@ export async function uploadToS3(imageFile: File) {
       body: formData,
     });
 
-    console.log(uploadResponse);
     if (!uploadResponse.ok) {
       throw new Error("Image upload failed");
     }
     toast.success("Filed upload successfully.");
     return signeduploadUrl.key;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     toast.error("Image uplaod Failed");
     throw error;
   }

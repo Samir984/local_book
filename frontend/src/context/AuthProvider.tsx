@@ -40,11 +40,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const checkAuth = async function () {
       try {
         const data = await coreApiGetUser();
-        console.log(data);
+   
         setUser(data);
         setIsLoggedIn(true);
         setIsLoading(false);
       } catch (err) {
+        console.error(err)
         setIsLoading(false);
       }
     };

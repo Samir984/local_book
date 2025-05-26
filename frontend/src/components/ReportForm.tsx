@@ -14,7 +14,6 @@ export default function ReportForm({
 }) {
   const [reason, setReason] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  console.log(reason.length);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,13 +37,11 @@ export default function ReportForm({
       closeModal();
     } catch (err) {
       setIsSubmitting(false);
-      console.log(err);
+      console.error(err);
 
       // @ts-ignore
       toast.error(err.response.data.detail || "Something went wrong");
     }
-
-    console.log(e);
   };
   return (
     <div className="p-4">

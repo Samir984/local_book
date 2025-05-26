@@ -63,7 +63,6 @@ function Register() {
   const signupMutation = useCoreApiRegisterUser({
     mutation: {
       onSuccess: (data) => {
-        console.log("response:", data);
         toast.success(data.detail);
         navigate("/login");
         reset();
