@@ -273,7 +273,7 @@ def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  #
     user = request.user
 
     queryset = Book.objects.filter(
-        # is_sold=True, is_reviewed=True ,is_accepted=True
+        is_sold=True, is_reviewed=True, is_accepted=True
     )
 
     filter_conditions = Q()
@@ -483,7 +483,7 @@ def create_bookmark(request: HttpRequest, data: CreateBookMarkSchema):
     if not book_exists:
         return 400, {"detail": "Book does not exist."}
     # create bookmark if don't exists
-    bookmark, created = BookMark.objects.get_or_create(user=user)
+    bookmark, _ = BookMark.objects.get_or_create(user=user)
 
     if BookMarkItem.objects.filter(
         bookmark=bookmark, book_id=data.book_id
