@@ -91,7 +91,7 @@ export default function BrowseBook() {
   const sortBy = searchParams.get("sortBy");
   const filterBooks = sortByPrice(books, sortBy);
 
-  
+
   return (
     <div className="px-4 py-6 flex flex-wrap gap-6 h-full flex-col  sidebar:flex-row relative">
       {/* Desktop Filter */}
