@@ -141,8 +141,7 @@ class BookAdmin(admin.ModelAdmin[Book]):
         except Exception as e:
             messages.error(
                 request,
-                "Failed to delete the images associated with books. "
-                "The books themselves were not deleted. Error: {e}",
+                f"Failed to delete the images associated with books. {e}",
             )
 
 

@@ -8,7 +8,7 @@ User = get_user_model()
 
 
 @receiver(post_save, sender=User)
-def create_user_bookmark(sender, instance, created: bool, **kwargs):
+def create_user_bookmark(_, instance, created: bool, **kwargs):  # type: ignore
     """
     Signal to create a BookMark instance on post_save of User.
     """
