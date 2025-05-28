@@ -65,10 +65,7 @@ function Footer() {
 
         {/* Bottom Section */}
         <div className="border-t border-blue-700 mt-10 pt-6 text-center text-sm text-gray-400">
-          <p>
-            © {new Date().getFullYear()} LocalBook Local Finds. All rights
-            reserved.
-          </p>
+          <p>© {new Date().getFullYear()} LocalBook. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState } from "react"; // Import useState
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,18 +11,40 @@ interface BookCardProps {
 }
 
 const BookCard = ({ book }: BookCardProps) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
   return (
     <Link to={`/books/${book.id}`}>
       <Card
-        className={` h-full flex flex-col min-w-[320px] duration-300 hover:shadow-md hover:-translate-y-1 transition-all ${book.is_sold && "bg-red-50"}`}
+        className={` h-full p-0 pb-2 flex flex-col min-w-[320px] duration-300 hover:shadow-md hover:-translate-y-1 transition-all ${book.is_sold && "bg-red-50"}`}
       >
-        <div className="relative pt-[56.25%] bg-bookworm-light">
+        <div
+          className={`relative pt-[56.25%] bg-gray-200 overflow-hidden ${
+            !imageLoaded ? "animate-pulse-light" : ""
+          }`}
+        >
           <img
             src={book.book_image}
             alt={book.name}
-            className="absolute top-0 left-0 w-full h-full object-cover"
+            className={`absolute top-0 left-[50%] -translate-x-1/2 h-full object-cover transition-opacity duration-500 `}
+            onLoad={handleImageLoad}
+            onError={(e) => {
+              setImageLoaded(true);
+              e.currentTarget.src = "/placeholder-image.png";
+            }}
           />
-          <Badge className="absolute top-2 right-2  bg-orange-700">
+
+          {!imageLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">
+              Loading Image...
+            </div>
+          )}
+
+          <Badge className="absolute top-2 right-2 bg-orange-700">
             {Number(book.price) <= 0
               ? "Donate"
               : `Rs. ${Number(book.price).toFixed(2)}`}
@@ -34,7 +57,7 @@ const BookCard = ({ book }: BookCardProps) => {
           </div>
 
           {book.distance && book.distance !== "None" && (
-            <Badge variant="default" className="text-sm  mt-1 ">
+            <Badge variant="default" className="text-sm mt-1 ">
               {Number(book.distance.trim().replace("m", "")).toFixed(2)} m AWAY
             </Badge>
           )}
@@ -52,7 +75,7 @@ const BookCard = ({ book }: BookCardProps) => {
                     variant="outline"
                     className="bg-gray-100 text-red-600 hover:bg-red-100 "
                   >
-                    {book.is_sold && "Not Avilable"}
+                    {book.is_sold && "Not Available"}
                   </Badge>
                 )}
                 {(book.is_school_book ||
@@ -65,9 +88,9 @@ const BookCard = ({ book }: BookCardProps) => {
                     {book.is_school_book
                       ? "School"
                       : book.is_college_book
-                        ? "Collage"
+                        ? "College" // Corrected typo
                         : book.is_bachlore_book
-                          ? "Bachlore"
+                          ? "Bachelor" // Corrected typo
                           : "null"}
                   </Badge>
                 )}
@@ -95,7 +118,7 @@ const BookCard = ({ book }: BookCardProps) => {
           {(book.owner_first_name ||
             book.owner_last_name ||
             book.owner_location) && (
-            <div className="flex justify-between items-center mt-3  border-t border-gray-100">
+            <div className="flex justify-between items-center mt-3 border-t border-gray-100">
               <div className="flex flex-col text-sm text-bookworm-gray">
                 {(book.owner_first_name || book.owner_last_name) && (
                   <span className="font-medium text-lg">

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-import { Bookmark, Menu, X } from "lucide-react";
+import { LucideBookmark, Menu, X } from "lucide-react";
 import { useMobileNav } from "@/hooks/useMobileNav";
 import { useAuth } from "@/context/AuthProvider";
 import { Skeleton } from "./ui/skeleton";
@@ -15,7 +15,7 @@ function Navbar() {
 
   return (
     <nav className="bg-white shadow-md py-4 sticky top-0 z-40">
-      <div className="max-w-[1440px] mx-auto  px-0 md:px-4">
+      <div className="max-w-[1440px] mx-auto  px-1 md:px-4">
         <div className="flex justify-between items-center">
           {/* Logo & Brand */}
           <Link to="/" className="flex items-center space-x-2">
@@ -69,14 +69,14 @@ function Navbar() {
             <NavLink
               to="/bookmarks"
               className={({ isActive }) =>
-                `px-3 py-2 flex gap-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                `px-3 py-2 flex gap-[1px] text-sm font-medium rounded-md transition-all duration-200 ${
                   isActive
                     ? "text-orange-700"
                     : "text-gray-700 hover:text-orange-700"
                 }`
               }
             >
-              <Bookmark size={20} />
+              <LucideBookmark size={20} />
               <span>Bookmark</span>
             </NavLink>
             {isLoading ? (
@@ -99,7 +99,7 @@ function Navbar() {
           <div className="md:hidden flex  gap-4">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className=" hover:text-bookworm-secondary focus:outline-none"
+              className=" hover:text-bookworm-secondary focus:outline-none  "
             >
               {isMenuOpen ? <X /> : <Menu />}
             </button>
@@ -125,11 +125,11 @@ function Navbar() {
         {/* Mobile Menu */}
         {isMobile && isMenuOpen && (
           <div className="mt-4 md:hidden">
-            <div className="p-2 flex flex-col">
+            <div className="p-2 flex flex-col border-[1px] bg-gray-100">
               <NavLink
                 to="/books"
                 className={({ isActive }) =>
-                  `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                  `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 active:bg-gray-200 ${
                     isActive
                       ? "text-orange-700"
                       : "text-gray-700 hover:text-orange-700"
@@ -142,7 +142,7 @@ function Navbar() {
               <NavLink
                 to="/sell"
                 className={({ isActive }) =>
-                  `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                  `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 active:bg-gray-200 ${
                     isActive
                       ? "text-orange-700"
                       : "text-gray-700 hover:text-orange-700"
@@ -155,7 +155,7 @@ function Navbar() {
               <NavLink
                 to="/mybooks"
                 className={({ isActive }) =>
-                  `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                  `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 active:bg-gray-200 ${
                     isActive
                       ? "text-orange-700"
                       : "text-gray-700 hover:text-orange-700"
@@ -168,7 +168,7 @@ function Navbar() {
               <NavLink
                 to="/bookmarks"
                 className={({ isActive }) =>
-                  `px-3 py-2 flex gap-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                  `px-3 py-2 flex  gap-[2px] text-sm font-medium rounded-md transition-all duration-200 active:bg-gray-200 ${
                     isActive
                       ? "text-orange-700"
                       : "text-gray-700 hover:text-orange-700"
@@ -176,7 +176,6 @@ function Navbar() {
                 }
                 onClick={() => setIsMenuOpen(false)}
               >
-                <Bookmark />
                 <span>Bookmarks</span>
               </NavLink>
             </div>

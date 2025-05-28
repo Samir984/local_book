@@ -26,7 +26,6 @@ export function BookPagination({
     setPage(currentPage + 1);
   };
 
-
   const handleMenstionPage = function (page: number) {
     if (page > totalPage) return;
     setPage(page);
@@ -36,13 +35,13 @@ export function BookPagination({
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            className={`${currentPage <= 1 ? "disable cursor-not-allowed" : ""}`}
+            className={`${currentPage <= 1 ? "disable cursor-not-allowed" : "active:bg-gray-200"}`}
             onClick={handlePreviousPage}
           />
         </PaginationItem>
         <PaginationItem>
           <PaginationLink
-            className={`${currentPage > totalPage ? "disable cursor-not-allowed" : ""}`}
+            className={`${currentPage > totalPage ? "disable cursor-not-allowed" : "active:bg-gray-200"}`}
             onClick={() => handleMenstionPage(currentPage)}
             isActive
           >
@@ -51,7 +50,7 @@ export function BookPagination({
         </PaginationItem>
         <PaginationItem>
           <PaginationLink
-            className={`${currentPage + 1 > totalPage ? "disable cursor-not-allowed" : ""}`}
+            className={`${currentPage + 1 > totalPage ? "disable cursor-not-allowed" : "active:bg-gray-200"}`}
             onClick={() => handleMenstionPage(currentPage + 1)}
           >
             {currentPage + 1}
@@ -59,7 +58,7 @@ export function BookPagination({
         </PaginationItem>
         <PaginationItem>
           <PaginationLink
-            className={`${currentPage + 2 > totalPage ? "disable cursor-not-allowed" : ""}`}
+            className={`${currentPage + 2 > totalPage ? "disable cursor-not-allowed" : "active:bg-gray-200"}`}
             onClick={() => handleMenstionPage(currentPage + 2)}
           >
             {currentPage + 2}
@@ -70,7 +69,7 @@ export function BookPagination({
         </PaginationItem>
         <PaginationItem>
           <PaginationNext
-            className={`${currentPage >= totalPage ? "disable cursor-not-allowed" : ""}`}
+            className={`${currentPage >= totalPage ? "disable cursor-not-allowed" : "active:bg-gray-200"}`}
             onClick={handleNextPage}
           />
         </PaginationItem>

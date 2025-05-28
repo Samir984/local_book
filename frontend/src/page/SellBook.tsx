@@ -275,14 +275,14 @@ function SellBook() {
                       >
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                           {bookImageToDisplay ? (
-                            <div className="w-60 h-[80%] mb-4 ">
+                            <div className="max-w-40 max-h-52  mb-4 ">
                               <img
                                 src={
                                   typeof bookImageToDisplay === "string"
                                     ? bookImageToDisplay
                                     : ""
                                 }
-                                className="mx-auto inset-0 object-contain rounded-md"
+                                className="mx-auto inset-0  w-full h-full object-contain rounded-md"
                                 alt="book image"
                               />
                             </div>

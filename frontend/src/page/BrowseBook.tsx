@@ -15,7 +15,6 @@ import {
   useCoreApiListBooks,
 } from "@/gen";
 
-
 const LIMIT = 6;
 
 export default function BrowseBook() {
@@ -91,7 +90,6 @@ export default function BrowseBook() {
   const sortBy = searchParams.get("sortBy");
   const filterBooks = sortByPrice(books, sortBy);
 
-
   return (
     <div className="px-4 py-6 flex flex-wrap gap-6 h-full flex-col  sidebar:flex-row relative">
       {/* Desktop Filter */}
@@ -156,7 +154,9 @@ export default function BrowseBook() {
           </div>
         ) : (
           <div className="grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-            {filterBooks?.items.map((book) => <BookCard book={book} key={book.id} />)}
+            {filterBooks?.items.map((book) => (
+              <BookCard book={book} key={book.id} />
+            ))}
           </div>
         )}
         {books && books?.count > 0 && (

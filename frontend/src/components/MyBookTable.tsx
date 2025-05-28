@@ -78,7 +78,7 @@ const BookActions: React.FC<BookActionsProps> = ({ book, refetch }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
-            className="flex gap-2 transition-colors duration-150 ease-in-out hover:bg-gray-200 hover:text-green-600"
+            className="flex gap-2 transition-colors duration-150 ease-in-out hover:bg-gray-200  active:bg-gray-200 hover:text-green-600"
             disabled={book.is_sold || !book.is_reviewed}
             onClick={() => {
               async function markedAsSold() {
@@ -107,14 +107,14 @@ const BookActions: React.FC<BookActionsProps> = ({ book, refetch }) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             disabled={book.is_sold}
-            className="flex gap-2 transition-colors duration-150 ease-in-out hover:bg-gray-200 hover:text-green-600"
+            className="flex gap-2 transition-colors duration-150 ease-in-out hover:bg-gray-200  active:bg-gray-200 hover:text-green-600"
             onSelect={() => setOpen(true)}
           >
             <EditIcon />
             <span>Edit</span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            className="flex gap-2 transition-colors duration-150 ease-in-out hover:bg-gray-200 hover:text-orange-700"
+            className="flex gap-2 transition-colors duration-150 ease-in-out hover:bg-gray-200  active:bg-gray-200 hover:text-orange-700"
             onClick={() => {
               async function deleteBook() {
                 try {

@@ -39,6 +39,11 @@ function BookDetailsPage() {
   const { isLoggedIn } = useAuth();
 
   const navigate = useNavigate();
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
   const [openReportModal, setOpenReportModal] = useState(false);
   const { bookId } = useParams();
   const queryClient = useQueryClient();
@@ -100,6 +105,7 @@ function BookDetailsPage() {
       addBookMark.mutate({ data: payload });
     }
   };
+  console.log(isLoading, isFetching, imageLoaded);
   return (
     <div className="w-full ">
       <div className="max-w-7xl mx-auto py-8 ">
@@ -117,23 +123,25 @@ function BookDetailsPage() {
             <span>Loading ...</span>
           </div>
         ) : (
-          <div className="flex justify-center flex-wrap gap-4 items-center">
-            <div className="bg-white flex flex-col gap-2 justify-center border-2 border-gray-200 shadow-sm duration-300 transition-all  p-4">
-              <div className=" p-4 min-w-96  min-h-96  rounded-lg flex justify-center items-center ">
+          <div className="flex justify-center flex-wrap gap-4 items-start">
+            <div className="bg-white flex flex-col gap-2 justify-center   duration-300 transition-all  ">
+              <div className="p-2  rounded-lg flex justify-center items-center ">
                 <img
                   src={book?.book_image}
                   alt={book?.name}
-                  className="w-full  rounded-md"
+                  className={`max-h-96 min-w-82 rounded-md `}
+                  onLoad={handleImageLoad}
                 />
               </div>
-
-              <div className="  text-center">
-                <Badge className="bg-orange-700 mx-auto">
-                  {Number(book?.price) <= 0
-                    ? "Donate"
-                    : `Rs. ${Number(book?.price).toFixed(2)}`}
-                </Badge>
-              </div>
+              {imageLoaded && (
+                <div className="text-center">
+                  <Badge className="bg-orange-700 mx-auto">
+                    {Number(book?.price) <= 0
+                      ? "Donate"
+                      : `Rs. ${Number(book?.price).toFixed(2)}`}
+                  </Badge>
+                </div>
+              )}
             </div>
             <div className="flex-1  bg-white p-4">
               <div className="bg-white p-4 rounded-lg mx-auto border-3 border-gray-200 md:min-w-96 h-full">
@@ -257,13 +265,17 @@ function BookDetailsPage() {
                   </div>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button className="flex-1" variant="outline">
+                  <Button
+                    className="flex-1 active:bg-gray-200"
+                    disabled={true}
+                    variant="outline"
+                  >
                     <MessageSquare className="mr-2 h-4 w-4" />
                     Chat with Seller
                   </Button>
                   <Button
                     variant="outline"
-                    className="flex-1"
+                    className="flex-1 active:bg-gray-200"
                     onClick={onBookMarkChange}
                     disabled={isFetching}
                   >
