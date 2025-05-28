@@ -49,7 +49,7 @@ function Login() {
       onError: (error) => {
         console.error("Error registering user", error);
         toast.error(
-          `Error: ${error.response?.data.detail || "Fail to login."}`
+          `Error: ${error.response?.data.detail || "Something went wrong."}`
         );
       },
     },
@@ -113,7 +113,10 @@ function Login() {
             {LoginMutation.isError && (
               <div className="flex items-center justify-center gap-2 text-red-400 font-semibold text-lg text-center p-2 rounded-md bg-red-50 border border-red-200 w-full">
                 <AlertCircle className="w-5 h-5" />
-                <span>Invalid Credentials</span>
+                <span>
+                  {LoginMutation.error.response?.data?.detail ||
+                    "An unexpected error occurred."}
+                </span>
               </div>
             )}
             <Button className="w-full" disabled={LoginMutation.isPending}>

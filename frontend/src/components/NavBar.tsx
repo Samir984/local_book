@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-import { Book, Bookmark, Menu, X } from "lucide-react";
+import { Bookmark, Menu, X } from "lucide-react";
 import { useMobileNav } from "@/hooks/useMobileNav";
 import { useAuth } from "@/context/AuthProvider";
 import { Skeleton } from "./ui/skeleton";
 import Profile from "./Profile";
 
-const Navbar = () => {
+function Navbar() {
   const isMobile = useMobileNav();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isLoading, isLoggedIn, user } = useAuth();
@@ -19,63 +19,87 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           {/* Logo & Brand */}
           <Link to="/" className="flex items-center space-x-2">
-            <Book className="w-8 h-8 text-orange-700 text-bookworm-burgundy" />
+            <img src="/logo.png" alt="logo" width={32} />
             <div>
-              <h1 className="text-xl sm:text-2xl font-noto font-medium text-bookworm-primary leading-tight">
+              <h1 className="text-xl sm:text-2xl font-noto font-medium  leading-tight">
                 LocalBook <br />
               </h1>
             </div>
           </Link>
 
-          {/* Navigation Links - Desktop */}
+          {/* Navigation NavLinks - Desktop */}
           <div className="hidden md:flex md:space-x-0 lg:space-x-6  items-center">
-            <Link
+            <NavLink
               to="/books"
-              className="text-bookworm-gray hover:text-bookworm-primary px-3 py-2 text-sm font-medium"
+              className={({ isActive }) =>
+                `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                  isActive
+                    ? "text-orange-700"
+                    : "text-gray-700 hover:text-orange-700"
+                }`
+              }
             >
               Browse Books
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/sell"
-              className="text-bookworm-gray hover:text-bookworm-primary px-3 py-2 text-sm font-medium"
+              className={({ isActive }) =>
+                `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                  isActive
+                    ? "text-orange-700"
+                    : "text-gray-700 hover:text-orange-700"
+                }`
+              }
             >
               Sell Books
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/mybooks"
-              className="text-bookworm-gray hover:text-bookworm-primary px-3 py-2 text-sm font-medium"
+              className={({ isActive }) =>
+                `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                  isActive
+                    ? "text-orange-700"
+                    : "text-gray-700 hover:text-orange-700"
+                }`
+              }
             >
               My Books
-            </Link>
+            </NavLink>
 
-            <Link
+            <NavLink
               to="/bookmarks"
-              className="text-bookworm-gray items-center flex gap-1  hover:text-bookworm-primary px-3 py-2 text-sm font-medium"
+              className={({ isActive }) =>
+                `px-3 py-2 flex gap-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                  isActive
+                    ? "text-orange-700"
+                    : "text-gray-700 hover:text-orange-700"
+                }`
+              }
             >
               <Bookmark size={20} />
               <span>Bookmark</span>
-            </Link>
+            </NavLink>
             {isLoading ? (
               <Skeleton className="w-12 h-12 rounded-full bg-gray-300" />
             ) : isLoggedIn ? (
               <Profile user={user} />
             ) : (
               <div className="flex gap-2">
-                <Link to="/login">
+                <NavLink to="/login">
                   <Button variant="outline">Sign In</Button>
-                </Link>
-                <Link to="/register">
+                </NavLink>
+                <NavLink to="/register">
                   <Button>Register</Button>
-                </Link>
+                </NavLink>
               </div>
             )}
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex gap-4">
+          <div className="md:hidden flex  gap-4">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-bookworm-primary hover:text-bookworm-secondary focus:outline-none"
+              className=" hover:text-bookworm-secondary focus:outline-none"
             >
               {isMenuOpen ? <X /> : <Menu />}
             </button>
@@ -86,12 +110,12 @@ const Navbar = () => {
                 <Profile user={user} />
               ) : (
                 <div className="flex gap-2">
-                  <Link to="/login">
+                  <NavLink to="/login">
                     <Button variant="outline">Sign In</Button>
-                  </Link>
-                  <Link to="/register">
+                  </NavLink>
+                  <NavLink to="/register">
                     <Button>Register</Button>
-                  </Link>
+                  </NavLink>
                 </div>
               )}
             </div>
@@ -101,42 +125,66 @@ const Navbar = () => {
         {/* Mobile Menu */}
         {isMobile && isMenuOpen && (
           <div className="mt-4 md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <Link
+            <div className="p-2 flex flex-col">
+              <NavLink
                 to="/books"
-                className="block px-3 py-2 rounded-md text-base font-medium text-bookworm-primary hover: "
+                className={({ isActive }) =>
+                  `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                    isActive
+                      ? "text-orange-700"
+                      : "text-gray-700 hover:text-orange-700"
+                  }`
+                }
                 onClick={() => setIsMenuOpen(false)}
               >
                 Browse Books
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to="/sell"
-                className="block px-3 py-2 rounded-md text-base font-medium text-bookworm-primary hover: "
+                className={({ isActive }) =>
+                  `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                    isActive
+                      ? "text-orange-700"
+                      : "text-gray-700 hover:text-orange-700"
+                  }`
+                }
                 onClick={() => setIsMenuOpen(false)}
               >
                 Sell Books
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to="/mybooks"
-                className="block px-3 py-2 rounded-md text-base font-medium text-bookworm-primary hover: "
+                className={({ isActive }) =>
+                  `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                    isActive
+                      ? "text-orange-700"
+                      : "text-gray-700 hover:text-orange-700"
+                  }`
+                }
                 onClick={() => setIsMenuOpen(false)}
               >
                 My Books
-              </Link>
-              <Link
-                to="/mybooks"
-                className=" flex gap-1 items-center px-3 py-2 rounded-md text-base font-medium text-bookworm-primary hover: "
+              </NavLink>
+              <NavLink
+                to="/bookmarks"
+                className={({ isActive }) =>
+                  `px-3 py-2 flex gap-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                    isActive
+                      ? "text-orange-700"
+                      : "text-gray-700 hover:text-orange-700"
+                  }`
+                }
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Bookmark />
                 <span>Bookmarks</span>
-              </Link>
+              </NavLink>
             </div>
           </div>
         )}
       </div>
     </nav>
   );
-};
+}
 
 export default Navbar;

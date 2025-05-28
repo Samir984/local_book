@@ -273,7 +273,7 @@ def list_books(request: HttpRequest, filters: BookFilterScehma = Query(...)):  #
     user = request.user
 
     queryset = Book.objects.filter(
-        is_sold=True, is_reviewed=True, is_accepted=True
+        is_sold=False, is_reviewed=True, is_accepted=True
     )
 
     filter_conditions = Q()

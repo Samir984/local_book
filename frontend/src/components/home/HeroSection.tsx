@@ -61,17 +61,17 @@ const HeroSection = () => {
             </div>
           </form>
 
-          <div className="flex flex-wrap justify-center gap-4 mt-8">
+          <div className="flex flex-wrap justify-center gap-4 ">
             <Button
-              variant="secondary"
-              className="bg-white text-bookworm-primary text-black"
+              variant="default"
+              className="bg-white text-black border border-gray-200 hover:bg-gray-100 transition-all duration-200  px-4 py-2 font-medium shadow-sm"
               onClick={() => navigate("/books")}
             >
               Browse All Books
             </Button>
             <Button
-              variant="outline"
-              className="border-white text-black bg-white hover:text-bookworm-primary"
+              variant="default"
+              className="bg-white text-black border border-gray-200 hover:bg-gray-100 transition-all duration-200  px-4 py-2 font-medium shadow-sm"
               onClick={() => navigate("/sell")}
             >
               Sell Your Books
