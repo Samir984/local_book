@@ -52,12 +52,6 @@ class Book(models.Model):
         max_digits=6, decimal_places=2, default=Decimal("0.00")
     )
 
-    rating = models.PositiveIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)],
-        blank=True,
-        null=True,
-    )
-
     is_sold = models.BooleanField(default=False)
     is_disabled = models.BooleanField(default=False)
     is_reviewed = models.BooleanField(default=False)

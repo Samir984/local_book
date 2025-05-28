@@ -9,7 +9,7 @@ export const coreApiListUserBooksQueryParamsFilterByEnum = {
   all: 'all',
   accepted: 'accepted',
   rejected: 'rejected',
-  reviewed: 'reviewed',
+  unreviewed: 'unreviewed',
   sold: 'sold',
 } as const
 

@@ -7,7 +7,7 @@ export const privateBookFilterFilterByEnum = {
   all: 'all',
   accepted: 'accepted',
   rejected: 'rejected',
-  reviewed: 'reviewed',
+  unreviewed: 'unreviewed',
   sold: 'sold',
 } as const
 

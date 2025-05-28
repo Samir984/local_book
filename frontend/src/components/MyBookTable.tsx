@@ -200,18 +200,22 @@ export const columns: ColumnDef<PrivateBookScehma>[] = [
         <div className="text-right font-medium ">
           <span
             className={`text-xs font-semibold px-2 py-1 rounded-md ${
-              book.is_reviewed && book.is_accepted
-                ? "bg-green-100 text-green-700"
-                : book.is_reviewed && book.is_rejected
-                  ? "bg-red-100 text-red-700"
-                  : "bg-orange-100 text-orange-700"
+              book.is_disabled
+                ? "bg-gray-100 text-gray-700" // Style for disabled books
+                : book.is_reviewed && book.is_accepted
+                  ? "bg-green-100 text-green-700"
+                  : book.is_reviewed && book.is_rejected
+                    ? "bg-red-100 text-red-700"
+                    : "bg-orange-100 text-orange-700"
             }`}
           >
-            {book.is_reviewed && book.is_accepted
-              ? "Accepted"
-              : book.is_reviewed && book.is_rejected
-                ? "Rejected"
-                : "Unreviewed"}
+            {book.is_disabled
+              ? "Disabled"
+              : book.is_reviewed && book.is_accepted
+                ? "Accepted"
+                : book.is_reviewed && book.is_rejected
+                  ? "Rejected"
+                  : "Unreviewed"}
           </span>
         </div>
       );

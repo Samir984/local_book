@@ -102,6 +102,7 @@ class PrivateBookScehma(ModelSchema):
             "is_reviewed",
             "is_accepted",
             "is_rejected",
+            "is_disabled",
             "is_sold",
         ]
 

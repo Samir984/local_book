@@ -478,7 +478,7 @@ def delete_book(request: HttpRequest, id: int):
 def create_bookmark(request: HttpRequest, data: CreateBookMarkSchema):
     """Create book schema"""
     user = request.user
-    # Bookmark is already created using signal
+    # Bookmark is already created using signal 
     book_exists = Book.objects.filter(id=data.book_id).exists()
     if not book_exists:
         return 400, {"detail": "Book does not exist."}
@@ -518,12 +518,10 @@ def remove_bookmark_item(request: HttpRequest, data: RemoveBookMarkItemScehma):
     """Remove bookmark items"""
     user = request.user
     bookmark = get_object_or_404(BookMark, user=user)
-    print(bookmark, data)
     bookmark_item = get_object_or_404(
         BookMarkItem.objects.filter(bookmark=bookmark),
         book_id=data.book_id,
     )
-    print(bookmark_item, "item\n")
     bookmark_item.delete()
     return 200, {"detail": "Bookmark item delete successfull."}
 

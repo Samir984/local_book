@@ -48,5 +48,10 @@ export type PrivateBookScehma = {
    * @default false
    * @type boolean | undefined
    */
+  is_disabled?: boolean
+  /**
+   * @default false
+   * @type boolean | undefined
+   */
   is_sold?: boolean
 }

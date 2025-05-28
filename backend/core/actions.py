@@ -44,7 +44,8 @@ def disable_book(
     book = queryset[0]
     if book.is_sold or book.is_disabled or not book.is_reviewed:
         return messages.error(
-            request, "Can't disable  sold or already disable book."
+            request,
+            "Can't disable  unreviewed, sold and already disable book.",
         )
     book.is_disabled = True
     book.save(update_fields=["is_disabled"])

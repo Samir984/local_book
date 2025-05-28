@@ -1,1 +1,1 @@
-{"properties":{"filter_by":{"default":"all","enum":["all","accepted","rejected","reviewed","sold"],"title":"Filter By","type":"string"}},"title":"PrivateBookFilter","type":"object","x-readme-ref-name":"PrivateBookFilter"}
+{"properties":{"filter_by":{"default":"all","enum":["all","accepted","rejected","unreviewed","sold"],"title":"Filter By","type":"string"}},"title":"PrivateBookFilter","type":"object","x-readme-ref-name":"PrivateBookFilter"}

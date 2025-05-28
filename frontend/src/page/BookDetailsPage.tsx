@@ -25,6 +25,7 @@ import {
   BookmarkPlus,
   Flag,
   LoaderIcon,
+  Mail,
   MapPin,
   MessageSquare,
   Phone,
@@ -246,6 +247,11 @@ function BookDetailsPage() {
                         <span className="font-medium">
                           {book?.user.phone_number}
                         </span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <span className="font-medium text-lg">Email:</span>
+                        <Mail className="h-5 w-5 " />
+                        <span className="font-medium">{book?.user.email}</span>
                       </div>
                     </div>
                   </div>
