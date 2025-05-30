@@ -1,5 +1,27 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Search, Book, Phone } from "lucide-react";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.3,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 5 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+    },
+  },
+};
 
 const HowItWorks = () => {
   const steps = [
@@ -25,7 +47,13 @@ const HowItWorks = () => {
   ];
 
   return (
-    <div className="py-16 bg-amber-50">
+    <motion.div
+      className="py-16 "
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+    >
       <div className="mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-share font-bold mb-4">
@@ -39,24 +67,30 @@ const HowItWorks = () => {
 
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {steps.map((step) => (
-            <Card
+            <motion.div
               key={step.id}
-              className="text-center  hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.5 }}
+              className="border-gray-200 border-2 shadow-lg hover:-translate-y-1 rounded-2xl transition-all duration-300"
             >
-              <CardContent className="p-6 flex flex-col  items-center">
-                <div className="mb-4 p-3 rounded-full  bg-gray-100 text-orange-700">
-                  {step.icon}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                <p className="text-gray-800 font-inter font-medium">
-                  {step.description}
-                </p>
-              </CardContent>
-            </Card>
+              <Card className="text-center border-0 shadow-none">
+                <CardContent className="p-6 flex flex-col items-center">
+                  <div className="mb-4 p-3 rounded-full bg-gray-100 text-orange-700">
+                    {step.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
+                  <p className="text-gray-800 font-inter font-medium">
+                    {step.description}
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
