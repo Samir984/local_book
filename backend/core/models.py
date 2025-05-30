@@ -75,7 +75,7 @@ class Book(models.Model):
 
 
 class Report(models.Model):
-    user = models.ForeignKey(
+    user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="reports"
     )
     book = models.ForeignKey(
@@ -98,6 +98,9 @@ class BookMark(models.Model):
     def __str__(self):
         return f"{self.user.username} bookmarked"
 
+    class Meta:
+        verbose_name = "Bookmark"
+
 
 class BookMarkItem(models.Model):
     bookmark = models.ForeignKey(
@@ -109,3 +112,6 @@ class BookMarkItem(models.Model):
 
     def __str__(self):
         return f"{self.bookmark.user.username} bookmarked {self.book.name}"
+
+    class Meta:
+        verbose_name = "BookMark Item"

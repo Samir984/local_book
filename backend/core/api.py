@@ -534,6 +534,10 @@ def report_book(request: HttpRequest, data: ReportBookSchema):
     """Report book"""
     user = request.user
     book = get_object_or_404(Book, id=data.book_id)
+    already_reported = Report.objects.filter(user=user, book=book).exists()
+    if already_reported:
+        return 400, {"detail": "You have already reported the book."}
+
     Report.objects.create(
         user=user,
         book=book,
