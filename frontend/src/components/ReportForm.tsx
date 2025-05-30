@@ -34,7 +34,6 @@ export default function ReportForm({
       toast.success(res.detail);
 
       setIsSubmitting(false);
-      closeModal();
     } catch (err) {
       setIsSubmitting(false);
       console.error(err);

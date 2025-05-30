@@ -190,7 +190,7 @@ function BookDetailsPage() {
                   </div>
                 </div>
                 <p className="text-lg text-bookworm-gray mb-4">
-                  by {book?.user.first_name} {book?.user.last_name}
+                  by {book?.user.first_name} {book?.user.last_name}k
                 </p>
 
                 <div className="mb-6">

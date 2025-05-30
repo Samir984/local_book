@@ -1,5 +1,26 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { ShoppingCart, Tag, Gift, Users } from "lucide-react";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0.1,
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.2, type: "spring" },
+  },
+};
 
 function OurServices() {
   const services = [
@@ -34,7 +55,13 @@ function OurServices() {
   ];
 
   return (
-    <div className="py-12">
+    <motion.div
+      className="py-12"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.5 }}
+    >
       <div className="mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-share font-bold mb-4">
@@ -47,28 +74,31 @@ function OurServices() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+        <motion.div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {services.map((service) => (
-            <Card
+            <motion.div
               key={service.id}
-              className="text-center  hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              variants={cardVariants}
+              className="border-gray-200 border-2  rounded-2xl shadow-lg hover:-translate-y-1  duration-300hover:-translate-y-1 transition-all duration-300"
             >
-              <CardContent className="p-4 flex flex-col items-center">
-                <div className="mb-4 p-3 rounded-full   bg-gray-100 text-orange-700">
-                  {service.icon}
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  {service.title}
-                </h3>
-                <p className="text-sm text-gray-600 font-medium">
-                  {service.description}
-                </p>
-              </CardContent>
-            </Card>
+              <Card className="text-center border-0 shadow-none  ">
+                <CardContent className="p-4 flex flex-col items-center">
+                  <div className="mb-4 p-3 rounded-full bg-gray-100 text-orange-700">
+                    {service.icon}
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    {service.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 font-medium">
+                    {service.description}
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

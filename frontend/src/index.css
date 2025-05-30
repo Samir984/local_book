@@ -50,7 +50,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-@theme {
+@theme  {
   --breakpoint-sidebar: 100rem;
 }
 

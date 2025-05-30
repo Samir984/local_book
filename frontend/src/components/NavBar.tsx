@@ -7,6 +7,7 @@ import { useMobileNav } from "@/hooks/useMobileNav";
 import { useAuth } from "@/context/AuthProvider";
 import { Skeleton } from "./ui/skeleton";
 import Profile from "./Profile";
+import Logo from "./Logo";
 
 function Navbar() {
   const isMobile = useMobileNav();
@@ -14,17 +15,14 @@ function Navbar() {
   const { isLoading, isLoggedIn, user } = useAuth();
 
   return (
-    <nav className="bg-white shadow-md py-4 sticky top-0 z-40">
+    <nav className="bg-white shadow-md py-3 sticky top-0 z-40 ">
       <div className="max-w-[1440px] mx-auto  px-1 md:px-4">
         <div className="flex justify-between items-center">
           {/* Logo & Brand */}
+
           <Link to="/" className="flex items-center space-x-2">
-            <img src="/logo.png" alt="logo" width={32} />
-            <div>
-              <h1 className="text-xl sm:text-2xl font-noto font-medium  leading-tight">
-                LocalBook <br />
-              </h1>
-            </div>
+            <div className="h-12 w-[1px]"></div>
+            <Logo />
           </Link>
 
           {/* Navigation NavLinks - Desktop */}
@@ -80,17 +78,21 @@ function Navbar() {
               <span>Bookmark</span>
             </NavLink>
             {isLoading ? (
-              <Skeleton className="w-12 h-12 rounded-full bg-gray-300" />
-            ) : isLoggedIn ? (
-              <Profile user={user} />
+              <Skeleton className="w-9 h-9 rounded-lg bg-gray-300" />
             ) : (
-              <div className="flex gap-2">
-                <NavLink to="/login">
-                  <Button variant="outline">Sign In</Button>
-                </NavLink>
-                <NavLink to="/register">
-                  <Button>Register</Button>
-                </NavLink>
+              <div>
+                {isLoggedIn ? (
+                  <Profile user={user} />
+                ) : (
+                  <div className="flex gap-2  overflow-hidden">
+                    <NavLink to="/login">
+                      <Button variant="outline">Sign In</Button>
+                    </NavLink>
+                    <NavLink to="/register">
+                      <Button>Register</Button>
+                    </NavLink>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -103,22 +105,24 @@ function Navbar() {
             >
               {isMenuOpen ? <X /> : <Menu />}
             </button>
-            <div>
-              {isLoading ? (
-                <Skeleton className="w-12 h-12 rounded-full bg-gray-300" />
-              ) : isLoggedIn ? (
-                <Profile user={user} />
-              ) : (
-                <div className="flex gap-2">
-                  <NavLink to="/login">
-                    <Button variant="outline">Sign In</Button>
-                  </NavLink>
-                  <NavLink to="/register">
-                    <Button>Register</Button>
-                  </NavLink>
-                </div>
-              )}
-            </div>
+            {isLoading ? (
+              <Skeleton className="w-12 h-12 rounded-full bg-gray-300 " />
+            ) : (
+              <div className="transition-opacity duration-500 ease-in-out opacity-100">
+                {isLoggedIn ? (
+                  <Profile user={user} />
+                ) : (
+                  <div className="flex gap-2">
+                    <NavLink to="/login">
+                      <Button variant="outline">Sign In</Button>
+                    </NavLink>
+                    <NavLink to="/register">
+                      <Button>Register</Button>
+                    </NavLink>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
