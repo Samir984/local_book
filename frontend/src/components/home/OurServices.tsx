@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { ShoppingCart, Tag, Gift, Users } from "lucide-react";
+import { ShoppingCart, Tag, Users } from "lucide-react";
 import { motion } from "framer-motion";
 
 const containerVariants = {
@@ -29,29 +29,21 @@ function OurServices() {
     {
       id: 1,
       title: "Buy Books",
-      description:
-        "Find pre-loved books at great prices from sellers in your area or worldwide. Browse through thousands of titles across all genres.",
+      description: "Find the books you need around your neighbourhood.",
       icon: <ShoppingCart className="w-10 h-10" />,
     },
     {
       id: 2,
       title: "Sell Books",
       description:
-        "List your books for sale easily. Set your price, add photos and description, and connect with potential buyers instantly.",
+        "List your books for sell or donated to the local community.",
       icon: <Tag className="w-10 h-10" />,
     },
+
     {
       id: 3,
-      title: "Donate Books",
-      description:
-        "Donate your books to those who need them most. Support schools, libraries, and community centers through our platform.",
-      icon: <Gift className="w-10 h-10" />,
-    },
-    {
-      id: 4,
       title: "Community",
-      description:
-        "Connect with fellow book lovers, share reviews, recommendations, and discuss your favorite titles.",
+      description: "Building the community to enable book reusability",
       icon: <Users className="w-10 h-10" />,
     },
   ];
@@ -70,13 +62,11 @@ function OurServices() {
             Our Services
           </h2>
           <p className="text-bookworm-gray max-w-2xl mx-auto">
-            LocalBook offers a variety of services to enhance your book buying
-            and selling experience. Whether you're looking to buy, sell, or
-            donate books, we've got you covered.
+            Sell or donate your old book to the people nearby your locality.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl  mx-auto">
           {services.map((service) => (
             <motion.div
               key={service.id}

@@ -60,8 +60,9 @@ const HowItWorks = () => {
             How It Works
           </h2>
           <p className="text-bookworm-gray max-w-2xl mx-auto">
-            LocalBook makes it easy to buy and sell used books in your
-            community.
+            We provide the platform for book buyers and sellers, making it easy
+            to find used books. All transaction details, including payment and
+            exchange, are handled directly between members.
           </p>
         </div>
 

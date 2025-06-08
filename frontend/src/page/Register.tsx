@@ -12,12 +12,12 @@ import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Lock, Phone, LocateFixed } from "lucide-react";
+import { Mail, Lock, Phone, LocateFixed, Eye, EyeOff } from "lucide-react";
 
 import { z } from "zod";
 import { coreApiCheckUsername, useCoreApiRegisterUser } from "@/gen";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import { AxiosError } from "axios";
 
@@ -44,6 +44,7 @@ type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 
 function Register() {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -206,7 +207,7 @@ function Register() {
                   id="email"
                   type="email"
                   placeholder="john@example.com"
-                  className={`pl-10 ${errors.email ? "border-red-600" : ""}`}
+                  className={`pl-10 relative${errors.email ? "border-red-600" : ""}`}
                   {...register("email")}
                   required
                 />
@@ -221,15 +222,26 @@ function Register() {
             <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
               <div className="relative ">
-                <Lock className="absolute left-3 top-2 h-5 w-5 text-gray-400" />
+                <Lock className="absolute left-3  top-2 h-5 w-5 text-gray-400" />
                 <Input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="**********"
-                  className={`pl-10 ${errors.password ? "border-red-600" : ""}`}
+                  className={`pl-10 pr-10 relative  ${errors.password ? "border-red-600" : ""}`}
                   {...register("password")}
                   required
                 />
+                {showPassword ? (
+                  <EyeOff
+                    className="absolute right-3 top-2 text-gray-500 cursor-pointer"
+                    onClick={() => setShowPassword(false)}
+                  />
+                ) : (
+                  <Eye
+                    className="absolute right-3 top-2 text-gray-500 cursor-pointer"
+                    onClick={() => setShowPassword(true)}
+                  />
+                )}
                 {
                   <p className="text-[12px]  text-red-500 ">
                     {errors.password?.message}
@@ -245,7 +257,7 @@ function Register() {
                   id="location"
                   type="text"
                   placeholder="location"
-                  className={`pl-10 ${errors.location ? "border-red-600" : ""}`}
+                  className={`pl-10 relative${errors.location ? "border-red-600" : ""}`}
                   {...register("location")}
                   required
                 />
@@ -264,7 +276,7 @@ function Register() {
                   id="phone"
                   type="number"
                   placeholder="mobile"
-                  className={`pl-10 ${errors.phone_number ? "border-red-600" : ""}`}
+                  className={`pl-10 relative${errors.phone_number ? "border-red-600" : ""}`}
                   {...register("phone_number")}
                   required
                 />

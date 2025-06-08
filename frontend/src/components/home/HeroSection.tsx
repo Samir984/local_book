@@ -98,15 +98,14 @@ const HeroSection = () => {
             className="text-3xl md:text-6xl font-bold mb-6 text-white"
             variants={itemVariants}
           >
-            Find Books in Your Neighbourhood
+            Find Books in Your Neighbourhood.
           </motion.h1>
 
           <motion.p
             className="text-lg md:text-xl mb-8 text-gray-100"
             variants={itemVariants}
           >
-            Buy and sell used books locally. Connect with fellow readers, save
-            money, and give books a second life.
+            We are building the community to enable reuablity of old book. 
           </motion.p>
 
           <motion.form

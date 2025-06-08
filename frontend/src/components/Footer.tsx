@@ -25,7 +25,8 @@ function Footer() {
                 { name: "Home", to: "/" },
                 { name: "Browse Books", to: "/books" },
                 { name: "Sell Books", to: "/sell" },
-                { name: "About Us", to: "/about" },
+                { name: "My books", to: "/mybooks" },
+                { name: "My bookmarks", to: "/bookmarks" },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
@@ -46,9 +47,9 @@ function Footer() {
             </h3>
             <ul className="space-y-2">
               {[
-                { name: "Terms of Service", to: "/terms" },
-                { name: "Privacy Policy", to: "/privacy" },
-                { name: "Contact Us", to: "/contact" },
+                { name: "Terms of Service", to: "/#" },
+                { name: "Privacy Policy", to: "/#" },
+                { name: "Contact Us", to: "/#" },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
