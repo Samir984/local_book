@@ -39,3 +39,11 @@ export async function uploadToS3(imageFile: File) {
     throw error;
   }
 }
+
+export function addSufixOnNumber(num: number) {
+  const suffix = ["st", "nd", "rd", "th"];
+  if (num === 1) return num + suffix[0];
+  if (num === 2) return num + suffix[1];
+  if (num === 3) return num + suffix[2];
+  if (num >= 4) return num + suffix[3];
+}

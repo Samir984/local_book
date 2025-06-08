@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { MapPin, BookIcon, BookmarkIcon } from "lucide-react";
 import { PublicBookScehma } from "@/gen";
 import { motion } from "framer-motion";
+import { addSufixOnNumber } from "@/utils/utils";
 interface BookCardProps {
   book: PublicBookScehma & { is_sold?: boolean };
 }
@@ -128,7 +129,18 @@ const BookCard = ({ book }: BookCardProps) => {
                 )}
               </div>
             </div>
-
+            <div className="flex flex-col gap-2 mt-2">
+              {book.publication && (
+                <Badge variant="secondary" className="text-sm text-purple-700">
+                  {book.publication}
+                </Badge>
+              )}
+              {book.edition && (
+                <Badge variant="secondary" className="text-sm text-pink-700">
+                  {addSufixOnNumber(book.edition)} Edition
+                </Badge>
+              )}
+            </div>
             {/* Owner information */}
             {(book.owner_first_name ||
               book.owner_last_name ||

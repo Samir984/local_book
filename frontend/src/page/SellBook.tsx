@@ -470,7 +470,7 @@ function SellBook() {
                     <FormControl>
                       <Input
                         type="text"
-                        placeholder="Enter publication name"
+                        placeholder="KEC publication"
                         {...field}
                         className="mt-1 block w-full"
                       />

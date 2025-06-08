@@ -46,6 +46,12 @@ export type PublicBookScehma = {
    * @type string | undefined
    */
   category?: string
+  publication?: string | null
+  /**
+   * @default 1
+   * @type integer | undefined
+   */
+  edition?: number
   /**
    * @default false
    * @type boolean | undefined

@@ -28,6 +28,12 @@ export type BookDetailSchema = {
    * @type string
    */
   description: string
+  publication?: string | null
+  /**
+   * @default 1
+   * @type integer | undefined
+   */
+  edition?: number
   /**
    * @maxLength 10
    * @type string

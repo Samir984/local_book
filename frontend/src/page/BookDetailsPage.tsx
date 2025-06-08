@@ -10,6 +10,7 @@ import {
   useCoreApiGetBook,
   useCoreApiRemoveBookmarkItem,
 } from "@/gen";
+import { addSufixOnNumber } from "@/utils/utils";
 import {
   Tooltip,
   TooltipContent,
@@ -221,6 +222,24 @@ function BookDetailsPage() {
                       </Badge>
                     )}
                   </div>
+                </div>
+                <div className="flex flex-col gap-2 mt-2">
+                  {book?.publication && (
+                    <Badge
+                      variant="secondary"
+                      className="text-sm text-purple-700"
+                    >
+                      {book.publication}
+                    </Badge>
+                  )}
+                  {book?.edition && (
+                    <Badge
+                      variant="secondary"
+                      className="text-sm text-pink-700"
+                    >
+                      {addSufixOnNumber(book.edition)} Edition
+                    </Badge>
+                  )}
                 </div>
                 <hr className="border-1 my-2 border-gray-100 " />
 
