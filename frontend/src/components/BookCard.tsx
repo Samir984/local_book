@@ -31,7 +31,7 @@ const BookCard = ({ book }: BookCardProps) => {
         }}
       >
         <Card
-          className={` h-full p-0 pb-1 flex flex-col min-w-[320px] duration-300 hover:shadow-md hover:-translate-y-1 transition-all ${book.is_sold && "bg-red-50"}`}
+          className={` h-full p-0 pb-1 flex flex-col w-[320px] duration-300 hover:shadow-md hover:-translate-y-1 transition-all ${book.is_sold && "bg-red-50"}`}
         >
           <div
             className={`relative pt-[56.25%] bg-gray-200 overflow-hidden ${

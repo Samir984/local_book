@@ -105,7 +105,7 @@ const HeroSection = () => {
             className="text-lg md:text-xl mb-8 text-gray-100"
             variants={itemVariants}
           >
-            We are building the community to enable reuablity of old book. 
+            We are building the community to enable reuablity of old book.
           </motion.p>
 
           <motion.form
